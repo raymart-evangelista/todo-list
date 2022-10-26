@@ -23,11 +23,12 @@ class Model {
 
   addTodo(todoText) {
     const todo = {
-      id: this.todo.length > 0 ? this.todos[this.todos.length - 1].id + 1 : 1,
+      id: this.todos.length > 0 ? this.todos[this.todos.length - 1].id + 1 : 1,
       text: todoText,
       complete: false,
     }
 
+    console.log("todo added to list")
     this.todos.push(todo)
   }
 
@@ -60,3 +61,4 @@ class Controller {
 }
 
 const app = new Controller(new Model(), new View())
+app.model.addTodo('Take a nap')
