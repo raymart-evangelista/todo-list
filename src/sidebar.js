@@ -28,7 +28,7 @@ class Model {
     this.todos.push(todo)
   }
 
-  editTodo(id, updateText) {
+  editTodo(id, updatedText) {
     this.todos = this.todos.map((todo) => 
     todo.id === id ? {id: todo.id, text: updatedText, complete: todo.complete} : todo,
     )
