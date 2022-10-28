@@ -19,6 +19,10 @@ class Model {
     this.todos = JSON.parse(localStorage.getItem('todos')) || []
   }
 
+  bindTodoListChanged(callback) {
+    this.onTodoListChanged = callback
+  }
+
   _commit(todos) {
     this.onTodoListChanged(todos)
     localStorage.setItem('todos', JSON.stringify(todos))
@@ -49,7 +53,6 @@ class Model {
     this.todos = this.todos.filter((todo) => todo.id !== id)
 
     this._commit(this.todos)
-    this.onTodoListChanged(this.todos)
   }
 
   toggleTodo(id) {
@@ -59,20 +62,16 @@ class Model {
 
     this._commit(this.todos)
   }
-
-  bindTodoListChanged(callback) {
-    this.onTodoListChanged = callback
-  }
 }
 
 // used for UI logic--such as customer view including UI components such as text boxes, dropdowns
 class View {
   constructor() {
     this.app = this.getElem('#content')
-    this.app.classList = 'flex flex-col'
+    this.app.classList = 'flex flex-col items-center h-screen'
 
     this.title = this.createElem('h1')
-    this.title.textContent = 'Todos'
+    this.title.textContent = 'Todo List'
 
     this.form = this.createElem('form')
 
