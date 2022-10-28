@@ -16,10 +16,12 @@ import './style.css'
 // the model works with data
 class Model {
   constructor() {
-    this.todos = [
-      {id: 1, text: 'Run a marathon', complete: false},
-      {id: 2, text: 'Plant a garden', complete: false},
-    ]
+    this.todos = JSON.parse(localStorage.getItem('todos')) || []
+  }
+
+  _commit(todos) {
+    this.onTodoListChanged(todos)
+    localStorage.setItem('todos', JSON.stringify(todos))
   }
 
   addTodo(todoText) {
@@ -31,17 +33,22 @@ class Model {
 
     console.log("todo added to list")
     this.todos.push(todo)
+
+    this._commit(this.todos)
   }
 
   editTodo(id, updatedText) {
     this.todos = this.todos.map((todo) => 
     todo.id === id ? {id: todo.id, text: updatedText, complete: todo.complete} : todo,
     )
+
+    this._commit(this.todos)
   }
 
   deleteTodo(id) {
     this.todos = this.todos.filter((todo) => todo.id !== id)
 
+    this._commit(this.todos)
     this.onTodoListChanged(this.todos)
   }
 
@@ -49,6 +56,8 @@ class Model {
     this.todos = this.todos.map((todo) =>
     todo.id === id ? {id: todo.id, text: todo.text, complete: !todo.complete} : todo
     )
+
+    this._commit(this.todos)
   }
 
   bindTodoListChanged(callback) {
@@ -80,6 +89,9 @@ class View {
     this.form.append(this.input, this.submitBtn)
 
     this.app.append(this.title, this.form, this.todoList)
+
+    this._temporaryTodoText = ''
+    this._initLocalListeners()
   }
 
   get _todoText() {
@@ -90,6 +102,13 @@ class View {
     this.input.value = ''
   }
 
+  _initLocalListeners() {
+    this.todoList.addEventListener('input', event => {
+      if (event.target.className === 'editable') {
+        this._temporaryTodoText = event.target.innerText
+      }
+    })
+  }
 
   createElem(tag, className) {
     const element = document.createElement(tag)
@@ -112,7 +131,7 @@ class View {
 
     // show default message
     if (todos.length === 0) {
-      const p = this.createElement('p')
+      const p = this.createElem('p')
       p.textContent = 'Nothing to do! Add a task?'
       this.todoList.append(p)
     } else {
@@ -157,7 +176,7 @@ class View {
 
       if (this._todoText) {
         handler(this._todoText)
-        this._resetInput
+        this._resetInput()
       }
     })
   }
@@ -181,6 +200,17 @@ class View {
       }
     })
   }
+
+  bindEditTodo(handler) {
+    this.todoList.addEventListener('focusout', event => {
+      if (this._temporaryTodoText) {
+        const id = paraseInt(event.target.parentElement.id)
+
+        handler(id, this._temporaryTodoText)
+        this._temporaryTodoText = ''
+      }
+    })
+  }
 }
 
 // controller is link between model and view
@@ -189,13 +219,19 @@ class Controller {
     this.model = model
     this.view = view
 
+    // explicit this binding
+    this.model.bindTodoListChanged(this.onTodoListChanged)
+    this.view.bindAddTodo(this.handleAddTodo)
+    this.view.bindEditTodo(this.handleEditTodo)
+    this.view.bindDeleteTodo(this.handleDeleteTodo)
+    this.view.bindToggleTodo(this.handleToggleTodo)
+
     // display initial todos
     this.onTodoListChanged(this.model.todos)
   }
   
   onTodoListChanged = (todos) => {
     this.view.displayTodos(todos)
-    this.model.bindTodoListChanged(this.onTodoListChanged)
   }
 
   handleAddTodo = (todoText) => {
