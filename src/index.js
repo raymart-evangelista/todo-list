@@ -204,7 +204,7 @@ class View {
   bindEditTodo(handler) {
     this.todoList.addEventListener('focusout', event => {
       if (this._temporaryTodoText) {
-        const id = paraseInt(event.target.parentElement.id)
+        const id = parseInt(event.target.parentElement.id)
 
         handler(id, this._temporaryTodoText)
         this._temporaryTodoText = ''
