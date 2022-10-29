@@ -1,4 +1,6 @@
 import './style.css'
+import { format, compareAsc } from 'date-fns'
+import moment from 'moment'
 
 
 // home button
@@ -85,8 +87,24 @@ class View {
 
     this.todoList = this.createElem('ul', 'todo-list')
 
-    this.form.append(this.input, this.submitBtn)
+    // more requirements
+    this.taskTitle = this.createElem('input', 'border-4')
+    this.taskTitle.type = 'text'
+    this.taskTitle.placeholder = 'e.g., Learn Portuguese'
+    this.taskTitle.name = 'taskTitle'
 
+    this.taskDesc = this.createElem('input', 'border-4')
+    this.taskDesc.type = 'text'
+    this.taskDesc.placeholder = 'Description'
+    this.taskDesc.name = 'taskDesc'
+
+    this.taskDate = this.createElem('input', 'border-4')
+    this.taskDate.type = 'date'
+    this.taskDate.value = moment().format('YYYY-MM-DD')
+    this.taskDate.name = 'taskDate'
+
+    // append
+    this.form.append(this.taskTitle, this.taskDesc, this.taskDate, this.input, this.submitBtn)
     this.app.append(this.title, this.form, this.todoList)
 
     this._temporaryTodoText = ''
@@ -176,6 +194,8 @@ class View {
       if (this._todoText) {
         handler(this._todoText)
         this._resetInput()
+      } else {
+        alert("Fill in sections")
       }
     })
   }
