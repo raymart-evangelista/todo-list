@@ -103,6 +103,36 @@ class View {
     this.taskDate.value = moment().format('YYYY-MM-DD')
     this.taskDate.name = 'taskDate'
 
+
+    this.radioGroup = this.createElem('div', 'radio-group')
+
+    // const lowPriority = 'Low'
+    // this.lowPriorityLabel = this.createElem('label')
+    // this.lowPriorityLabel.innerHTML = 'Low'
+    // this.lowPriorityValue = this.createElem('input', 'border-4')
+    // this.lowPriorityValue.type = 'radio'
+    // this.lowPriorityValue.name = 'Low'
+    // this.lowPriorityValue.lowPriority = 0
+
+    const priority = ['Low', 'Normal', 'High']
+    priority.forEach((priorityValue, index) => {
+      this.labelValue = this.createElem('label')
+      this.labelValue.innerHTML = priorityValue
+      this.inputValue = this.createElem('input')
+      this.inputValue.type = 'radio'
+      this.inputValue.name = 'priority'
+      this.inputValue.priorityValue = index
+      this.radioGroup.append(this.labelValue, this.inputValue)
+    })
+
+    // this.radioGroup.append(this.lowPriorityLabel, this.lowPriorityValue)
+    this.form.append(this.radioGroup)
+
+
+    this.taskPriority = this.createElem('input', 'border-4')
+    this.taskPriority.type = 'radio'
+
+
     // append
     this.form.append(this.taskTitle, this.taskDesc, this.taskDate, this.input, this.submitBtn)
     this.app.append(this.title, this.form, this.todoList)
