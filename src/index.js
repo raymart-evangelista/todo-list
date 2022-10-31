@@ -76,6 +76,7 @@ class View {
     this.title.textContent = 'Todo List'
 
     this.form = this.createElem('form')
+    this.form.classList = 'grid'
 
     this.input = this.createElem('input', 'border-4')
     this.input.type = 'text'
@@ -114,6 +115,7 @@ class View {
       this.inputValue = this.createElem('input')
       this.inputValue.type = 'radio'
       this.inputValue.name = 'priority'
+      this.inputValue.value = priorityValue
       this.inputValue.priorityValue = index
       this.radioGroup.append(this.labelValue, this.inputValue)
     })
@@ -134,6 +136,43 @@ class View {
 
   get _todoText() {
     return this.input.value
+  }
+
+  get _priorityGroupChecked() {
+    let checked
+    const priorityValues = document.getElementsByName('priority')
+    priorityValues.forEach((priority) => {
+      if (priority.checked) {
+        checked = true
+      }
+    })
+    return checked
+  }
+
+  get _priorityValue() {
+    const priorityValues = document.getElementsByName('priority')
+    priorityValues.forEach((priority) => {
+      if (priority.checked) {
+        console.log(priority.value)
+        return priority.value
+      }
+    })
+  }
+
+  get _taskTitle() {
+    return this.taskTitle.value
+  }
+
+  get _taskDesc() {
+    return this.taskDesc.value
+  }
+
+  get _taskDate() {
+    return this.taskDate.value
+  }
+
+  get _optionalNotes() {
+    return this.optionalNotes.value
   }
 
   _resetInput() {
@@ -208,15 +247,53 @@ class View {
     }
   }
 
+  highlightInput = (input) => {
+    input.classList.add('border-4')
+    input.classList.add('border-red-500')
+  }
+  
+  unhighlightInput = (input) => {
+    input.classList.remove('border-red-500')
+  }
+
   bindAddTodo(handler) {
     this.form.addEventListener('submit', event => {
       event.preventDefault()
 
+      // if (this._todoText && this._radioGroup && this._taskTitle && this._taskDesc && this._taskDate) {
+      //   handler(this._todoText)
+      //   this._resetInput()
+      // } else {
+      //   alert("Fill in sections")
+      // }
+
       if (this._todoText) {
-        handler(this._todoText)
-        this._resetInput()
+        this.unhighlightInput(this.input)
       } else {
-        alert("Fill in sections")
+        this.highlightInput(this.input)
+      }
+      if (this._priorityGroupChecked) {
+        this.unhighlightInput(this.radioGroup)
+      } else {
+        this.highlightInput(this.radioGroup)
+      }
+
+      if (this._taskTitle) {
+        this.unhighlightInput(this.taskTitle)
+      } else {
+        this.highlightInput(this.taskTitle)
+      }
+
+      if (this._taskDesc) {
+        this.unhighlightInput(this.taskDesc)
+      } else {
+        this.highlightInput(this.taskDesc)
+      }
+
+      if (this._taskDate) {
+        this.unhighlightInput(this.taskDate)
+      } else {
+        this.highlightInput(this.taskDate)
       }
     })
   }
@@ -292,4 +369,3 @@ class Controller {
 }
 
 const app = new Controller(new Model(), new View())
-// app.model.addTodo('Take a nap')
