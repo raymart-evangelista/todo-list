@@ -106,14 +106,7 @@ class View {
 
     this.radioGroup = this.createElem('div', 'radio-group')
 
-    // const lowPriority = 'Low'
-    // this.lowPriorityLabel = this.createElem('label')
-    // this.lowPriorityLabel.innerHTML = 'Low'
-    // this.lowPriorityValue = this.createElem('input', 'border-4')
-    // this.lowPriorityValue.type = 'radio'
-    // this.lowPriorityValue.name = 'Low'
-    // this.lowPriorityValue.lowPriority = 0
-
+    // https://www.tutorialspoint.com/how-to-dynamically-create-radio-buttons-using-an-array-in-javascript
     const priority = ['Low', 'Normal', 'High']
     priority.forEach((priorityValue, index) => {
       this.labelValue = this.createElem('label')
@@ -124,17 +117,15 @@ class View {
       this.inputValue.priorityValue = index
       this.radioGroup.append(this.labelValue, this.inputValue)
     })
-
-    // this.radioGroup.append(this.lowPriorityLabel, this.lowPriorityValue)
-    this.form.append(this.radioGroup)
-
-
-    this.taskPriority = this.createElem('input', 'border-4')
-    this.taskPriority.type = 'radio'
-
+    
+    this.optionalNotes = this.createElem('input', 'border-4')
+    this.optionalNotes.type = 'text'
+    this.optionalNotes.placeholder = 'Optional notes'
+    this.optionalNotes.name = 'optionalNotes'
 
     // append
-    this.form.append(this.taskTitle, this.taskDesc, this.taskDate, this.input, this.submitBtn)
+    this.form.append(this.radioGroup)
+    this.form.append(this.taskTitle, this.taskDesc, this.taskDate, this.optionalNotes, this.input, this.submitBtn)
     this.app.append(this.title, this.form, this.todoList)
 
     this._temporaryTodoText = ''
