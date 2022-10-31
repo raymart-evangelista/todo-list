@@ -157,11 +157,6 @@ class View {
     this.form = this.createElem('form')
     this.form.classList = 'grid'
 
-    this.input = this.createElem('input', 'border-4')
-    this.input.type = 'text'
-    this.input.placeholder = 'Add todo'
-    this.input.name = 'todo'
-
     this.submitBtn = this.createElem('button')
     this.submitBtn.textContent = 'Submit'
 
@@ -206,15 +201,11 @@ class View {
 
     // append
     this.form.append(this.radioGroup)
-    this.form.append(this.taskTitle, this.taskDesc, this.taskDate, this.optionalNotes, this.input, this.submitBtn)
+    this.form.append(this.taskTitle, this.taskDesc, this.taskDate, this.optionalNotes, this.submitBtn)
     this.app.append(this.title, this.form, this.todoList)
 
-    this._temporaryTodoText = ''
+    this._temporaryTitle = ''
     this._initLocalListeners()
-  }
-
-  get _todoText() {
-    return this.input.value
   }
 
   get _priorityGroupChecked() {
@@ -262,7 +253,6 @@ class View {
     })
   }
   _resetInput() {
-    this.input.value = ''
     this.taskTitle.value = ''
     this.taskDesc.value = ''
     this.taskDate.value = moment().format('YYYY-MM-DD')
@@ -273,8 +263,8 @@ class View {
 
   _initLocalListeners() {
     this.todoList.addEventListener('input', event => {
-      if (event.target.className === 'editable') {
-        this._temporaryTodoText = event.target.innerText
+      if (event.target.className === 'editable-title') {
+        this._temporaryTitle = event.target.innerText
       }
     })
   }
@@ -317,15 +307,15 @@ class View {
         // todo item text will be in a contenteditable span
         const span = this.createElem('span')
         span.contentEditable = true
-        span.classList.add('editable')
+        span.classList.add('editable-title')
 
         // if todo completed, add strikethrough
         if (todo.complete) {
           const strike = this.createElem('s')
-          strike.textContent = todo.text
+          strike.textContent = todo.title
           span.append(strike)
         } else {
-          span.textContent = todo.text
+          span.textContent = todo.title
         }
 
         // todos have a delete button
@@ -352,18 +342,6 @@ class View {
     this.form.addEventListener('submit', event => {
       event.preventDefault()
 
-      // if (this._todoText && this._radioGroup && this._taskTitle && this._taskDesc && this._taskDate) {
-      //   handler(this._todoText)
-      //   this._resetInput()
-      // } else {
-      //   alert("Fill in sections")
-      // }
-
-      if (this._todoText) {
-        this.unhighlightInput(this.input)
-      } else {
-        this.highlightInput(this.input)
-      }
       if (this._priorityGroupChecked) {
         this.unhighlightInput(this.radioGroup)
       } else {
@@ -388,9 +366,9 @@ class View {
         this.highlightInput(this.taskDate)
       }
 
-      if (this._todoText && this._priorityGroupChecked && this._taskTitle && this._taskDesc && this._taskDate) {
+      if (this._priorityGroupChecked && this._taskTitle && this._taskDesc && this._taskDate) {
         console.log('all input valid')
-        handler(this._todoText, this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes)
+        handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes)
         this._resetInput()
       }
     })
@@ -416,13 +394,13 @@ class View {
     })
   }
 
-  bindEditTodo(handler) {
+  bindEditTitle(handler) {
     this.todoList.addEventListener('focusout', event => {
-      if (this._temporaryTodoText) {
+      if (this._temporaryTitle) {
         const id = parseInt(event.target.parentElement.id)
 
-        handler(id, this._temporaryTodoText)
-        this._temporaryTodoText = ''
+        handler(id, this._temporaryTitle)
+        this._temporaryTitle = ''
       }
     })
   }
@@ -437,7 +415,7 @@ class Controller {
     // explicit this binding
     this.model.bindTodoListChanged(this.onTodoListChanged)
     this.view.bindAddTodo(this.handleAddTodo)
-    this.view.bindEditTodo(this.handleEditTodo)
+    this.view.bindEditTitle(this.handleEditTitle)
     this.view.bindDeleteTodo(this.handleDeleteTodo)
     this.view.bindToggleTodo(this.handleToggleTodo)
 
@@ -449,12 +427,12 @@ class Controller {
     this.view.displayTodos(todos)
   }
 
-  handleAddTodo = (todoText, taskTitle, taskDesc, taskDate, taskPriority, optionalNotes) => {
-    this.model.addTodo(todoText, taskTitle, taskDesc, taskDate, taskPriority, optionalNotes)
+  handleAddTodo = (taskTitle, taskDesc, taskDate, taskPriority, optionalNotes) => {
+    this.model.addTodo(taskTitle, taskDesc, taskDate, taskPriority, optionalNotes)
   }
 
-  handleEditTodo = (id, todoText) => {
-    this.model.editTodo(id, todoText)
+  handleEditTitle = (id, taskTitle) => {
+    this.model.editTodoTitle(id, taskTitle)
   }
 
   handleDeleteTodo = (id) => {
