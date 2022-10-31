@@ -30,7 +30,7 @@ class Model {
     localStorage.setItem('todos', JSON.stringify(todos))
   }
 
-  addTodo(todoText, taskTitle, taskDesc, taskDate, optionalNotes, priorityValue) {
+  addTodo(todoText, taskTitle, taskDesc, taskDate, priorityValue, optionalNotes ) {
     const todo = {
       id: this.todos.length > 0 ? this.todos[this.todos.length - 1].id + 1 : 1,
       text: todoText,
@@ -160,7 +160,6 @@ class View {
     const priorityValues = document.getElementsByName('priority')
     priorityValues.forEach((priority) => {
       if (priority.checked) {
-        console.log(priority.value)
         return priority.value
       }
     })
@@ -319,15 +318,7 @@ class View {
 
       if (this._todoText && this._priorityGroupChecked && this._taskTitle && this._taskDesc && this._taskDate) {
         console.log('all input valid')
-        // handler(this._todoText)
-        // handler(this._priorityGroupChecked)
-        // handler(this._taskTitle)
-        // handler(this._taskDesc)
-        // handler(this._taskDate)
-        // if (this._optionalNotes) {
-        //   handler(this._optionalNotes)
-        // }
-
+        handler(this._todoText, this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes)
         this._resetInput()
       }
     })
@@ -386,13 +377,8 @@ class Controller {
     this.view.displayTodos(todos)
   }
 
-  handleAddTodo = (todoText) => {
-    this.model.addTodo(todoText)
-    // this.model.addTaskTitle()
-    // this.model.addTaskDesc()
-    // this.model.addTaskDate()
-    // this.model.addTaskPriority()
-    // this.model.addOptionalNotes()
+  handleAddTodo = (todoText, taskTitle, taskDesc, taskDate, taskPriority, optionalNotes) => {
+    this.model.addTodo(todoText, taskTitle, taskDesc, taskDate, taskPriority, optionalNotes)
   }
 
   handleEditTodo = (id, todoText) => {
