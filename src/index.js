@@ -30,10 +30,17 @@ class Model {
     localStorage.setItem('todos', JSON.stringify(todos))
   }
 
-  addTodo(todoText) {
+  addTodo(todoText, taskTitle, taskDesc, taskDate, optionalNotes, priorityValue) {
     const todo = {
       id: this.todos.length > 0 ? this.todos[this.todos.length - 1].id + 1 : 1,
       text: todoText,
+
+      title: taskTitle,
+      description: taskDesc,
+      date: taskDate,
+      notes: optionalNotes,
+      priority: priorityValue,
+
       complete: false,
     }
 
@@ -175,8 +182,22 @@ class View {
     return this.optionalNotes.value
   }
 
+  _resetPriorityGroup() {
+    const priorityValues = document.getElementsByName('priority')
+    priorityValues.forEach((priority) => {
+      if (priority.checked) {
+        priority.checked = false
+      }
+    })
+  }
   _resetInput() {
     this.input.value = ''
+    this.taskTitle.value = ''
+    this.taskDesc.value = ''
+    this.taskDate.value = moment().format('YYYY-MM-DD')
+    this._resetPriorityGroup()
+
+    this.optionalNotes.value = ''
   }
 
   _initLocalListeners() {
@@ -295,6 +316,20 @@ class View {
       } else {
         this.highlightInput(this.taskDate)
       }
+
+      if (this._todoText && this._priorityGroupChecked && this._taskTitle && this._taskDesc && this._taskDate) {
+        console.log('all input valid')
+        // handler(this._todoText)
+        // handler(this._priorityGroupChecked)
+        // handler(this._taskTitle)
+        // handler(this._taskDesc)
+        // handler(this._taskDate)
+        // if (this._optionalNotes) {
+        //   handler(this._optionalNotes)
+        // }
+
+        this._resetInput()
+      }
     })
   }
 
@@ -353,6 +388,11 @@ class Controller {
 
   handleAddTodo = (todoText) => {
     this.model.addTodo(todoText)
+    // this.model.addTaskTitle()
+    // this.model.addTaskDesc()
+    // this.model.addTaskDate()
+    // this.model.addTaskPriority()
+    // this.model.addOptionalNotes()
   }
 
   handleEditTodo = (id, todoText) => {
