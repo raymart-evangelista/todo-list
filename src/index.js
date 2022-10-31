@@ -30,16 +30,14 @@ class Model {
     localStorage.setItem('todos', JSON.stringify(todos))
   }
 
-  addTodo(todoText, taskTitle, taskDesc, taskDate, priorityValue, optionalNotes ) {
+  addTodo(taskTitle, taskDesc, taskDate, priorityValue, optionalNotes ) {
     const todo = {
       id: this.todos.length > 0 ? this.todos[this.todos.length - 1].id + 1 : 1,
-      text: todoText,
-
       title: taskTitle,
       description: taskDesc,
       date: taskDate,
-      notes: optionalNotes,
       priority: priorityValue,
+      notes: optionalNotes,
 
       complete: false,
     }
@@ -50,9 +48,76 @@ class Model {
     this._commit(this.todos)
   }
 
-  editTodo(id, updatedText) {
+  editTodoTitle(id, updatedTitle) {
     this.todos = this.todos.map((todo) => 
-    todo.id === id ? {id: todo.id, text: updatedText, complete: todo.complete} : todo,
+    todo.id === id ? {
+      id: todo.id, 
+      title: updatedTitle,
+      description: todo.description, 
+      date: todo.date,
+      priority: todo.priority,
+      notes: todo.notes,
+      complete: !todo.complete } : todo
+    )
+
+    this._commit(this.todos)
+  }
+
+  editTodoDescription(id, updatedDesc) {
+    this.todos = this.todos.map((todo) => 
+    todo.id === id ? {
+      id: todo.id, 
+      title: todo.title, 
+      description: updatedDesc, 
+      date: todo.date,
+      priority: todo.priority,
+      notes: todo.notes,
+      complete: !todo.complete } : todo
+    )
+
+    this._commit(this.todos)
+  }
+
+  editTodoDate(id, updatedDate) {
+    this.todos = this.todos.map((todo) => 
+    todo.id === id ? {
+      id: todo.id, 
+      title: todo.title, 
+      description: todo.description, 
+      date: updatedDate,
+      priority: todo.priority,
+      notes: todo.notes,
+      complete: !todo.complete } : todo
+    )
+
+    this._commit(this.todos)
+  }
+
+  editTodoPriority(id, updatedPriority) {
+    this.todos = this.todos.map((todo) => 
+    todo.id === id ? {
+      id: todo.id, 
+      title: todo.title, 
+      description: todo.description, 
+      date: todo.date,
+      priority: updatedPriority,
+      notes: todo.notes,
+      complete: !todo.complete } : todo
+    )
+
+    this._commit(this.todos)
+  }
+
+  editTodoNotes(id, updatedNotes) {
+    this.todos = this.todos.map((todo) => 
+    todo.id === id ? {
+      id: todo.id, 
+      title: todo.title, 
+      description: todo.description, 
+      date: todo.date,
+      priority: todo.priority,
+      notes: updatedNotes,
+      complete: !todo.complete } : todo
     )
 
     this._commit(this.todos)
@@ -66,7 +131,14 @@ class Model {
 
   toggleTodo(id) {
     this.todos = this.todos.map((todo) =>
-    todo.id === id ? {id: todo.id, text: todo.text, complete: !todo.complete} : todo
+    todo.id === id ? {
+      id: todo.id, 
+      title: todo.title, 
+      description: todo.description, 
+      date: todo.date,
+      priority: todo.priority,
+      notes: todo.notes,
+      complete: !todo.complete } : todo
     )
 
     this._commit(this.todos)
