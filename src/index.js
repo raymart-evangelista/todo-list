@@ -3,7 +3,7 @@ import { format, compareAsc } from 'date-fns'
 import moment from 'moment'
 import logo from './icons/check-square.svg'
 import menu from './icons/menu.svg'
-
+import down from './icons/chevron-down.svg'
 
 // home button
 
@@ -265,13 +265,26 @@ class View {
     
     this.logoContainer.append(this.logoImg, this.logoText)
 
-    this.menuBtn = this.createElem('button', 'inline-flex justify-center items-center text-gray-400 rounded-lg hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-300 dark:text-gray-400 dark:hover:text-white dark:focus:ring-gray-500')
-    this.menuLogo = this.createElem('img', 'w-6 h-6')
-    this.menuLogo.src = menu
+    // this.menuBtn = this.createElem('button', 'inline-flex justify-center items-center text-gray-400 rounded-lg hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-300 dark:text-gray-400 dark:hover:text-white dark:focus:ring-gray-500')
+    this.menuBtn = this.createElem('button', 'inline-flex justify-center rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-100')
+    this.menuWrapper = this.createElem('div', 'relative inline-block text-left')
+    this.menuWrapper2 = this.createElem('div')
 
-    this.menuBtn.append(this.menuLogo)
-
-    this.navbarContainer.append(this.logoContainer, this.menuBtn)
+    
+    
+    this.menuText = this.createElem('span', 'p-1')
+    this.menuText.textContent = 'Projects'
+    this.menuLogo = this.createElem('img', 'p-.5')
+    this.menuLogo.src = down
+    
+    this.menuBtnContents = this.createElem('div', 'flex')
+    this.menuBtnContents.append(this.menuText, this.menuLogo)
+    
+    this.menuWrapper.append(this.menuWrapper2)
+    this.menuWrapper2.append(this.menuBtn)
+    this.menuBtn.append(this.menuBtnContents)
+    // this.menuBtn.append(this.menuText)
+    this.navbarContainer.append(this.logoContainer, this.menuWrapper)
     this.navbar.append(this.navbarContainer)
 
     // append
