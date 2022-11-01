@@ -1,7 +1,7 @@
 import './style.css'
 import { format, compareAsc } from 'date-fns'
 import moment from 'moment'
-// import logo from './icons/check-square.svg'
+import logo from './icons/check-square.svg'
 
 
 // home button
@@ -258,7 +258,7 @@ class View {
     this.navbarContainer = this.createElem('div', 'container flex flex-wrap justify-between items-center mx-auto')
     this.logoContainer = this.createElem('a', 'flex items-center')
     this.logoImg = this.createElem('img', 'mr-3 h-6 sm:h-9')
-    // this.logoImg.src = './src/icons/check-square.svg'
+    this.logoImg.src = logo
     this.logoText = this.createElem('span', 'self-center text-xl font-semibold whitespace-nowrap dark:text-white')
     this.logoText.textContent = 'Todo List'
 
@@ -266,7 +266,7 @@ class View {
     this.navbarContainer.append(this.logoContainer)
 
 
-    
+    this.navbar.append(this.navbarContainer)
 
     // append
     this.app.append(this.navbar)
