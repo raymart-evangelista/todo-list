@@ -57,7 +57,7 @@ class Model {
       date: todo.date,
       priority: todo.priority,
       notes: todo.notes,
-      complete: !todo.complete } : todo
+      complete: todo.complete } : todo
     )
 
     this._commit(this.todos)
@@ -72,7 +72,7 @@ class Model {
       date: todo.date,
       priority: todo.priority,
       notes: todo.notes,
-      complete: !todo.complete } : todo
+      complete: todo.complete } : todo
     )
 
     this._commit(this.todos)
@@ -87,7 +87,7 @@ class Model {
       date: updatedDate,
       priority: todo.priority,
       notes: todo.notes,
-      complete: !todo.complete } : todo
+      complete: todo.complete } : todo
     )
 
     this._commit(this.todos)
@@ -102,7 +102,7 @@ class Model {
       date: todo.date,
       priority: updatedPriority,
       notes: todo.notes,
-      complete: !todo.complete } : todo
+      complete: todo.complete } : todo
     )
 
     this._commit(this.todos)
@@ -117,7 +117,7 @@ class Model {
       date: todo.date,
       priority: todo.priority,
       notes: updatedNotes,
-      complete: !todo.complete } : todo
+      complete: todo.complete } : todo
     )
 
     this._commit(this.todos)
