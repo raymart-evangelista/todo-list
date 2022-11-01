@@ -271,7 +271,6 @@ class View {
     this.menuWrapper2 = this.createElem('div')
 
     
-    
     this.menuText = this.createElem('span', 'p-1')
     this.menuText.textContent = 'Projects'
     this.menuLogo = this.createElem('img', 'p-.5')
@@ -283,7 +282,19 @@ class View {
     this.menuWrapper.append(this.menuWrapper2)
     this.menuWrapper2.append(this.menuBtn)
     this.menuBtn.append(this.menuBtnContents)
-    // this.menuBtn.append(this.menuText)
+
+    // project menu dropdown
+    this.menuDropdown = this.createElem('div', 'absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none')
+    this.menuDropdownWrapper = this.createElem('div', 'py-1')
+
+    this.menuDropdown.append(this.menuDropdownWrapper)
+    this.menuWrapper.append(this.menuDropdown)
+
+    this.defaultProject = this.createElem('a', 'text-gray-700 block px-4 py-2 text-sm')
+    this.defaultProject.textContent = 'Default project'
+
+    this.menuDropdownWrapper.append(this.defaultProject)
+
     this.navbarContainer.append(this.logoContainer, this.menuWrapper)
     this.navbar.append(this.navbarContainer)
 
