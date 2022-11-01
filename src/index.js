@@ -153,7 +153,11 @@ class View {
 
     this.newTaskBtn = this.getElem('#newTask')
 
-
+    this.overlay = this.createElem('div')
+    this.overlay.id = 'overlay'
+    this.overlay.classList = 'fixed w-screen h-screen bg-gray-900 opacity-90'
+    this.overlay.style.display = 'none'
+    this.app.append(this.overlay)
 
     this.title = this.createElem('h1')
     this.title.textContent = 'Todo List'
@@ -274,6 +278,12 @@ class View {
 
     this.newTaskBtn.addEventListener('click', event => {
       console.log('pressed')
+      this.overlay.style.display = 'block'
+    })
+
+    this.overlay.addEventListener('click', event => {
+      console.log('overlay executed')
+      this.overlay.style.display = 'none'
     })
   }
 
