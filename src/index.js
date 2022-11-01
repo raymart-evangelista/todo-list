@@ -160,7 +160,8 @@ class View {
 
     this.overlayCard = this.createElem('div')
     this.overlayCard.id = 'overlayCard'
-    this.overlayCard.classList = 'fixed flex flex-col transition-opacity delay-100 duration-500 ease-in-out opacity-0 invisible bg-white shadow-lg shadow-gray-200 rounded-2xl p-4 sm:p-6 xl:p-8 mb-6 mt-6'
+    // this.overlayCard.classList = 'fixed flex flex-col transition-opacity delay-100 duration-500 ease-in-out opacity-0 invisible bg-white shadow-lg rounded-2xl p-4gi sm:p-6 xl:p-8 mb-6 mt-6'
+    this.overlayCard.classList = 'fixed flex flex-col transition-opacity delay-100 duration-500 ease-in-out opacity-0 invisible bg-white shadow-lg rounded-2xl w-3/4 mt-6 p-6'
     this.app.append(this.overlayCard)
 
     this.title = this.createElem('h1', 'text-2xl text-center mb-6')
@@ -226,7 +227,7 @@ class View {
 
     this.radioGroupLabel = this.createElem('label', 'block mb-2 text-sm font-medium text-gray-900')
     this.radioGroupLabel.textContent = 'Priority level'
-    this.radioGroupContainer = this.createElem('div', 'mb-2')
+    this.radioGroupContainer = this.createElem('div', 'mb-2 p-2 rounded-lg border border-gray-300')
     this.radioGroupContainer.append(this.radioGroupLabel, this.radioGroup)  
 
     // https://www.tutorialspoint.com/how-to-dynamically-create-radio-buttons-using-an-array-in-javascript
@@ -405,12 +406,13 @@ class View {
   }
 
   highlightInput = (input) => {
-    input.classList.add('border-4')
-    input.classList.add('border-red-500')
+    input.classList.remove('border-gray-300')
+    input.classList.add('border-red-600')
   }
   
   unhighlightInput = (input) => {
-    input.classList.remove('border-red-500')
+    input.classList.remove('border-red-600')
+    input.classList.add('border-gray-300')
   }
 
   bindAddTodo(handler) {
@@ -418,9 +420,9 @@ class View {
       event.preventDefault()
 
       if (this._priorityGroupChecked) {
-        this.unhighlightInput(this.radioGroup)
+        this.unhighlightInput(this.radioGroupContainer)
       } else {
-        this.highlightInput(this.radioGroup)
+        this.highlightInput(this.radioGroupContainer)
       }
 
       if (this._taskTitle) {
