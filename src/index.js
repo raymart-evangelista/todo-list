@@ -151,6 +151,10 @@ class View {
     this.app = this.getElem('#content')
     this.app.classList = 'flex flex-col items-center h-screen'
 
+    this.newTaskBtn = this.getElem('#newTask')
+
+
+
     this.title = this.createElem('h1')
     this.title.textContent = 'Todo List'
 
@@ -266,6 +270,10 @@ class View {
       if (event.target.className === 'editable-title') {
         this._temporaryTitle = event.target.innerText
       }
+    })
+
+    this.newTaskBtn.addEventListener('click', event => {
+      console.log('pressed')
     })
   }
 
