@@ -24,6 +24,11 @@ module.exports = {
         include: path.resolve(__dirname, 'src'),
         use: ['style-loader', 'css-loader', 'postcss-loader'],
       },
+      {
+        test: /\.svg$/,
+        loader: 'svg-inline-loader'
+      },
+      
     ],
   },
 }
