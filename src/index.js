@@ -175,6 +175,8 @@ class View {
     this.todoList = this.createElem('ul', 'todo-list')
 
     // more requirements
+    this.taskTitleLabel = this.createElem('label')
+
     this.taskTitle = this.createElem('input')
     this.taskTitle.type = 'text'
     this.taskTitle.classList = 'block p-4 w-full text-gray-900 bg-gray-50 rounded-lg border border-gray-300 sm:text-md focus:ring-blue-500 focus:border-blue-500'
@@ -318,7 +320,7 @@ class View {
   createElem(tag, className) {
     const element = document.createElement(tag)
     if (className) {
-      element.classList.add(className)
+      element.classList = className
     }
     return element
   }
