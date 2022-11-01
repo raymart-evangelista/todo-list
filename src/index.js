@@ -160,11 +160,11 @@ class View {
 
     this.overlayCard = this.createElem('div')
     this.overlayCard.id = 'overlayCard'
-    this.overlayCard.classList = 'fixed transition-opacity delay-100 duration-500 ease-in-out opacity-0 invisible bg-white shadow-lg shadow-gray-200 rounded-2xl p-4 sm:p-6 xl:p-8 mb-6'
+    this.overlayCard.classList = 'fixed flex flex-col transition-opacity delay-100 duration-500 ease-in-out opacity-0 invisible bg-white shadow-lg shadow-gray-200 rounded-2xl p-4 sm:p-6 xl:p-8 mb-6 mt-6'
     this.app.append(this.overlayCard)
 
-    this.title = this.createElem('h1')
-    this.title.textContent = 'Todo List'
+    this.title = this.createElem('h1', 'text-2xl text-center mb-6')
+    this.title.textContent = 'Add a new task'
 
     this.form = this.createElem('form')
     this.form.classList = 'grid'
@@ -174,40 +174,67 @@ class View {
 
     this.todoList = this.createElem('ul', 'todo-list')
 
-    // more requirements
-    this.taskTitleLabel = this.createElem('label')
-
+    // task title
     this.taskTitle = this.createElem('input')
     this.taskTitle.type = 'text'
     this.taskTitle.classList = 'block p-4 w-full text-gray-900 bg-gray-50 rounded-lg border border-gray-300 sm:text-md focus:ring-blue-500 focus:border-blue-500'
     this.taskTitle.placeholder = 'e.g., Learn Portuguese'
     this.taskTitle.name = 'taskTitle'
 
+    this.taskTitleLabel = this.createElem('label', 'block mb-2 text-sm font-medium text-gray-900')
+    this.taskTitleLabel.textContent = 'Task title'
+    this.taskTitleContainer = this.createElem('div', 'mb-2')
+    this.taskTitleContainer.append(this.taskTitleLabel, this.taskTitle)
+
+    // task description
     this.taskDesc = this.createElem('input')
     this.taskDesc.type = 'text'
     this.taskDesc.classList = 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
-    this.taskDesc.placeholder = 'Description'
+    this.taskDesc.placeholder = 'e.g., Hour long session'
     this.taskDesc.name = 'taskDesc'
 
-    this.taskDate = this.createElem('input', 'border-4')
+    this.taskDescLabel = this.createElem('label', 'block mb-2 text-sm font-medium text-gray-900')
+    this.taskDescLabel.textContent = 'Description'
+    this.taskDescContainer = this.createElem('div', 'mb-2')
+    this.taskDescContainer.append(this.taskDescLabel, this.taskDesc)  
+
+    // task date
+    this.taskDate = this.createElem('input', 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5')
     this.taskDate.type = 'date'
     this.taskDate.value = moment().format('YYYY-MM-DD')
     this.taskDate.name = 'taskDate'
 
+    this.taskDateLabel = this.createElem('label', 'block mb-2 text-sm font-medium text-gray-900')
+    this.taskDateLabel.textContent = 'Date'
+    this.taskDateContainer = this.createElem('div', 'mb-2')
+    this.taskDateContainer.append(this.taskDateLabel, this.taskDate)  
+
+    // task optional notes
     this.optionalNotes = this.createElem('input')
     this.optionalNotes.type = 'text'
     this.optionalNotes.classList = 'block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-gray-300 sm:text-xs focus:ring-blue-500 focus:border-blue-500'
-    this.optionalNotes.placeholder = 'Optional notes'
+    this.optionalNotes.placeholder = 'e.g., bring flashcards'
     this.optionalNotes.name = 'optionalNotes'
 
+    this.optionalNotesLabel = this.createElem('label', 'block mb-2 text-sm font-medium text-gray-900')
+    this.optionalNotesLabel.textContent = 'Optional notes'
+    this.optionalNotesContainer = this.createElem('div', 'mb-2')
+    this.optionalNotesContainer.append(this.optionalNotesLabel, this.optionalNotes)  
+
+    // task priority level
     this.radioGroup = this.createElem('div', 'radio-group')
+
+    this.radioGroupLabel = this.createElem('label', 'block mb-2 text-sm font-medium text-gray-900')
+    this.radioGroupLabel.textContent = 'Priority level'
+    this.radioGroupContainer = this.createElem('div', 'mb-2')
+    this.radioGroupContainer.append(this.radioGroupLabel, this.radioGroup)  
 
     // https://www.tutorialspoint.com/how-to-dynamically-create-radio-buttons-using-an-array-in-javascript
     const priority = ['Low', 'Normal', 'High']
     priority.forEach((priorityValue, index) => {
 
       this.selectionContainer = this.createElem('div')
-      this.selectionContainer.classList = 'flex items-center mb-4'
+      this.selectionContainer.classList = 'flex items-center mb-2'
 
       this.inputValue = this.createElem('input')
       this.inputValue.type = 'radio'
@@ -227,8 +254,8 @@ class View {
     
 
     // append
-    this.form.append(this.radioGroup)
-    this.form.append(this.taskTitle, this.taskDesc, this.taskDate, this.optionalNotes, this.submitBtn)
+    this.form.append(this.radioGroupContainer)
+    this.form.append(this.taskTitleContainer, this.taskDescContainer, this.taskDateContainer, this.optionalNotesContainer, this.submitBtn)
     this.overlayCard.append(this.title, this.form, this.todoList)
 
     this._temporaryTitle = ''
