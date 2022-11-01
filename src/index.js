@@ -255,17 +255,17 @@ class View {
     })
 
     // navbar 
-    this.navbar = this.createElem('nav', 'p-3 bg-gray-50 rounded border-gray-200 dark:bg-gray-800 dark:border-gray-700')
-    this.navbarContainer = this.createElem('div', 'container flex flex-wrap justify-between items-center mx-auto')
+    this.navbar = this.createElem('nav', 'w-screen p-3 bg-gray-50 rounded border-gray-200 dark:bg-gray-800 dark:border-gray-700')
+    this.navbarContainer = this.createElem('div', 'flex justify-between')
     this.logoContainer = this.createElem('a', 'flex items-center')
-    this.logoImg = this.createElem('img', 'mr-3 h-6 sm:h-10')
+    this.logoImg = this.createElem('img', 'mr-1 h-6 sm:h-10')
     this.logoImg.src = logo
     this.logoText = this.createElem('span', 'self-center text-xl font-semibold whitespace-nowrap dark:text-white')
     this.logoText.textContent = 'Todo List'
     
     this.logoContainer.append(this.logoImg, this.logoText)
 
-    this.menuBtn = this.createElem('button', 'inline-flex justify-center items-center ml-3 text-gray-400 rounded-lg hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-300 dark:text-gray-400 dark:hover:text-white dark:focus:ring-gray-500')
+    this.menuBtn = this.createElem('button', 'inline-flex justify-center items-center text-gray-400 rounded-lg hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-300 dark:text-gray-400 dark:hover:text-white dark:focus:ring-gray-500')
     this.menuLogo = this.createElem('img', 'w-6 h-6')
     this.menuLogo.src = menu
 
