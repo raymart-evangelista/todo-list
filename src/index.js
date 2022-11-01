@@ -170,7 +170,7 @@ class View {
     this.form = this.createElem('form')
     this.form.classList = 'grid'
 
-    this.submitBtn = this.createElem('button')
+    this.submitBtn = this.createElem('button', 'mt-4 w-fit justify-self-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800')
     this.submitBtn.textContent = 'Submit'
 
     this.todoList = this.createElem('ul', 'todo-list')
@@ -255,9 +255,10 @@ class View {
     
 
     // append
+    this.app.append(this.todoList)
     this.form.append(this.radioGroupContainer)
     this.form.append(this.taskTitleContainer, this.taskDescContainer, this.taskDateContainer, this.optionalNotesContainer, this.submitBtn)
-    this.overlayCard.append(this.title, this.form, this.todoList)
+    this.overlayCard.append(this.title, this.form)
 
     this._temporaryTitle = ''
     this._initLocalListeners()
