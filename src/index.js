@@ -175,13 +175,15 @@ class View {
     this.todoList = this.createElem('ul', 'todo-list')
 
     // more requirements
-    this.taskTitle = this.createElem('input', 'border-4')
+    this.taskTitle = this.createElem('input')
     this.taskTitle.type = 'text'
+    this.taskTitle.classList = 'block p-4 w-full text-gray-900 bg-gray-50 rounded-lg border border-gray-300 sm:text-md focus:ring-blue-500 focus:border-blue-500'
     this.taskTitle.placeholder = 'e.g., Learn Portuguese'
     this.taskTitle.name = 'taskTitle'
 
-    this.taskDesc = this.createElem('input', 'border-4')
+    this.taskDesc = this.createElem('input')
     this.taskDesc.type = 'text'
+    this.taskDesc.classList = 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
     this.taskDesc.placeholder = 'Description'
     this.taskDesc.name = 'taskDesc'
 
@@ -190,26 +192,37 @@ class View {
     this.taskDate.value = moment().format('YYYY-MM-DD')
     this.taskDate.name = 'taskDate'
 
+    this.optionalNotes = this.createElem('input')
+    this.optionalNotes.type = 'text'
+    this.optionalNotes.classList = 'block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-gray-300 sm:text-xs focus:ring-blue-500 focus:border-blue-500'
+    this.optionalNotes.placeholder = 'Optional notes'
+    this.optionalNotes.name = 'optionalNotes'
 
     this.radioGroup = this.createElem('div', 'radio-group')
 
     // https://www.tutorialspoint.com/how-to-dynamically-create-radio-buttons-using-an-array-in-javascript
     const priority = ['Low', 'Normal', 'High']
     priority.forEach((priorityValue, index) => {
-      this.labelValue = this.createElem('label')
-      this.labelValue.innerHTML = priorityValue
+
+      this.selectionContainer = this.createElem('div')
+      this.selectionContainer.classList = 'flex items-center mb-4'
+
       this.inputValue = this.createElem('input')
       this.inputValue.type = 'radio'
       this.inputValue.name = 'priority'
       this.inputValue.value = priorityValue
       this.inputValue.priorityValue = index
-      this.radioGroup.append(this.labelValue, this.inputValue)
+      this.inputValue.classList = 'w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300'
+
+      this.labelValue = this.createElem('label')
+      this.labelValue.innerHTML = priorityValue
+      this.labelValue.classList = 'block ml-2 text-sm font-medium text-gray-900'
+
+      this.selectionContainer.append(this.inputValue, this.labelValue)
+
+      this.radioGroup.append(this.selectionContainer)
     })
     
-    this.optionalNotes = this.createElem('input', 'border-4')
-    this.optionalNotes.type = 'text'
-    this.optionalNotes.placeholder = 'Optional notes'
-    this.optionalNotes.name = 'optionalNotes'
 
     // append
     this.form.append(this.radioGroup)
