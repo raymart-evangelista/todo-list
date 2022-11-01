@@ -1,6 +1,7 @@
 import './style.css'
 import { format, compareAsc } from 'date-fns'
 import moment from 'moment'
+// import logo from './icons/check-square.svg'
 
 
 // home button
@@ -251,9 +252,24 @@ class View {
 
       this.radioGroup.append(this.selectionContainer)
     })
+
+    // navbar 
+    this.navbar = this.createElem('nav', 'bg-white px-2 sm:px-4 py-2.5 dark:bg-gray-900 fixed w-full z-20 top-0 left-0 border-b border-gray-200 dark:border-gray-600')
+    this.navbarContainer = this.createElem('div', 'container flex flex-wrap justify-between items-center mx-auto')
+    this.logoContainer = this.createElem('a', 'flex items-center')
+    this.logoImg = this.createElem('img', 'mr-3 h-6 sm:h-9')
+    // this.logoImg.src = './src/icons/check-square.svg'
+    this.logoText = this.createElem('span', 'self-center text-xl font-semibold whitespace-nowrap dark:text-white')
+    this.logoText.textContent = 'Todo List'
+
+    this.logoContainer.append(this.logoImg, this.logoText)
+    this.navbarContainer.append(this.logoContainer)
+
+
     
 
     // append
+    this.app.append(this.navbar)
     this.app.append(this.todoList)
     this.form.append(this.radioGroupContainer)
     this.form.append(this.taskTitleContainer, this.taskDescContainer, this.taskDateContainer, this.optionalNotesContainer, this.submitBtn)
