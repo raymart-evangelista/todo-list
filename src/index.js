@@ -155,13 +155,12 @@ class View {
 
     this.overlay = this.createElem('div')
     this.overlay.id = 'overlay'
-    this.overlay.classList = 'fixed w-screen h-screen transition-opacity delay-100 duration-500 ease-in-out bg-gray-900 opacity-0 invisible'
+    this.overlay.classList = 'fixed w-screen h-screen transition-opacity duration-500 ease-in-out bg-gray-900 opacity-0 invisible'
     this.app.append(this.overlay)
 
     this.overlayCard = this.createElem('div')
     this.overlayCard.id = 'overlayCard'
-    // this.overlayCard.classList = 'fixed flex flex-col transition-opacity delay-100 duration-500 ease-in-out opacity-0 invisible bg-white shadow-lg rounded-2xl p-4gi sm:p-6 xl:p-8 mb-6 mt-6'
-    this.overlayCard.classList = 'fixed flex flex-col transition-opacity delay-100 duration-500 ease-in-out opacity-0 invisible bg-white shadow-lg rounded-2xl w-3/4 mt-6 p-6'
+    this.overlayCard.classList = 'fixed flex flex-col transition-opacity duration-500 ease-in-out opacity-0 invisible bg-white shadow-lg rounded-2xl w-3/4 mt-6 p-6'
     this.app.append(this.overlayCard)
 
     this.title = this.createElem('h1', 'text-2xl text-center mb-6')
@@ -326,22 +325,27 @@ class View {
 
     this.newTaskBtn.addEventListener('click', event => {
       console.log('show overlay')
-      this.overlay.classList.remove('invisible', 'opacity-0')
-      this.overlay.classList.add('opacity-90')
-
-      this.overlayCard.classList.remove('invisible', 'opacity-0')
-      this.overlayCard.classList.add('opacity-100')
+      this.overlay.classList.remove('hidden')
+      this.overlayCard.classList.remove('hidden')
+      setTimeout(() => {
+        this.overlay.classList.remove('invisible', 'opacity-0')
+        this.overlay.classList.add('opacity-90')
+        this.overlayCard.classList.remove('invisible', 'opacity-0')
+        this.overlayCard.classList.add('opacity-100')
+      }, 10);
     })
 
     this.overlay.addEventListener('click', event => {
       console.log('hide overlay')
       this.overlay.classList.remove('opacity-90')
       this.overlay.classList.add('opacity-0')
-
       this.overlayCard.classList.remove('opacity-100')
       this.overlayCard.classList.add('opacity-0')
       setTimeout(() => {
         this.overlay.classList.add('invisible')
+        this.overlayCard.classList.add('invisible')
+        this.overlay.classList.add('hidden')
+        this.overlayCard.classList.add('hidden')
       }, 500);
     })
   }
