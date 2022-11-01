@@ -155,8 +155,7 @@ class View {
 
     this.overlay = this.createElem('div')
     this.overlay.id = 'overlay'
-    this.overlay.classList = 'fixed w-screen h-screen bg-gray-900 opacity-90'
-    this.overlay.style.display = 'none'
+    this.overlay.classList = 'fixed w-screen h-screen transition-opacity delay-100 duration-500 ease-in-out bg-gray-900 opacity-0 invisible'
     this.app.append(this.overlay)
 
     this.title = this.createElem('h1')
@@ -277,13 +276,18 @@ class View {
     })
 
     this.newTaskBtn.addEventListener('click', event => {
-      console.log('pressed')
-      this.overlay.style.display = 'block'
+      console.log('show overlay')
+      this.overlay.classList.remove('invisible', 'opacity-0')
+      this.overlay.classList.add('opacity-90')
     })
 
     this.overlay.addEventListener('click', event => {
-      console.log('overlay executed')
-      this.overlay.style.display = 'none'
+      console.log('hide overlay')
+      this.overlay.classList.remove('opacity-90')
+      this.overlay.classList.add('opacity-0')
+      setTimeout(() => {
+        this.overlay.classList.add('invisible')
+      }, 500);
     })
   }
 
