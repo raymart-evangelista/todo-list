@@ -158,6 +158,11 @@ class View {
     this.overlay.classList = 'fixed w-screen h-screen transition-opacity delay-100 duration-500 ease-in-out bg-gray-900 opacity-0 invisible'
     this.app.append(this.overlay)
 
+    this.overlayCard = this.createElem('div')
+    this.overlayCard.id = 'overlayCard'
+    this.overlayCard.classList = 'fixed transition-opacity delay-100 duration-500 ease-in-out opacity-0 invisible bg-white shadow-lg shadow-gray-200 rounded-2xl p-4 sm:p-6 xl:p-8 mb-6'
+    this.app.append(this.overlayCard)
+
     this.title = this.createElem('h1')
     this.title.textContent = 'Todo List'
 
@@ -209,7 +214,7 @@ class View {
     // append
     this.form.append(this.radioGroup)
     this.form.append(this.taskTitle, this.taskDesc, this.taskDate, this.optionalNotes, this.submitBtn)
-    this.app.append(this.title, this.form, this.todoList)
+    this.overlayCard.append(this.title, this.form, this.todoList)
 
     this._temporaryTitle = ''
     this._initLocalListeners()
@@ -279,12 +284,18 @@ class View {
       console.log('show overlay')
       this.overlay.classList.remove('invisible', 'opacity-0')
       this.overlay.classList.add('opacity-90')
+
+      this.overlayCard.classList.remove('invisible', 'opacity-0')
+      this.overlayCard.classList.add('opacity-100')
     })
 
     this.overlay.addEventListener('click', event => {
       console.log('hide overlay')
       this.overlay.classList.remove('opacity-90')
       this.overlay.classList.add('opacity-0')
+
+      this.overlayCard.classList.remove('opacity-100')
+      this.overlayCard.classList.add('opacity-0')
       setTimeout(() => {
         this.overlay.classList.add('invisible')
       }, 500);
