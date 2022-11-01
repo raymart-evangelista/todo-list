@@ -2,6 +2,7 @@ import './style.css'
 import { format, compareAsc } from 'date-fns'
 import moment from 'moment'
 import logo from './icons/check-square.svg'
+import menu from './icons/menu.svg'
 
 
 // home button
@@ -254,18 +255,23 @@ class View {
     })
 
     // navbar 
-    this.navbar = this.createElem('nav', 'bg-white px-2 sm:px-4 py-2.5 dark:bg-gray-900 fixed w-full z-20 top-0 left-0 border-b border-gray-200 dark:border-gray-600')
+    this.navbar = this.createElem('nav', 'p-3 bg-gray-50 rounded border-gray-200 dark:bg-gray-800 dark:border-gray-700')
     this.navbarContainer = this.createElem('div', 'container flex flex-wrap justify-between items-center mx-auto')
     this.logoContainer = this.createElem('a', 'flex items-center')
-    this.logoImg = this.createElem('img', 'mr-3 h-6 sm:h-9')
+    this.logoImg = this.createElem('img', 'mr-3 h-6 sm:h-10')
     this.logoImg.src = logo
     this.logoText = this.createElem('span', 'self-center text-xl font-semibold whitespace-nowrap dark:text-white')
     this.logoText.textContent = 'Todo List'
-
+    
     this.logoContainer.append(this.logoImg, this.logoText)
-    this.navbarContainer.append(this.logoContainer)
 
+    this.menuBtn = this.createElem('button', 'inline-flex justify-center items-center ml-3 text-gray-400 rounded-lg hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-300 dark:text-gray-400 dark:hover:text-white dark:focus:ring-gray-500')
+    this.menuLogo = this.createElem('img', 'w-6 h-6')
+    this.menuLogo.src = menu
 
+    this.menuBtn.append(this.menuLogo)
+
+    this.navbarContainer.append(this.logoContainer, this.menuBtn)
     this.navbar.append(this.navbarContainer)
 
     // append
