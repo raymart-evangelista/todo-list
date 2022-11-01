@@ -20,9 +20,9 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.css$/i,
+        test: [ /\.css$/i, /\.svg$/i ],
         include: path.resolve(__dirname, 'src'),
-        use: ['style-loader', 'css-loader', 'postcss-loader'],
+        use: ['style-loader', 'css-loader', 'postcss-loader', 'svg-inline-loader'],
       },
     ],
   },
