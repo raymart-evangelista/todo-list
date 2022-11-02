@@ -284,7 +284,8 @@ class View {
     this.menuBtn.append(this.menuBtnContents)
 
     // project menu dropdown
-    this.menuDropdown = this.createElem('div', 'absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none')
+    this.menuDropdown = this.createElem('div', 'transition-opacity duration-150 ease-in-out opacity-0 invisible absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none')
+    this.menuDropdown.id = 'menu-dropdown'
     this.menuDropdownWrapper = this.createElem('div', 'py-1')
 
     this.menuDropdown.append(this.menuDropdownWrapper)
@@ -394,6 +395,19 @@ class View {
         this.overlayCard.classList.add('hidden')
       }, 500);
     })
+
+    this.menuBtn.addEventListener('click', event => {
+      console.log('show projects')
+      // show projects
+      this.menuDropdown.classList.remove('hidden')
+      // this.menuOverlay.classList.remove('hidden')
+
+      setTimeout(() => {
+        this.menuDropdown.classList.remove('invisible', 'opacity-0')
+        this.menuDropdown.classList.add('opacity-100')
+      }, 10);
+    })
+    
   }
 
   createElem(tag, className) {
