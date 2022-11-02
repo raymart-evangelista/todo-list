@@ -21,21 +21,25 @@ import down from './icons/chevron-down.svg'
 class Model {
   constructor() {
     this.todos = JSON.parse(localStorage.getItem('todos')) || []
-    // this.projects = JSON.parse(localStorage.getItem('projects')) || []
+    this.projects = JSON.parse(localStorage.getItem('projects')) || []
   }
 
   bindTodoListChanged(callback) {
     this.onTodoListChanged = callback
   }
 
-  _commit(todos, projects) {
+  bindProjectListChanged(callback) {
+    this.onProjectListChanged = callback
+  }
+
+  _commit(todos) {
     this.onTodoListChanged(todos)
     localStorage.setItem('todos', JSON.stringify(todos))
+  }
 
-    if (projects) {
-      this.onProjectListChanged(projects)
-      localStorage.setItem('projects', JSON.stringify(projects))
-    }
+  _commitProjectName(projects) {
+    this.onProjectListChanged(projects)
+    localStorage.setItem('projects', JSON.stringify(projects))
   }
 
   addTodo(taskTitle, taskDesc, taskDate, priorityValue, optionalNotes, taskProject) {
@@ -57,7 +61,14 @@ class Model {
   }
 
   addProjectName(projectName) {
+    const project = {
+      projectName: projectName
+    }
 
+    console.log('project name added to projects')
+    this.projects.push(project)
+
+    this._commitProjectName(this.projects)
   }
 
   editTodoTitle(id, updatedTitle) {
@@ -589,6 +600,10 @@ class View {
     }
   }
 
+  displayProjects(projects) {
+
+  }
+
   highlightInput = (input) => {
     input.classList.remove('border-gray-300')
     input.classList.add('border-red-600')
@@ -687,6 +702,7 @@ class Controller {
 
     // explicit this binding
     this.model.bindTodoListChanged(this.onTodoListChanged)
+    this.model.bindProjectListChanged(this.onProjectListChanged)
     this.view.bindAddTodo(this.handleAddTodo)
     this.view.bindAddProjectName(this.handleAddProjectName)
     this.view.bindEditTitle(this.handleEditTitle)
@@ -695,10 +711,17 @@ class Controller {
 
     // display initial todos
     this.onTodoListChanged(this.model.todos)
+
+    // display initial projects
+    this.onProjectListChanged(this.model.projects)
   }
   
   onTodoListChanged = (todos) => {
     this.view.displayTodos(todos)
+  }
+
+  onProjectListChanged = (projects) => {
+    this.view.displayProjects(projects)
   }
 
   handleAddTodo = (taskTitle, taskDesc, taskDate, taskPriority, optionalNotes, taskProject) => {
