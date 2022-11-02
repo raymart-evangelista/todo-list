@@ -455,6 +455,10 @@ class View {
     this.optionalNotes.value = ''
   }
 
+  _resetProjectNameInput() {
+    this.projectName.value = ''
+  }
+
   _initLocalListeners() {
     this.todoList.addEventListener('input', event => {
       if (event.target.className === 'editable-title') {
@@ -618,6 +622,8 @@ class View {
     this.form.addEventListener('submit', event => {
       event.preventDefault()
 
+      console.log(`this is the value of taskTitle: ${this._taskTitle}`)
+
       if (this._priorityGroupChecked) {
         this.unhighlightInput(this.radioGroupContainer)
       } else {
@@ -655,8 +661,12 @@ class View {
       event.preventDefault()
 
       if (this._projectName) {
+        console.log('project name valid')
         this.unhighlightInput(this.projectName)
+        handler(this._projectName)
+        this._resetProjectNameInput()
       } else {
+        console.log('project name is invalid')
         this.highlightInput(this.projectName)
       }
     })
