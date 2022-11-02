@@ -21,6 +21,7 @@ import down from './icons/chevron-down.svg'
 class Model {
   constructor() {
     this.todos = JSON.parse(localStorage.getItem('todos')) || []
+    this.projects = JSON.parse(localStorage.getItem('projects')) || []
   }
 
   bindTodoListChanged(callback) {
@@ -32,7 +33,7 @@ class Model {
     localStorage.setItem('todos', JSON.stringify(todos))
   }
 
-  addTodo(taskTitle, taskDesc, taskDate, priorityValue, optionalNotes ) {
+  addTodo(taskTitle, taskDesc, taskDate, priorityValue, optionalNotes, project) {
     const todo = {
       id: this.todos.length > 0 ? this.todos[this.todos.length - 1].id + 1 : 1,
       title: taskTitle,
@@ -40,6 +41,7 @@ class Model {
       date: taskDate,
       priority: priorityValue,
       notes: optionalNotes,
+      project: project,
 
       complete: false,
     }
@@ -162,7 +164,7 @@ class View {
 
     this.overlayCard = this.createElem('div')
     this.overlayCard.id = 'overlayCard'
-    this.overlayCard.classList = 'fixed flex flex-col transition-opacity duration-500 ease-in-out opacity-0 invisible bg-white shadow-lg rounded-2xl w-3/4 mt-6 p-6'
+    this.overlayCard.classList = 'overflow-y-auto h-4/5 fixed flex flex-col transition-opacity duration-500 ease-in-out opacity-0 invisible bg-white shadow-lg rounded-2xl w-3/4 mt-6 p-6'
     this.app.append(this.overlayCard)
 
     this.title = this.createElem('h1', 'text-2xl text-center mb-6')
@@ -254,6 +256,26 @@ class View {
       this.radioGroup.append(this.selectionContainer)
     })
 
+    // project options
+    this.projectOptions = this.createElem('select', 'bg-gray-50 border border-gray-300 text-gray-900 mb-2 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500')
+    this.projectOptions.id = 'projects'
+    this.projectOptions.name = 'projects'
+
+    this.projectOptionsLabel = this.createElem('label', 'block mb-2 text-sm font-medium text-gray-900')
+    this.projectOptionsLabel.textContent = 'Choose a project for the task'
+    this.projectOptionsContainer = this.createElem('div', 'mb-2 p-2 rounded-lg border border-gray-300')
+    this.projectOptionsContainer.append(this.projectOptionsLabel, this.projectOptions)
+
+    const projects = ['Default project', 'Another project', 'Work project']
+    projects.forEach((project, index) => {
+
+      this.projectOption = this.createElem('option')
+      this.projectOption.value = project
+      this.projectOption.textContent = project
+
+      this.projectOptions.append(this.projectOption)
+    })
+
     // navbar 
     this.navbar = this.createElem('nav', 'w-screen p-3 bg-gray-50 rounded border-gray-200 dark:bg-gray-800 dark:border-gray-700')
     this.navbarContainer = this.createElem('div', 'flex justify-between')
@@ -319,7 +341,7 @@ class View {
     // append
     this.app.append(this.navbar)
     this.app.append(this.todoList)
-    this.form.append(this.radioGroupContainer)
+    this.form.append(this.radioGroupContainer, this.projectOptionsContainer)
     this.form.append(this.taskTitleContainer, this.taskDescContainer, this.taskDateContainer, this.optionalNotesContainer, this.submitBtn)
     this.overlayCard.append(this.title, this.form)
 
