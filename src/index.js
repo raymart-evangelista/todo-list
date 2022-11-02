@@ -28,9 +28,14 @@ class Model {
     this.onTodoListChanged = callback
   }
 
-  _commit(todos) {
+  _commit(todos, projects) {
     this.onTodoListChanged(todos)
     localStorage.setItem('todos', JSON.stringify(todos))
+
+    if (projects) {
+      this.onProjectListChanged(projects)
+      localStorage.setItem('projects', JSON.stringify(projects))
+    }
   }
 
   addTodo(taskTitle, taskDesc, taskDate, priorityValue, optionalNotes, taskProject) {
@@ -49,6 +54,10 @@ class Model {
     this.todos.push(todo)
 
     this._commit(this.todos)
+  }
+
+  addProjectName(projectName) {
+
   }
 
   editTodoTitle(id, updatedTitle) {
@@ -413,6 +422,10 @@ class View {
     return this.projectOptions.value
   }
 
+  get _projectName() {
+    return this.projectName.value
+  }
+
   _resetPriorityGroup() {
     const priorityValues = document.getElementsByName('priority')
     priorityValues.forEach((priority) => {
@@ -622,8 +635,16 @@ class View {
     })
   }
 
-  bindAddProject(handler) {
-    this.project
+  bindAddProjectName(handler) {
+    this.projectNameForm.addEventListener('submit', event => {
+      event.preventDefault()
+
+      if (this._projectName) {
+        this.unhighlightInput(this.projectName)
+      } else {
+        this.highlightInput(this.projectName)
+      }
+    })
   }
 
   bindDeleteTodo(handler) {
@@ -667,6 +688,7 @@ class Controller {
     // explicit this binding
     this.model.bindTodoListChanged(this.onTodoListChanged)
     this.view.bindAddTodo(this.handleAddTodo)
+    this.view.bindAddProjectName(this.handleAddProjectName)
     this.view.bindEditTitle(this.handleEditTitle)
     this.view.bindDeleteTodo(this.handleDeleteTodo)
     this.view.bindToggleTodo(this.handleToggleTodo)
@@ -681,6 +703,10 @@ class Controller {
 
   handleAddTodo = (taskTitle, taskDesc, taskDate, taskPriority, optionalNotes, taskProject) => {
     this.model.addTodo(taskTitle, taskDesc, taskDate, taskPriority, optionalNotes, taskProject)
+  }
+
+  handleAddProjectName = (projectName) => {
+    this.model.addProjectName(projectName)
   }
 
   handleEditTitle = (id, taskTitle) => {
