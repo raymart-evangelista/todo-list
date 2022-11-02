@@ -33,7 +33,7 @@ class Model {
     localStorage.setItem('todos', JSON.stringify(todos))
   }
 
-  addTodo(taskTitle, taskDesc, taskDate, priorityValue, optionalNotes, project) {
+  addTodo(taskTitle, taskDesc, taskDate, priorityValue, optionalNotes, taskProject) {
     const todo = {
       id: this.todos.length > 0 ? this.todos[this.todos.length - 1].id + 1 : 1,
       title: taskTitle,
@@ -41,7 +41,7 @@ class Model {
       date: taskDate,
       priority: priorityValue,
       notes: optionalNotes,
-      project: project,
+      project: taskProject,
       complete: false,
     }
 
@@ -592,7 +592,7 @@ class View {
 
       if (this._priorityGroupChecked && this._taskTitle && this._taskDesc && this._taskDate) {
         console.log('all input valid')
-        handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes)
+        handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
         this._resetInput()
       }
     })
@@ -651,8 +651,8 @@ class Controller {
     this.view.displayTodos(todos)
   }
 
-  handleAddTodo = (taskTitle, taskDesc, taskDate, taskPriority, optionalNotes) => {
-    this.model.addTodo(taskTitle, taskDesc, taskDate, taskPriority, optionalNotes)
+  handleAddTodo = (taskTitle, taskDesc, taskDate, taskPriority, optionalNotes, taskProject) => {
+    this.model.addTodo(taskTitle, taskDesc, taskDate, taskPriority, optionalNotes, taskProject)
   }
 
   handleEditTitle = (id, taskTitle) => {
