@@ -311,7 +311,7 @@ class View {
     this.menuBtn.append(this.menuBtnContents)
 
     // project menu dropdown
-    this.menuDropdown = this.createElem('div', 'transition-opacity duration-150 ease-in-out opacity-0 hidden invisible absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none divide-y divide-gray-100 ')
+    this.menuDropdown = this.createElem('div', 'transition-opacity duration-150 ease-in-out opacity-0 hidden invisible absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none divide-y divide-gray-100')
     this.menuDropdown.id = 'menu-dropdown'
     this.menuDropdownWrapper = this.createElem('div', 'py-1')
 
@@ -334,6 +334,25 @@ class View {
 
     this.menuDropdown.append(this.menuDropdownWrapper2)
 
+
+    // project name form
+    this.projectForm = this.createElem('form', 'absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none divide-y divide-gray-100 p-4')
+
+    this.projectName = this.createElem('input', 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5')
+    this.projectName.type = 'text'
+    this.projectName.placeholder = 'e.g., Computer Science'
+    this.projectName.name = 'projectName'
+
+    this.projectNameLabel = this.createElem('label', 'block mb-2 text-sm font-medium text-gray-900')
+    this.projectNameLabel.textContent = 'Name your new project'
+    this.projectNameContainer = this.createElem('div', 'mb-2')
+    this.projectNameContainer.append(this.projectNameLabel, this.projectName)
+    
+    this.menuDropdown.append(this.projectForm)
+    this.projectNameSubmitBtn = this.createElem('button', 'mt-2 w-fit justify-self-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800')
+    this.projectNameSubmitBtn.textContent = 'Submit'
+
+    this.projectForm.append(this.projectNameContainer, this.projectNameSubmitBtn)
 
     // dropdown overlay
     this.menuOverlay = this.createElem('div', 'fixed w-screen h-screen transition-opacity duration-500 ease-in-out bg-gray-900 opacity-0 hidden invisible')
@@ -488,6 +507,11 @@ class View {
 
         this.menuOverlay.classList.add('invisible', 'hidden')
       }, 500);
+    })
+
+    this.newProjectBtn.addEventListener('click', event => {
+      console.log('new project')
+      // initiate new project form
     })
     
   }
