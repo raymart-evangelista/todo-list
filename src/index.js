@@ -21,7 +21,7 @@ import down from './icons/chevron-down.svg'
 class Model {
   constructor() {
     this.todos = JSON.parse(localStorage.getItem('todos')) || []
-    this.projects = JSON.parse(localStorage.getItem('projects')) || []
+    // this.projects = JSON.parse(localStorage.getItem('projects')) || []
   }
 
   bindTodoListChanged(callback) {
@@ -42,7 +42,6 @@ class Model {
       priority: priorityValue,
       notes: optionalNotes,
       project: project,
-
       complete: false,
     }
 
@@ -61,6 +60,7 @@ class Model {
       date: todo.date,
       priority: todo.priority,
       notes: todo.notes,
+      project: todo.project,
       complete: todo.complete } : todo
     )
 
@@ -76,6 +76,7 @@ class Model {
       date: todo.date,
       priority: todo.priority,
       notes: todo.notes,
+      project: todo.project,
       complete: todo.complete } : todo
     )
 
@@ -91,6 +92,7 @@ class Model {
       date: updatedDate,
       priority: todo.priority,
       notes: todo.notes,
+      project: todo.project,
       complete: todo.complete } : todo
     )
 
@@ -106,6 +108,7 @@ class Model {
       date: todo.date,
       priority: updatedPriority,
       notes: todo.notes,
+      project: todo.project,
       complete: todo.complete } : todo
     )
 
@@ -121,6 +124,7 @@ class Model {
       date: todo.date,
       priority: todo.priority,
       notes: updatedNotes,
+      project: todo.project,
       complete: todo.complete } : todo
     )
 
@@ -142,6 +146,7 @@ class Model {
       date: todo.date,
       priority: todo.priority,
       notes: todo.notes,
+      project: todo.project,
       complete: !todo.complete } : todo
     )
 
@@ -385,6 +390,10 @@ class View {
     return this.optionalNotes.value
   }
 
+  get _taskProject() {
+    return this.projectOptions.value
+  }
+
   _resetPriorityGroup() {
     const priorityValues = document.getElementsByName('priority')
     priorityValues.forEach((priority) => {
@@ -398,6 +407,7 @@ class View {
     this.taskDesc.value = ''
     this.taskDate.value = moment().format('YYYY-MM-DD')
     this._resetPriorityGroup()
+    this.projectOptions.selectedIndex = 0
 
     this.optionalNotes.value = ''
   }
