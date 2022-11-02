@@ -21,7 +21,7 @@ import down from './icons/chevron-down.svg'
 class Model {
   constructor() {
     this.todos = JSON.parse(localStorage.getItem('todos')) || []
-    this.projects = JSON.parse(localStorage.getItem('projects')) || []
+    this.projects = JSON.parse(localStorage.getItem('projects')) || [{id: 1, name: 'default project'}]
   }
 
   bindTodoListChanged(callback) {
@@ -62,7 +62,8 @@ class Model {
 
   addProjectName(projectName) {
     const project = {
-      projectName: projectName
+      id: this.projects.length > 0 ? this.projects[this.projects.length - 1].id + 1 : 1,
+      name: projectName
     }
 
     console.log('project name added to projects')
@@ -291,15 +292,19 @@ class View {
     this.projectOptionsContainer = this.createElem('div', 'mb-2 p-2 rounded-lg border border-gray-300')
     this.projectOptionsContainer.append(this.projectOptionsLabel, this.projectOptions)
 
-    const projects = ['Default project', 'Another project', 'Work project']
-    projects.forEach((project, index) => {
+    // const projects = ['Default project', 'Another project', 'Work project']
 
-      this.projectOption = this.createElem('option')
-      this.projectOption.value = project
-      this.projectOption.textContent = project
+    this.projectsList = this.createElem('ul', 'projects-list')
+    this.projectOptions.append(this.projectsList)
 
-      this.projectOptions.append(this.projectOption)
-    })
+    // projects.forEach((project, index) => {
+
+    //   this.projectOption = this.createElem('option')
+    //   this.projectOption.value = project
+    //   this.projectOption.textContent = project
+
+    //   this.projectOptions.append(this.projectOption)
+    // })
 
     // navbar 
     this.navbar = this.createElem('nav', 'w-screen p-3 bg-gray-50 rounded border-gray-200 dark:bg-gray-800 dark:border-gray-700')
@@ -348,7 +353,7 @@ class View {
 
     // for new project 
     this.menuDropdownWrapper2 = this.createElem('div', 'py-1')
-    this.newProjectBtn = this.createElem('button', 'w-full text-gray-700 block px-4 py-2 text-sm')
+    this.newProjectBtn = this.createElem('button', 'w-full text-gray-700 block px-4 py-2 text-sm font-bold')
     this.newProjectBtn.textContent = 'New project'
     this.menuDropdownWrapper2.append(this.newProjectBtn)
 
@@ -605,7 +610,24 @@ class View {
   }
 
   displayProjects(projects) {
+    // delete all nodes on screen
+    while (this.projectsList.firstChild) {
+      this.projectsList.removeChild(this.projectsList.firstChild)
+    }
 
+    projects.forEach(project => {
+      const li = this.createElem('li')
+      li.id = project.id
+
+      // each project will be posted in the main form in the project options  
+      this.projectOption = this.createElem('option')
+      this.projectOption.value = project.name
+      this.projectOption.textContent = project.name
+
+      this.projectOptions.append(this.projectOption)
+
+      // each project will be posted in the projects dropdown
+    })
   }
 
   highlightInput = (input) => {
