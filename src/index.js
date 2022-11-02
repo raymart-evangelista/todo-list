@@ -284,7 +284,7 @@ class View {
     this.menuBtn.append(this.menuBtnContents)
 
     // project menu dropdown
-    this.menuDropdown = this.createElem('div', 'transition-opacity duration-150 ease-in-out opacity-0 invisible absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none')
+    this.menuDropdown = this.createElem('div', 'transition-opacity duration-150 ease-in-out opacity-0 hidden invisible absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none')
     this.menuDropdown.id = 'menu-dropdown'
     this.menuDropdownWrapper = this.createElem('div', 'py-1')
 
@@ -295,6 +295,12 @@ class View {
     this.defaultProject.textContent = 'Default project'
 
     this.menuDropdownWrapper.append(this.defaultProject)
+
+
+    // dropdown overlay
+    this.menuOverlay = this.createElem('div', 'fixed w-screen h-screen transition-opacity duration-500 ease-in-out bg-gray-900 opacity-0 hidden invisible')
+    this.menuOverlay.id = 'menu-overlay'
+    this.app.append(this.menuOverlay)
 
     this.navbarContainer.append(this.logoContainer, this.menuWrapper)
     this.navbar.append(this.navbarContainer)
@@ -397,15 +403,46 @@ class View {
     })
 
     this.menuBtn.addEventListener('click', event => {
-      console.log('show projects')
-      // show projects
-      this.menuDropdown.classList.remove('hidden')
-      // this.menuOverlay.classList.remove('hidden')
+      // if the projects dropdown isn't in the shown state, show it
+      // else the project dropdown is active, close it
+      if (this.menuDropdown.classList.contains('hidden')) {
+        this.menuDropdown.classList.remove('hidden')
+        this.menuOverlay.classList.remove('hidden')
+        setTimeout(() => {
+          this.menuDropdown.classList.remove('invisible', 'opacity-0')
+          this.menuDropdown.classList.add('opacity-100')
 
+          this.menuOverlay.classList.remove('invisible', 'opacity-0')
+          this.menuOverlay.classList.add('opacity-90')
+        }, 10);
+      } else {
+        this.menuDropdown.classList.remove('opacity-100')
+        this.menuDropdown.classList.add('opacity-0')
+
+        this.menuOverlay.classList.remove('opacity-90')
+        this.menuOverlay.classList.add('opacity-0')
+        setTimeout(() => {
+          this.menuDropdown.classList.add('invisible')
+          this.menuDropdown.classList.add('hidden')
+
+          this.menuOverlay.classList.add('invisible', 'hidden')
+        }, 500);
+      }
+
+    })
+
+    this.menuOverlay.addEventListener('click', event => {
+      this.menuDropdown.classList.remove('opacity-100')
+      this.menuDropdown.classList.add('opacity-0')
+
+      this.menuOverlay.classList.remove('opacity-90')
+      this.menuOverlay.classList.add('opacity-0')
       setTimeout(() => {
-        this.menuDropdown.classList.remove('invisible', 'opacity-0')
-        this.menuDropdown.classList.add('opacity-100')
-      }, 10);
+        this.menuDropdown.classList.add('invisible')
+        this.menuDropdown.classList.add('hidden')
+
+        this.menuOverlay.classList.add('invisible', 'hidden')
+      }, 500);
     })
     
   }
