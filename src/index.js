@@ -284,17 +284,28 @@ class View {
     this.menuBtn.append(this.menuBtnContents)
 
     // project menu dropdown
-    this.menuDropdown = this.createElem('div', 'transition-opacity duration-150 ease-in-out opacity-0 hidden invisible absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none')
+    this.menuDropdown = this.createElem('div', 'transition-opacity duration-150 ease-in-out opacity-0 hidden invisible absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none divide-y divide-gray-100 ')
     this.menuDropdown.id = 'menu-dropdown'
     this.menuDropdownWrapper = this.createElem('div', 'py-1')
 
     this.menuDropdown.append(this.menuDropdownWrapper)
     this.menuWrapper.append(this.menuDropdown)
 
-    this.defaultProject = this.createElem('a', 'text-gray-700 block px-4 py-2 text-sm')
+    this.defaultProject = this.createElem('button', 'w-full text-gray-700 block px-4 py-2 text-sm')
     this.defaultProject.textContent = 'Default project'
 
-    this.menuDropdownWrapper.append(this.defaultProject)
+    this.exampleProject = this.createElem('button', 'w-full text-gray-700 block px-4 py-2 text-sm')
+    this.exampleProject.textContent = 'Example project'
+
+    this.menuDropdownWrapper.append(this.defaultProject, this.exampleProject)
+
+    // for new project 
+    this.menuDropdownWrapper2 = this.createElem('div', 'py-1')
+    this.newProjectBtn = this.createElem('button', 'w-full text-gray-700 block px-4 py-2 text-sm')
+    this.newProjectBtn.textContent = 'New project'
+    this.menuDropdownWrapper2.append(this.newProjectBtn)
+
+    this.menuDropdown.append(this.menuDropdownWrapper2)
 
 
     // dropdown overlay
