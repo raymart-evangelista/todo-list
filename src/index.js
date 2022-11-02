@@ -380,6 +380,7 @@ class View {
       console.log('show overlay')
       this.overlay.classList.remove('hidden')
       this.overlayCard.classList.remove('hidden')
+      this.menuWrapper.classList.remove('relative')
       setTimeout(() => {
         this.overlay.classList.remove('invisible', 'opacity-0')
         this.overlay.classList.add('opacity-90')
@@ -399,6 +400,7 @@ class View {
         this.overlayCard.classList.add('invisible')
         this.overlay.classList.add('hidden')
         this.overlayCard.classList.add('hidden')
+        this.menuWrapper.classList.add('relative')
       }, 500);
     })
 
