@@ -343,13 +343,13 @@ class View {
     this.menuDropdown.append(this.menuDropdownWrapper)
     this.menuWrapper.append(this.menuDropdown)
 
-    this.defaultProject = this.createElem('button', 'w-full text-gray-700 block px-4 py-2 text-sm')
-    this.defaultProject.textContent = 'Default project'
+    // this.defaultProject = this.createElem('button', 'w-full text-gray-700 block px-4 py-2 text-sm')
+    // this.defaultProject.textContent = 'Default project'
 
-    this.exampleProject = this.createElem('button', 'w-full text-gray-700 block px-4 py-2 text-sm')
-    this.exampleProject.textContent = 'Example project'
+    // this.exampleProject = this.createElem('button', 'w-full text-gray-700 block px-4 py-2 text-sm')
+    // this.exampleProject.textContent = 'Example project'
 
-    this.menuDropdownWrapper.append(this.defaultProject, this.exampleProject)
+    // this.menuDropdownWrapper.append(this.defaultProject, this.exampleProject)
 
     // for new project 
     this.menuDropdownWrapper2 = this.createElem('div', 'py-1')
@@ -626,7 +626,12 @@ class View {
 
       this.projectOptions.append(this.projectOption)
 
-      // each project will be posted in the projects dropdown
+      // each project will be posted in the projects dropdown as well
+      this.projectName = this.createElem('button', 'w-full text-gray-700 block px-4 py-2 text-sm')
+      this.projectName.textContent = project.name
+      this.menuDropdownWrapper.append(this.projectName)
+
+
     })
   }
 
