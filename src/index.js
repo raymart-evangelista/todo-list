@@ -361,7 +361,7 @@ class View {
 
 
     // project name form
-    this.projectNameForm = this.createElem('form', 'absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none divide-y divide-gray-100 p-4')
+    this.projectNameForm = this.createElem('form', 'hidden invisible opacity-0 transition-opacity duration-150 ease-in-out absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none divide-y divide-gray-100 p-4')
 
     this.projectName = this.createElem('input', 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5')
     this.projectName.type = 'text'
@@ -518,11 +518,17 @@ class View {
 
         this.menuOverlay.classList.remove('opacity-90')
         this.menuOverlay.classList.add('opacity-0')
+
+        this.projectNameForm.classList.remove('opacity-100')
+        this.projectNameForm.classList.add('opacity-0')
         setTimeout(() => {
           this.menuDropdown.classList.add('invisible')
           this.menuDropdown.classList.add('hidden')
 
           this.menuOverlay.classList.add('invisible', 'hidden')
+
+          this.projectNameForm.classList.add('invisible')
+          this.projectNameForm.classList.add('hidden')
         }, 500);
       }
 
@@ -534,17 +540,37 @@ class View {
 
       this.menuOverlay.classList.remove('opacity-90')
       this.menuOverlay.classList.add('opacity-0')
+
+      this.projectNameForm.classList.remove('opacity-100')
+      this.projectNameForm.classList.add('opacity-0')
       setTimeout(() => {
         this.menuDropdown.classList.add('invisible')
         this.menuDropdown.classList.add('hidden')
 
         this.menuOverlay.classList.add('invisible', 'hidden')
+
+        this.projectNameForm.classList.add('invisible')
+        this.projectNameForm.classList.add('hidden')
       }, 500);
     })
 
     this.newProjectBtn.addEventListener('click', event => {
       console.log('new project')
       // initiate new project form
+      if (this.projectNameForm.classList.contains('hidden')) {
+        this.projectNameForm.classList.remove('hidden')
+        setTimeout(() => {
+          this.projectNameForm.classList.remove('invisible', 'opacity-0')
+          this.projectNameForm.classList.add('opacity-100')
+        }, 10);
+      } else {
+        this.projectNameForm.classList.remove('opacity-100')
+        this.projectNameForm.classList.add('opacity-0')
+        setTimeout(() => {
+          this.projectNameForm.classList.add('invisible')
+          this.projectNameForm.classList.add('hidden')
+        }, 500);
+      }
     })
     
   }
