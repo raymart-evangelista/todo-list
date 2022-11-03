@@ -611,8 +611,13 @@ class View {
 
   displayProjects(projects) {
     // delete all nodes on screen
-    while (this.projectsList.firstChild) {
-      this.projectsList.removeChild(this.projectsList.firstChild)
+    while (this.projectOptions.firstChild) {
+      // for projects in select options
+      this.projectOptions.removeChild(this.projectOptions.firstChild)
+    }
+
+    while (this.menuDropdownWrapper.firstChild) {
+      this.menuDropdownWrapper.removeChild(this.menuDropdownWrapper.firstChild)
     }
 
     projects.forEach(project => {
@@ -627,9 +632,9 @@ class View {
       this.projectOptions.append(this.projectOption)
 
       // each project will be posted in the projects dropdown as well
-      this.projectName = this.createElem('button', 'w-full text-gray-700 block px-4 py-2 text-sm')
-      this.projectName.textContent = project.name
-      this.menuDropdownWrapper.append(this.projectName)
+      this.projectDropdownName = this.createElem('button', 'w-full text-gray-700 block px-4 py-2 text-sm')
+      this.projectDropdownName.textContent = project.name
+      this.menuDropdownWrapper.append(this.projectDropdownName)
 
 
     })
