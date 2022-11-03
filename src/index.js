@@ -339,6 +339,7 @@ class View {
     this.menuDropdown = this.createElem('div', 'transition-opacity duration-150 ease-in-out opacity-0 hidden invisible absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none divide-y divide-gray-100')
     this.menuDropdown.id = 'menu-dropdown'
     this.menuDropdownWrapper = this.createElem('div', 'py-1')
+    this.menuDropdownWrapper.id = 'project-buttons'
 
     this.menuDropdown.append(this.menuDropdownWrapper)
     this.menuWrapper.append(this.menuDropdown)
@@ -576,6 +577,19 @@ class View {
         }, 500);
       }
     })
+
+    // this.menuDropdownWrapper.forEach
+    // console.log(projectDropdownButtons)
+
+    // console.log(this.menuDropdownWrapper.children.length)
+    // for(let i = 0; i < this.menuDropdownWrapper.children.length; i++) {
+    //   console.log('hello')
+    //   console.log(this.menuDropdownWrapper.children[i])
+    // }
+
+    // this.menuDropdownWrapper.addEventListener('click', event => {
+    //   console.log(this.projectDropdownName)
+    // })
     
   }
 
@@ -665,9 +679,17 @@ class View {
       this.projectDropdownName = this.createElem('button', 'w-full text-gray-700 block px-4 py-2 text-sm')
       this.projectDropdownName.textContent = project.name
       this.menuDropdownWrapper.append(this.projectDropdownName)
-
-
     })
+
+    let projectDropdownButtons = this.getElem('#project-buttons')
+    console.log(projectDropdownButtons.children.length)
+    for(let child of projectDropdownButtons.children) {
+      console.log(child)
+    }
+  }
+
+  displayCurrentProjectInNav() {
+    
   }
 
   highlightInput = (input) => {
