@@ -308,7 +308,7 @@ class View {
 
     // navbar 
     this.navbar = this.createElem('nav', 'w-screen p-3 bg-gray-50 rounded border-gray-200 dark:bg-gray-800 dark:border-gray-700')
-    this.navbarContainer = this.createElem('div', 'flex justify-between')
+    this.navbarContainer = this.createElem('div', 'flex justify-between items-center')
     this.logoContainer = this.createElem('a', 'flex items-center')
     this.logoImg = this.createElem('img', 'mr-1 h-6 sm:h-10')
     this.logoImg.src = logo
@@ -384,7 +384,11 @@ class View {
     this.menuOverlay.id = 'menu-overlay'
     this.app.append(this.menuOverlay)
 
-    this.navbarContainer.append(this.logoContainer, this.menuWrapper)
+    // navbar current project
+    this.currentProjectTitle = this.createElem('h1')
+    this.currentProjectTitle = 'default project'    
+
+    this.navbarContainer.append(this.logoContainer, this.currentProjectTitle, this.menuWrapper)
     this.navbar.append(this.navbarContainer)
 
     // append
