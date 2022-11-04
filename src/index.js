@@ -22,6 +22,9 @@ class Model {
   constructor() {
     this.todos = JSON.parse(localStorage.getItem('todos')) || []
     this.projects = JSON.parse(localStorage.getItem('projects')) || [{id: 1, name: 'default project'}]
+    // this.currentProject = JSON.parse(localStorage.getItem('currentProject')) || [{id: 1, current: this.projects[0]}]
+    this.currentProject = JSON.parse(localStorage.getItem('currentProject')) || this.projects[0]
+    console.log(this.currentProject)
   }
 
   bindTodoListChanged(callback) {
@@ -32,6 +35,10 @@ class Model {
     this.onProjectListChanged = callback
   }
 
+  bindCurrentProjectChanged(callback) {
+    this.onCurrentProjectChanged = callback
+  }
+
   _commit(todos) {
     this.onTodoListChanged(todos)
     localStorage.setItem('todos', JSON.stringify(todos))
@@ -40,6 +47,18 @@ class Model {
   _commitProjectName(projects) {
     this.onProjectListChanged(projects)
     localStorage.setItem('projects', JSON.stringify(projects))
+  }
+
+  _commitCurrentProject(currentProject) {
+    this.onCurrentProjectChanged(currentProject)
+    localStorage.setItem('currentProject', JSON.stringify(currentProject))
+  }
+
+  updateCurrentProject(newCurrentProject) {
+    this.currentProject = newCurrentProject
+
+    console.log('new current project updated')
+    this._commitCurrentProject(this.currentProject)
   }
 
   addTodo(taskTitle, taskDesc, taskDate, priorityValue, optionalNotes, taskProject) {
@@ -387,7 +406,6 @@ class View {
 
     // navbar current project
     this.currentProjectTitle = this.createElem('h1')
-    this.currentProjectTitle = 'default project'    
 
     this.navbarContainer.append(this.logoContainer, this.currentProjectTitle, this.menuWrapper)
     this.navbar.append(this.navbarContainer)
@@ -399,6 +417,7 @@ class View {
     this.form.append(this.taskTitleContainer, this.taskDescContainer, this.taskDateContainer, this.optionalNotesContainer, this.submitBtn)
     this.overlayCard.append(this.title, this.form)
 
+    this._currentProject
     this._temporaryTitle = ''
     this._initLocalListeners()
   }
@@ -445,6 +464,15 @@ class View {
 
   get _projectName() {
     return this.projectName.value
+  }
+
+  get _currentProject() {
+    console.log(`this.currentProjectTitle ${this.currentProjectTitle.value}`)
+    if (this.currentProjectTitle.value) {
+      return this.currentProjectTitle.value
+    } else {
+      return 'default project'
+    }
   }
 
   _resetPriorityGroup() {
@@ -681,15 +709,23 @@ class View {
       this.menuDropdownWrapper.append(this.projectDropdownName)
     })
 
-    let projectDropdownButtons = this.getElem('#project-buttons')
-    console.log(projectDropdownButtons.children.length)
-    for(let child of projectDropdownButtons.children) {
-      console.log(child)
+    for (let projectButton of this.menuDropdownWrapper.children) {
+      projectButton.addEventListener('click', event => {
+
+        console.log(projectButton.textContent)
+        // this will display the todo list for the current project
+      })
     }
+    // console.log(projectDropdownButtons.children.length)
+    // for(let child of projectDropdownButtons.children) {
+    //   console.log(child)
+    // }
+    
   }
 
-  displayCurrentProjectInNav() {
-    
+  displayCurrentProjectInNav(project) {
+    console.log(project.name)
+    this.currentProjectTitle.textContent = project.name
   }
 
   highlightInput = (input) => {
@@ -756,6 +792,10 @@ class View {
     })
   }
 
+  bindUpdateCurrentProject(handler) {
+    
+  }
+
   bindDeleteTodo(handler) {
     this.todoList.addEventListener('click', event => {
       if (event.target.className === 'delete') {
@@ -797,8 +837,10 @@ class Controller {
     // explicit this binding
     this.model.bindTodoListChanged(this.onTodoListChanged)
     this.model.bindProjectListChanged(this.onProjectListChanged)
+    this.model.bindCurrentProjectChanged(this.onCurrentProjectChanged)
     this.view.bindAddTodo(this.handleAddTodo)
     this.view.bindAddProjectName(this.handleAddProjectName)
+    this.view.bindUpdateCurrentProject(this.handleUpdateCurrentProject)
     this.view.bindEditTitle(this.handleEditTitle)
     this.view.bindDeleteTodo(this.handleDeleteTodo)
     this.view.bindToggleTodo(this.handleToggleTodo)
@@ -808,6 +850,10 @@ class Controller {
 
     // display initial projects
     this.onProjectListChanged(this.model.projects)
+
+    // display initial current project in navbar
+    this.onCurrentProjectChanged(this.model.currentProject)
+    console.log(this.model.currentProject)
   }
   
   onTodoListChanged = (todos) => {
@@ -818,12 +864,20 @@ class Controller {
     this.view.displayProjects(projects)
   }
 
+  onCurrentProjectChanged = (currentProject) => {
+    this.view.displayCurrentProjectInNav(currentProject)
+  }
+
   handleAddTodo = (taskTitle, taskDesc, taskDate, taskPriority, optionalNotes, taskProject) => {
     this.model.addTodo(taskTitle, taskDesc, taskDate, taskPriority, optionalNotes, taskProject)
   }
 
   handleAddProjectName = (projectName) => {
     this.model.addProjectName(projectName)
+  }
+
+  handleUpdateCurrentProject = (currentProject) => {
+    this.model.updateCurrentProject(currentProject)
   }
 
   handleEditTitle = (id, taskTitle) => {
