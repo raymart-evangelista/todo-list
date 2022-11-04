@@ -717,9 +717,19 @@ class View {
     
   }
 
-  displayCurrentProjectInNav(project) {
+  displayCurrentProject(project) {
     console.log(project.name)
+    // display in navigation header
     this.currentProjectTitle.textContent = project.name
+
+    // in menu dropdown, highlight current project
+    console.log(this.menuDropdownWrapper.children)
+    for (let projectButton of this.menuDropdownWrapper.children) {
+      if (projectButton.textContent === this.currentProjectTitle.textContent) {
+        projectButton.classList.remove('text-gray-700')
+        projectButton.classList.add('text-green-700', 'font-bold')
+      }
+    }
   }
 
   highlightInput = (input) => {
@@ -852,7 +862,7 @@ class Controller {
     
     // display initial current project in navbar
     this.onCurrentProjectChanged(this.model.currentProject)
-    
+
     this.view.bindUpdateCurrentProject(this.handleUpdateCurrentProject)
   }
   
@@ -865,7 +875,7 @@ class Controller {
   }
 
   onCurrentProjectChanged = (currentProject) => {
-    this.view.displayCurrentProjectInNav(currentProject)
+    this.view.displayCurrentProject(currentProject)
   }
 
   handleAddTodo = (taskTitle, taskDesc, taskDate, taskPriority, optionalNotes, taskProject) => {
