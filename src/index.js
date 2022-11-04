@@ -754,22 +754,23 @@ class View {
     })
   }
 
-  bindAddProjectName(handler) {
+  bindAddProjectName(handler, projects) {
     this.projectNameForm.addEventListener('submit', event => {
       event.preventDefault()
 
-      if (this._projectName) {
-        console.log('project name valid')
+      let projectNames = []
+
+      projects.forEach(project => {
+        projectNames.push(project.name)
+      })
+
+      if (this._projectName && !projectNames.includes(this._projectName)) {
         this.unhighlightInput(this.projectName)
         // handle new project name to model from controller
         handler(this._projectName)
         this._resetProjectNameInput()
-        // set new current project
-        // this.currentProjectTitle.textContent = this._projectName
-        // console.log('new current project title set')
-
       } else {
-        console.log('project name is invalid')
+        alert('project name is invalid')
         this.highlightInput(this.projectName)
       }
     })
@@ -787,8 +788,6 @@ class View {
         } else {
           alert('That project is already selected')    
         }
-
-        // this will display the todo list for the current project
       })
     }
   }
@@ -836,7 +835,7 @@ class Controller {
     this.model.bindProjectListChanged(this.onProjectListChanged)
     this.model.bindCurrentProjectChanged(this.onCurrentProjectChanged)
     this.view.bindAddTodo(this.handleAddTodo)
-    this.view.bindAddProjectName(this.handleAddProjectName)
+    this.view.bindAddProjectName(this.handleAddProjectName, this.model.projects)
     this.view.bindEditTitle(this.handleEditTitle)
     this.view.bindDeleteTodo(this.handleDeleteTodo)
     this.view.bindToggleTodo(this.handleToggleTodo)
