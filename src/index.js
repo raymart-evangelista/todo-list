@@ -56,6 +56,7 @@ class Model {
   updateCurrentProject(newCurrentProject) {
     this.currentProject = newCurrentProject
     this._commitCurrentProject(this.currentProject)
+    this._commit(this.todos)
 
     console.log('[model]new current project updated')
   }
@@ -629,14 +630,26 @@ class View {
       this.todoList.removeChild(this.todoList.firstChild)
     }
 
+    let currentTodoList = []
+    if (todos.length > 0) {
+      todos.forEach(todo => {
+        console.log(`[view]this is the current project: ${this._currentProject}`)
+        if (todo.project === this._currentProject) {
+          currentTodoList.push(todo)
+        } else {
+          console.log(`[view]that todo is not part of the current project, it is part of: ${todo.project}`)
+        }
+      })
+    }
+
     // show default message
-    if (todos.length === 0) {
+    if (currentTodoList.length === 0) {
       const p = this.createElem('p')
       p.textContent = 'Nothing to do! Add a task?'
       this.todoList.append(p)
     } else {
       // create todo item nodes for each todo in state
-      todos.forEach(todo => {
+      currentTodoList.forEach(todo => {
         const li = this.createElem('li')
         li.id = todo.id
 
@@ -866,17 +879,16 @@ class Controller {
     this.view.bindDeleteTodo(this.handleDeleteTodo)
     this.view.bindToggleTodo(this.handleToggleTodo)
     
-    // display initial todos
-    this.onTodoListChanged(this.model.todos)
     
     // display initial projects
     this.onProjectListChanged(this.model.projects)
-
+    
     // set initial current project
     // display initial current project in navbar
     this.onCurrentProjectChanged(this.model.currentProject)
-
-    // this.view.bindUpdateCurrentProject(this.handleUpdateCurrentProject)
+    
+    // display initial todos
+    this.onTodoListChanged(this.model.todos)
   }
   
   onTodoListChanged = (todos) => {
