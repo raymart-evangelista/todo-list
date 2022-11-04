@@ -221,6 +221,8 @@ class View {
     this.submitBtn.textContent = 'Submit'
 
     this.todoList = this.createElem('ul', 'todo-list')
+    this.todoListWrapper = this.createElem('div')
+    this.todoListWrapper.append(this.todoList)
 
     // task title
     this.taskTitle = this.createElem('input')
@@ -414,7 +416,7 @@ class View {
 
     // append
     this.app.append(this.navbar)
-    this.app.append(this.todoList)
+    this.app.append(this.todoListWrapper)
     this.form.append(this.radioGroupContainer, this.projectOptionsContainer)
     this.form.append(this.taskTitleContainer, this.taskDescContainer, this.taskDateContainer, this.optionalNotesContainer, this.submitBtn)
     this.overlayCard.append(this.title, this.form)
