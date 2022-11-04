@@ -572,12 +572,7 @@ class View {
           this.projectNameForm.classList.add('opacity-100')
         }, 10);
       } else {
-        this.projectNameForm.classList.remove('opacity-100')
-        this.projectNameForm.classList.add('opacity-0')
-        setTimeout(() => {
-          this.projectNameForm.classList.add('invisible')
-          this.projectNameForm.classList.add('hidden')
-        }, 500);
+        this._closeProjectNameForm()
       }
     })    
   }
@@ -597,6 +592,15 @@ class View {
 
       this.menuOverlay.classList.add('invisible', 'hidden')
 
+      this.projectNameForm.classList.add('invisible')
+      this.projectNameForm.classList.add('hidden')
+    }, 500);
+  }
+
+  _closeProjectNameForm() {
+    this.projectNameForm.classList.remove('opacity-100')
+    this.projectNameForm.classList.add('opacity-0')
+    setTimeout(() => {
       this.projectNameForm.classList.add('invisible')
       this.projectNameForm.classList.add('hidden')
     }, 500);
@@ -775,9 +779,11 @@ class View {
         // handle new project name to model from controller
         handler(this._projectName)
         this._resetProjectNameInput()
+        this._closeProjectNameForm()
+        // close dropdown menu
       } else {
-        alert('project name is invalid')
         this.highlightInput(this.projectName)
+        alert('project name is invalid')
       }
     })
   }
