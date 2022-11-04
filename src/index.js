@@ -57,7 +57,7 @@ class Model {
     this.currentProject = newCurrentProject
     this._commitCurrentProject(this.currentProject)
 
-    console.log('new current project updated')
+    console.log('[model]new current project updated')
   }
 
   addTodo(taskTitle, taskDesc, taskDate, priorityValue, optionalNotes, taskProject) {
@@ -74,7 +74,7 @@ class Model {
     this.todos.push(todo)
     this._commit(this.todos)
 
-    console.log("todo added to list")
+    console.log("[model]todo added to list")
   }
 
   addProjectName(projectName) {
@@ -85,7 +85,7 @@ class Model {
     this.projects.push(project)
     this._commitProjectName(this.projects)
 
-    console.log('project name added to projects')
+    console.log('[model]project name added to projects')
   }
 
   editTodoTitle(id, updatedTitle) {
@@ -538,23 +538,7 @@ class View {
           this.menuOverlay.classList.add('opacity-90')
         }, 10);
       } else {
-        this.menuDropdown.classList.remove('opacity-100')
-        this.menuDropdown.classList.add('opacity-0')
-
-        this.menuOverlay.classList.remove('opacity-90')
-        this.menuOverlay.classList.add('opacity-0')
-
-        this.projectNameForm.classList.remove('opacity-100')
-        this.projectNameForm.classList.add('opacity-0')
-        setTimeout(() => {
-          this.menuDropdown.classList.add('invisible')
-          this.menuDropdown.classList.add('hidden')
-
-          this.menuOverlay.classList.add('invisible', 'hidden')
-
-          this.projectNameForm.classList.add('invisible')
-          this.projectNameForm.classList.add('hidden')
-        }, 500);
+        this._closeMenuOverlay()
       }
 
     })
@@ -596,6 +580,26 @@ class View {
         }, 500);
       }
     })    
+  }
+
+  _closeMenuOverlay() {
+    this.menuDropdown.classList.remove('opacity-100')
+    this.menuDropdown.classList.add('opacity-0')
+
+    this.menuOverlay.classList.remove('opacity-90')
+    this.menuOverlay.classList.add('opacity-0')
+
+    this.projectNameForm.classList.remove('opacity-100')
+    this.projectNameForm.classList.add('opacity-0')
+    setTimeout(() => {
+      this.menuDropdown.classList.add('invisible')
+      this.menuDropdown.classList.add('hidden')
+
+      this.menuOverlay.classList.add('invisible', 'hidden')
+
+      this.projectNameForm.classList.add('invisible')
+      this.projectNameForm.classList.add('hidden')
+    }, 500);
   }
 
   createElem(tag, className) {
@@ -749,7 +753,7 @@ class View {
       }
 
       if (this._priorityGroupChecked && this._taskTitle && this._taskDesc && this._taskDate) {
-        console.log('all form input is valid')
+        console.log('[view]all form input is valid')
         handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
         this._resetInput()
       }
@@ -790,6 +794,8 @@ class View {
         } else {
           alert('That project is already selected')    
         }
+        console.log('[view]close the window')
+        this._closeMenuOverlay()
       })
     }
   }
