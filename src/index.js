@@ -4,6 +4,7 @@ import moment from 'moment'
 import logo from './icons/check-square.svg'
 import menu from './icons/menu.svg'
 import down from './icons/chevron-down.svg'
+import deleteIcon from './icons/delete.svg'
 
 // home button
 
@@ -781,6 +782,41 @@ class View {
 
       if (this._priorityGroupChecked && this._taskTitle && this._taskDesc && this._taskDate) {
         console.log('[view]all form input is valid')
+        handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
+        handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
+        handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
+        handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
+        handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
+        handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
+        handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
+        handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
+        handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
+        handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
+        handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
+        handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
+        handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
+        handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
+        handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
+        handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
+        handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
+        handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
+        handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
+        handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
+        handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
+        handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
+        handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
+        handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
+        handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
+        handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
+        handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
+        handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
+        handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
+        handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
+        handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
+        handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
+        handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
+        handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
+        handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
         handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
         this._resetInput()
         // close form window
