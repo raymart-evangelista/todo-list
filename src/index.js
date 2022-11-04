@@ -466,12 +466,7 @@ class View {
   }
 
   get _currentProject() {
-    console.log(`this.currentProjectTitle ${this.currentProjectTitle.value}`)
-    if (this.currentProjectTitle.value) {
-      return this.currentProjectTitle.value
-    } else {
-      return 'default project'
-    }
+    return this.currentProjectTitle.textContent
   }
 
   _resetPriorityGroup() {
@@ -708,13 +703,13 @@ class View {
       this.menuDropdownWrapper.append(this.projectDropdownName)
     })
 
-    for (let projectButton of this.menuDropdownWrapper.children) {
-      projectButton.addEventListener('click', event => {
+    // for (let projectButton of this.menuDropdownWrapper.children) {
+    //   projectButton.addEventListener('click', event => {
 
-        console.log(projectButton.textContent)
-        // this will display the todo list for the current project
-      })
-    }
+    //     console.log(projectButton.textContent)
+    //     // this will display the todo list for the current project
+    //   })
+    // }
     // console.log(projectDropdownButtons.children.length)
     // for(let child of projectDropdownButtons.children) {
     //   console.log(child)
@@ -792,7 +787,13 @@ class View {
   }
 
   bindUpdateCurrentProject(handler) {
-    
+    for (let projectButton of this.menuDropdownWrapper.children) {
+      projectButton.addEventListener('click', event => {
+
+        console.log(projectButton.textContent)
+        // this will display the todo list for the current project
+      })
+    }
   }
 
   bindDeleteTodo(handler) {
@@ -839,19 +840,20 @@ class Controller {
     this.model.bindCurrentProjectChanged(this.onCurrentProjectChanged)
     this.view.bindAddTodo(this.handleAddTodo)
     this.view.bindAddProjectName(this.handleAddProjectName)
-    this.view.bindUpdateCurrentProject(this.handleUpdateCurrentProject)
     this.view.bindEditTitle(this.handleEditTitle)
     this.view.bindDeleteTodo(this.handleDeleteTodo)
     this.view.bindToggleTodo(this.handleToggleTodo)
-
+    
     // display initial todos
     this.onTodoListChanged(this.model.todos)
-
+    
     // display initial projects
     this.onProjectListChanged(this.model.projects)
-
+    
     // display initial current project in navbar
     this.onCurrentProjectChanged(this.model.currentProject)
+    
+    this.view.bindUpdateCurrentProject(this.handleUpdateCurrentProject)
   }
   
   onTodoListChanged = (todos) => {
