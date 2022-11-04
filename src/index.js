@@ -356,7 +356,7 @@ class View {
     // project menu dropdown
     this.menuDropdown = this.createElem('div', 'transition-opacity duration-150 ease-in-out opacity-0 hidden invisible absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none divide-y divide-gray-100')
     this.menuDropdown.id = 'menu-dropdown'
-    this.menuDropdownWrapper = this.createElem('div', 'py-1 overflow-y-auto h-1/3')
+    this.menuDropdownWrapper = this.createElem('div', 'py-1 overflow-y-auto')
     this.menuDropdownWrapper.id = 'project-buttons'
 
     this.menuDropdown.append(this.menuDropdownWrapper)
@@ -676,7 +676,7 @@ class View {
     while (this.menuDropdownWrapper.firstChild) {
       this.menuDropdownWrapper.removeChild(this.menuDropdownWrapper.firstChild)
     }
-
+    console.log(projects.length)
     projects.forEach(project => {
       const li = this.createElem('li')
       li.id = project.id
@@ -699,6 +699,12 @@ class View {
       this.projectDropdownName.textContent = project.name
       this.menuDropdownWrapper.append(this.projectDropdownName)
     })
+
+    if (projects.length > 5) {
+      this.menuDropdownWrapper.classList.add('h-48')
+    } else {
+      this.menuDropdownWrapper.classList.remove('h-48')
+    }
   }
 
   displayCurrentProject(project) {
