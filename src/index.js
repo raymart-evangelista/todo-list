@@ -24,7 +24,6 @@ class Model {
     this.projects = JSON.parse(localStorage.getItem('projects')) || [{id: 1, name: 'default project'}]
     // this.currentProject = JSON.parse(localStorage.getItem('currentProject')) || [{id: 1, current: this.projects[0]}]
     this.currentProject = JSON.parse(localStorage.getItem('currentProject')) || this.projects[0]
-    console.log(this.currentProject)
   }
 
   bindTodoListChanged(callback) {
@@ -417,7 +416,7 @@ class View {
     this.form.append(this.taskTitleContainer, this.taskDescContainer, this.taskDateContainer, this.optionalNotesContainer, this.submitBtn)
     this.overlayCard.append(this.title, this.form)
 
-    this._currentProject
+    // this._currentProject
     this._temporaryTitle = ''
     this._initLocalListeners()
   }
@@ -853,7 +852,6 @@ class Controller {
 
     // display initial current project in navbar
     this.onCurrentProjectChanged(this.model.currentProject)
-    console.log(this.model.currentProject)
   }
   
   onTodoListChanged = (todos) => {
