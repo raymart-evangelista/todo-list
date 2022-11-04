@@ -511,17 +511,7 @@ class View {
     })
 
     this.overlay.addEventListener('click', event => {
-      this.overlay.classList.remove('opacity-90')
-      this.overlay.classList.add('opacity-0')
-      this.overlayCard.classList.remove('opacity-100')
-      this.overlayCard.classList.add('opacity-0')
-      setTimeout(() => {
-        this.overlay.classList.add('invisible')
-        this.overlayCard.classList.add('invisible')
-        this.overlay.classList.add('hidden')
-        this.overlayCard.classList.add('hidden')
-        this.menuWrapper.classList.add('relative')
-      }, 500);
+      this._closeFormOverlay()
     })
 
     this.menuBtn.addEventListener('click', event => {
@@ -603,6 +593,20 @@ class View {
     setTimeout(() => {
       this.projectNameForm.classList.add('invisible')
       this.projectNameForm.classList.add('hidden')
+    }, 500);
+  }
+
+  _closeFormOverlay() {
+    this.overlay.classList.remove('opacity-90')
+    this.overlay.classList.add('opacity-0')
+    this.overlayCard.classList.remove('opacity-100')
+    this.overlayCard.classList.add('opacity-0')
+    setTimeout(() => {
+      this.overlay.classList.add('invisible')
+      this.overlayCard.classList.add('invisible')
+      this.overlay.classList.add('hidden')
+      this.overlayCard.classList.add('hidden')
+      this.menuWrapper.classList.add('relative')
     }, 500);
   }
 
@@ -766,6 +770,8 @@ class View {
         console.log('[view]all form input is valid')
         handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
         this._resetInput()
+        // close form window
+        this._closeFormOverlay()
       }
     })
   }
