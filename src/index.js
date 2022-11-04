@@ -220,7 +220,7 @@ class View {
     this.submitBtn = this.createElem('button', 'mt-4 w-fit justify-self-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800')
     this.submitBtn.textContent = 'Submit'
 
-    this.todoList = this.createElem('ul', 'todo-list')
+    this.todoList = this.createElem('ul', 'todo-list grid grid-cols-1 gap-4')
     this.todoListWrapper = this.createElem('div')
     this.todoListWrapper.append(this.todoList)
 
@@ -437,12 +437,15 @@ class View {
   }
 
   get _priorityValue() {
+    let value
     const priorityValues = document.getElementsByName('priority')
     priorityValues.forEach((priority) => {
       if (priority.checked) {
-        return priority.value
+        value = priority.value
       }
     })
+
+    return value
   }
 
   get _taskTitle() {
@@ -634,6 +637,9 @@ class View {
     }
 
     let currentTodoList = []
+    let highPrioirtyList = []
+    let normalPrioirtyList = []
+    let lowPrioirtyList = []
     if (todos.length > 0) {
       todos.forEach(todo => {
         console.log(`[view]this is the current project: ${this._currentProject}`)
@@ -642,6 +648,10 @@ class View {
         } else {
           console.log(`[view]that todo is not part of the current project, it is part of: ${todo.project}`)
         }
+      })
+
+      currentTodoList.forEach(todo => {
+        // if (todo.prioirty)
       })
     }
 
@@ -784,42 +794,43 @@ class View {
 
       if (this._priorityGroupChecked && this._taskTitle && this._taskDesc && this._taskDate) {
         console.log('[view]all form input is valid')
+        console.log(`[view] this is the value of priorityValue: ${this._priorityValue}`)
         handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
-        handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
-        handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
-        handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
-        handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
-        handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
-        handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
-        handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
-        handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
-        handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
-        handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
-        handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
-        handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
-        handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
-        handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
-        handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
-        handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
-        handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
-        handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
-        handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
-        handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
-        handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
-        handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
-        handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
-        handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
-        handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
-        handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
-        handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
-        handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
-        handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
-        handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
-        handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
-        handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
-        handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
-        handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
-        handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
+        // handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
+        // handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
+        // handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
+        // handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
+        // handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
+        // handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
+        // handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
+        // handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
+        // handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
+        // handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
+        // handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
+        // handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
+        // handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
+        // handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
+        // handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
+        // handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
+        // handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
+        // handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
+        // handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
+        // handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
+        // handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
+        // handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
+        // handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
+        // handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
+        // handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
+        // handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
+        // handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
+        // handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
+        // handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
+        // handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
+        // handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
+        // handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
+        // handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
+        // handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
+        // handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
         this._resetInput()
         // close form window
         this._closeFormOverlay()
