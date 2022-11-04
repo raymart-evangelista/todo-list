@@ -24,6 +24,7 @@ class Model {
     this.projects = JSON.parse(localStorage.getItem('projects')) || [{id: 1, name: 'default project'}]
     // this.currentProject = JSON.parse(localStorage.getItem('currentProject')) || [{id: 1, current: this.projects[0]}]
     this.currentProject = JSON.parse(localStorage.getItem('currentProject')) || this.projects[0]
+    console.log(`inside model constructor, this is currentProject ${this.currentProject.name}`)
   }
 
   bindTodoListChanged(callback) {
@@ -55,9 +56,9 @@ class Model {
 
   updateCurrentProject(newCurrentProject) {
     this.currentProject = newCurrentProject
+    this._commitCurrentProject(this.currentProject)
 
     console.log('new current project updated')
-    this._commitCurrentProject(this.currentProject)
   }
 
   addTodo(taskTitle, taskDesc, taskDate, priorityValue, optionalNotes, taskProject) {
@@ -416,7 +417,6 @@ class View {
     this.form.append(this.taskTitleContainer, this.taskDescContainer, this.taskDateContainer, this.optionalNotesContainer, this.submitBtn)
     this.overlayCard.append(this.title, this.form)
 
-    // this._currentProject
     this._temporaryTitle = ''
     this._initLocalListeners()
   }
@@ -698,9 +698,18 @@ class View {
       this.projectOptions.append(this.projectOption)
 
       // each project will be posted in the projects dropdown as well
-      this.projectDropdownName = this.createElem('button', 'w-full text-gray-700 block px-4 py-2 text-sm')
+      console.log(`init displayProjectss ${this._currentProject}`
+      )
+      if (project.name === this._currentProject) {
+        this.projectDropdownName = this.createElem('button', 'w-full text-green-700 font-bold block px-4 py-2 text-sm')  
+      } else {
+        this.projectDropdownName = this.createElem('button', 'w-full text-gray-700 block px-4 py-2 text-sm')
+
+      }
       this.projectDropdownName.textContent = project.name
       this.menuDropdownWrapper.append(this.projectDropdownName)
+
+      // this.displayCurrentProject(project)
     })
 
     // for (let projectButton of this.menuDropdownWrapper.children) {
@@ -780,15 +789,20 @@ class View {
     })
   }
 
-  bindAddProjectName(handler) {
+  bindAddProjectName(projectNameHandler, currentProjectHandler) {
     this.projectNameForm.addEventListener('submit', event => {
       event.preventDefault()
 
       if (this._projectName) {
         console.log('project name valid')
         this.unhighlightInput(this.projectName)
-        handler(this._projectName)
+        // handle new project name to model from controller
+        projectNameHandler(this._projectName)
         this._resetProjectNameInput()
+        // set new current project
+        // this.currentProjectTitle.textContent = this._projectName
+        // console.log('new current project title set')
+
       } else {
         console.log('project name is invalid')
         this.highlightInput(this.projectName)
@@ -800,7 +814,19 @@ class View {
     for (let projectButton of this.menuDropdownWrapper.children) {
       projectButton.addEventListener('click', event => {
 
-        console.log(projectButton.textContent)
+        // console.log(projectButton.textContent)
+
+        // console.log(event.target.textContent === this._currentProject)
+
+        if (event.target.textContent !== this._currentProject) {
+          // update the current project in model through controller
+          handler(this._currentProject)
+          // update nav text, menu dropdown text, and the todos to display
+          console.log('not the same element, current project changed')
+        } else {
+          console.log('same element')
+        }
+
         // this will display the todo list for the current project
       })
     }
@@ -859,7 +885,8 @@ class Controller {
     
     // display initial projects
     this.onProjectListChanged(this.model.projects)
-    
+
+    // set initial current project
     // display initial current project in navbar
     this.onCurrentProjectChanged(this.model.currentProject)
 
