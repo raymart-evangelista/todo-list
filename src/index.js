@@ -643,6 +643,7 @@ class View {
     
     if (todos.length > 0) {
       todos.forEach(todo => {
+        // filter todos such that it's only the todos for the current project
         console.log(`[view]this is the current project: ${this._currentProject}`)
         if (todo.project === this._currentProject) {
           currentTodoList.push(todo)
@@ -651,6 +652,7 @@ class View {
         }
       })
 
+      // filter the todos from the current project based off their priority
       currentTodoList.forEach(todo => {
         if (todo.priority === 'Low') {
           lowPriorityList.push(todo)
@@ -672,7 +674,10 @@ class View {
       p.textContent = 'Nothing to do! Add a task?'
       this.todoList.append(p)
     } else {
+
       // create todo item nodes for each todo in state
+
+      // normal sort
       currentTodoList.forEach(todo => {
         const li = this.createElem('li')
         li.id = todo.id
@@ -703,6 +708,91 @@ class View {
 
         // append nodes to the todo list
         this.todoList.append(li)
+      })
+
+      // sort based off priority
+      highPriorityList.forEach(todo => {
+        // const todoCard = this.createElem('div', 'p-4 w-full text-center bg-white rounded-lg border shadow-md sm:p-8 dark:bg-gray-800 dark:border-gray-700')
+        const todoCard = this.createElem('div', 'p-4 w-full bg-white rounded-lg border border-red-400 shadow-md sm:p-8 dark:bg-gray-800 dark:border-red-700')
+        const li = this.createElem('li')
+        li.id = todo.id
+
+        const checkbox = this.createElem('input')
+        checkbox.type = 'checkbox'
+        checkbox.checked = todo.complete
+
+        const todoTitle = this.createElem('h1', 'dark:text-white')
+        if (todo.complete) {
+          const strike = this.createElem('s')
+          strike.textContent = todo.title
+          todoTitle.append(strike)
+        } else {
+          todoTitle.textContent = todo.title
+        }
+
+        li.append(checkbox, todoTitle)
+        todoCard.append(li)
+        this.todoList.append(todoCard)
+
+
+      })
+
+      normalPriorityList.forEach(todo => {
+        // const todoCard = this.createElem('div', 'p-4 w-full text-center bg-white rounded-lg border shadow-md sm:p-8 dark:bg-gray-800 dark:border-gray-700')
+        const todoCard = this.createElem('div', 'p-4 w-full bg-white rounded-lg border border-orange-400 shadow-md sm:p-8 dark:bg-gray-800 dark:border-orange-700')
+        const li = this.createElem('li')
+        li.id = todo.id
+
+        const checkbox = this.createElem('input')
+        checkbox.type = 'checkbox'
+        checkbox.checked = todo.complete
+
+        const todoTitle = this.createElem('h1', 'dark:text-white')
+        if (todo.complete) {
+          const strike = this.createElem('s')
+          strike.textContent = todo.title
+          todoTitle.append(strike)
+        } else {
+          todoTitle.textContent = todo.title
+        }
+
+        li.append(checkbox, todoTitle)
+        todoCard.append(li)
+        this.todoList.append(todoCard)
+
+
+      })
+
+      lowPriorityList.forEach(todo => {
+        // contents for title portion of card
+        // const todoCard = this.createElem('div', 'p-4 w-full text-center bg-white rounded-lg border shadow-md sm:p-8 dark:bg-gray-800 dark:border-gray-700')
+        const todoCard = this.createElem('div', 'flex flex-col p-4 w-full bg-white rounded-lg border border-blue-400 shadow-md sm:p-8 dark:bg-gray-800 dark:border-blue-700')
+        const titleContents = this.createElem('div', 'flex gap-2')
+        titleContents.id = todo.id
+
+        const checkbox = this.createElem('input')
+        checkbox.type = 'checkbox'
+        checkbox.checked = todo.complete
+
+        const todoTitle = this.createElem('h1', 'dark:text-white')
+        if (todo.complete) {
+          const strike = this.createElem('s')
+          strike.textContent = todo.title
+          todoTitle.append(strike)
+        } else {
+          todoTitle.textContent = todo.title
+        }
+
+        // contents for date portion of card
+        
+        
+        // contents for description portion of card
+
+        titleContents.append(checkbox, todoTitle)
+        todoCard.append(titleContents)
+        this.todoList.append(todoCard)
+
+
       })
     }
   }
