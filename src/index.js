@@ -197,7 +197,7 @@ class Model {
 class View {
   constructor() {
     this.app = this.getElem('#content')
-    this.app.classList = 'flex flex-col items-center h-screen'
+    this.app.classList = 'flex flex-col items-center h-screen dark:bg-slate-900'
 
     this.newTaskBtn = this.getElem('#newTask')
 
@@ -637,9 +637,9 @@ class View {
     }
 
     let currentTodoList = []
-    let highPrioirtyList = []
-    let normalPrioirtyList = []
-    let lowPrioirtyList = []
+    let highPriorityList = []
+    let normalPriorityList = []
+    let lowPriorityList = []
     if (todos.length > 0) {
       todos.forEach(todo => {
         console.log(`[view]this is the current project: ${this._currentProject}`)
@@ -651,13 +651,19 @@ class View {
       })
 
       currentTodoList.forEach(todo => {
-        // if (todo.prioirty)
+        if (todo.priority === 'Low') {
+          lowPriorityList.push(todo)
+        } else if (todo.priority === 'Normal') {
+          normalPriorityList.push(todo)
+        } else if (todo.priority === 'High') {
+          highPriorityList.push(todo)
+        }
       })
     }
 
     // show default message
     if (currentTodoList.length === 0) {
-      const p = this.createElem('p')
+      const p = this.createElem('p', 'dark:text-white')
       p.textContent = 'Nothing to do! Add a task?'
       this.todoList.append(p)
     } else {
@@ -672,7 +678,7 @@ class View {
         checkbox.checked = todo.complete
 
         // todo item text will be in a contenteditable span
-        const span = this.createElem('span')
+        const span = this.createElem('span', 'dark:text-white')
         span.contentEditable = true
         span.classList.add('editable-title')
 
@@ -686,7 +692,7 @@ class View {
         }
 
         // todos have a delete button
-        const deleteBtn = this.createElem('button', 'delete')
+        const deleteBtn = this.createElem('button', 'delete dark:text-white')
         deleteBtn.textContent = 'Delete'
         li.append(checkbox, span, deleteBtn)
 
