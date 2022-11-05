@@ -640,6 +640,7 @@ class View {
     let highPriorityList = []
     let normalPriorityList = []
     let lowPriorityList = []
+    
     if (todos.length > 0) {
       todos.forEach(todo => {
         console.log(`[view]this is the current project: ${this._currentProject}`)
@@ -888,7 +889,7 @@ class View {
 
   bindDeleteTodo(handler) {
     this.todoList.addEventListener('click', event => {
-      if (event.target.className === 'delete') {
+      if (event.target.classList.contains('delete')) {
         const id = parseInt(event.target.parentElement.id)
 
         handler(id)
