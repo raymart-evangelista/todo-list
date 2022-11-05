@@ -660,6 +660,10 @@ class View {
           highPriorityList.push(todo)
         }
       })
+
+      console.log(`lowPriorityList: ${lowPriorityList.length}`)
+      console.log(`normalPriorityList: ${normalPriorityList.length}`)
+      console.log(`highPriorityList: ${highPriorityList.length}`)
     }
 
     // show default message
