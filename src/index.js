@@ -340,7 +340,7 @@ class View {
     this.logoContainer.append(this.logoImg, this.currentProjectTitle)
 
     // this.menuBtn = this.createElem('button', 'inline-flex justify-center items-center text-gray-400 rounded-lg hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-300 dark:text-gray-400 dark:hover:text-white dark:focus:ring-gray-500')
-    this.menuBtn = this.createElem('button', 'inline-flex justify-center rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-100')
+    this.menuBtn = this.createElem('button', 'inline-flex justify-center rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-100 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:focus:ring-offset-gray-900')
     this.menuWrapper = this.createElem('div', 'relative inline-block text-left')
     this.menuWrapper2 = this.createElem('div')
 
