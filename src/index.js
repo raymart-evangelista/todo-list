@@ -1,5 +1,5 @@
 import './style.css'
-import { format, compareAsc } from 'date-fns'
+import { format, parseISO, formatDistanceToNow, formatRelative, subDays, compareAsc, isToday, isYesterday, isTomorrow } from 'date-fns'
 import moment from 'moment'
 import logo from './icons/check-square.svg'
 import menu from './icons/menu.svg'
@@ -771,12 +771,12 @@ class View {
         const topPortionContents = this.createElem('div', 'flex justify-between items-center')
         todoCard.id = todo.id
 
-
-
-
         const checkbox = this.createElem('input')
         checkbox.type = 'checkbox'
         checkbox.checked = todo.complete
+
+        const deleteImg = this.createElem('img', 'h-6 sm:h-10')
+        deleteImg.src = deleteIcon
 
         const todoTitle = this.createElem('h1', 'dark:text-white')
         if (todo.complete) {
@@ -788,17 +788,40 @@ class View {
         }
 
         // contents for date portion of card
+        const dateContents = this.createElem('div', '')
+        const date = this.createElem('h2', 'text-xs dark:text-white')
 
+        // format date
+        const formattedDate = new Date(format(parseISO(todo.date), 'yyyy/MM/dd'))
+        const now = new Date()
+        // date.textContent = this.formatDate(formattedDate)
+        date.textContent = format(formattedDate, 'eeee')
+        
+        dateContents.append(date)
         
         // contents for description portion of card
         
-        todoCard.append(topPortionContents)
+        todoCard.append(topPortionContents, dateContents)
         titleContents.append(checkbox, todoTitle)
-        topPortionContents.append(titleContents)
+        topPortionContents.append(titleContents, deleteImg)
         this.todoList.append(todoCard)
 
 
       })
+    }
+  }
+
+  formatDate(date) {
+    if (isToday(date)) {
+      return `Today`
+    }
+
+    if (isYesterday(date)) {
+      return `Yesterday`
+    }
+
+    if (isTomorrow(date)) {
+      return `Tomorrow`
     }
   }
 
