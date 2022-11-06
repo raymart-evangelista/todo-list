@@ -1,5 +1,5 @@
 import './style.css'
-import { format, compareAsc } from 'date-fns'
+import { format, parseISO, formatDistanceToNow, formatRelative, subDays, compareAsc, isToday, isYesterday, isTomorrow, isBefore, isAfter, addDays } from 'date-fns'
 import moment from 'moment'
 import logo from './icons/check-square.svg'
 import menu from './icons/menu.svg'
@@ -643,6 +643,7 @@ class View {
     
     if (todos.length > 0) {
       todos.forEach(todo => {
+        // filter todos such that it's only the todos for the current project
         console.log(`[view]this is the current project: ${this._currentProject}`)
         if (todo.project === this._currentProject) {
           currentTodoList.push(todo)
@@ -651,6 +652,7 @@ class View {
         }
       })
 
+      // filter the todos from the current project based off their priority
       currentTodoList.forEach(todo => {
         if (todo.priority === 'Low') {
           lowPriorityList.push(todo)
@@ -660,6 +662,10 @@ class View {
           highPriorityList.push(todo)
         }
       })
+
+      console.log(`lowPriorityList: ${lowPriorityList.length}`)
+      console.log(`normalPriorityList: ${normalPriorityList.length}`)
+      console.log(`highPriorityList: ${highPriorityList.length}`)
     }
 
     // show default message
@@ -668,7 +674,10 @@ class View {
       p.textContent = 'Nothing to do! Add a task?'
       this.todoList.append(p)
     } else {
+
       // create todo item nodes for each todo in state
+
+      // normal sort
       currentTodoList.forEach(todo => {
         const li = this.createElem('li')
         li.id = todo.id
@@ -700,7 +709,131 @@ class View {
         // append nodes to the todo list
         this.todoList.append(li)
       })
+
+      // sort based off priority
+      highPriorityList.forEach(todo => {
+        // const todoCard = this.createElem('div', 'p-4 w-full text-center bg-white rounded-lg border shadow-md sm:p-8 dark:bg-gray-800 dark:border-gray-700')
+        const todoCard = this.createElem('div', 'p-4 w-full bg-white rounded-lg border border-red-400 shadow-md sm:p-8 dark:bg-gray-800 dark:border-red-700')
+        const li = this.createElem('li')
+        li.id = todo.id
+
+        const checkbox = this.createElem('input')
+        checkbox.type = 'checkbox'
+        checkbox.checked = todo.complete
+
+        const todoTitle = this.createElem('h1', 'dark:text-white')
+        if (todo.complete) {
+          const strike = this.createElem('s')
+          strike.textContent = todo.title
+          todoTitle.append(strike)
+        } else {
+          todoTitle.textContent = todo.title
+        }
+
+        li.append(checkbox, todoTitle)
+        todoCard.append(li)
+        this.todoList.append(todoCard)
+
+
+      })
+
+      normalPriorityList.forEach(todo => {
+        // const todoCard = this.createElem('div', 'p-4 w-full text-center bg-white rounded-lg border shadow-md sm:p-8 dark:bg-gray-800 dark:border-gray-700')
+        const todoCard = this.createElem('div', 'p-4 w-full bg-white rounded-lg border border-orange-400 shadow-md sm:p-8 dark:bg-gray-800 dark:border-orange-700')
+        const li = this.createElem('li')
+        li.id = todo.id
+
+        const checkbox = this.createElem('input')
+        checkbox.type = 'checkbox'
+        checkbox.checked = todo.complete
+
+        const todoTitle = this.createElem('h1', 'dark:text-white')
+        if (todo.complete) {
+          const strike = this.createElem('s')
+          strike.textContent = todo.title
+          todoTitle.append(strike)
+        } else {
+          todoTitle.textContent = todo.title
+        }
+
+        li.append(checkbox, todoTitle)
+        todoCard.append(li)
+        this.todoList.append(todoCard)
+
+
+      })
+
+      lowPriorityList.forEach(todo => {
+        // contents for title portion of card
+        // const todoCard = this.createElem('div', 'p-4 w-full text-center bg-white rounded-lg border shadow-md sm:p-8 dark:bg-gray-800 dark:border-gray-700')
+        const todoCard = this.createElem('div', 'flex flex-col p-4 w-full bg-white rounded-lg border border-blue-400 shadow-md sm:p-8 dark:bg-gray-800 dark:border-blue-700')
+        const titleContents = this.createElem('div', 'flex gap-2')
+        const topPortionContents = this.createElem('div', 'flex justify-between items-center')
+        todoCard.id = todo.id
+
+        const checkbox = this.createElem('input')
+        checkbox.type = 'checkbox'
+        checkbox.checked = todo.complete
+
+        const deleteImg = this.createElem('img', 'h-6 sm:h-10')
+        deleteImg.src = deleteIcon
+
+        const todoTitle = this.createElem('h1', 'dark:text-white')
+        if (todo.complete) {
+          const strike = this.createElem('s')
+          strike.textContent = todo.title
+          todoTitle.append(strike)
+        } else {
+          todoTitle.textContent = todo.title
+        }
+
+        // contents for date portion of card
+        const dateContents = this.createElem('div', '')
+        const date = this.createElem('h2', 'text-xs dark:text-white')
+
+        // format date
+        const formattedDate = new Date(format(parseISO(todo.date), 'yyyy/MM/dd'))
+        const now = new Date()
+        // date.textContent = this.formatDate(formattedDate)
+        date.textContent = this.formatDate(formattedDate)
+        
+        dateContents.append(date)
+        
+        // contents for description portion of card
+        
+        todoCard.append(topPortionContents, dateContents)
+        titleContents.append(checkbox, todoTitle)
+        topPortionContents.append(titleContents, deleteImg)
+        this.todoList.append(todoCard)
+
+
+      })
     }
+  }
+
+  formatDate(date) {
+    if (isToday(date)) {
+      return `Today`
+    }
+
+    if (isYesterday(date)) {
+      return `Yesterday`
+    }
+
+    if (isTomorrow(date)) {
+      return `Tomorrow`
+    }
+
+    if (isBefore(date, new Date())) {
+      return formatDistanceToNow((date), { addSuffix: true })
+    }
+
+    // if the date is a 8 days from the current date, post the date 'Nov 13'
+    if (isAfter(date, addDays(new Date(), 7) ) ) {
+      return format(date, 'MMM d')
+    }
+
+    return format(date, 'eeee')
   }
 
   displayProjects(projects) {
