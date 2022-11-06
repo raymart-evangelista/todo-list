@@ -768,7 +768,11 @@ class View {
         // const todoCard = this.createElem('div', 'p-4 w-full text-center bg-white rounded-lg border shadow-md sm:p-8 dark:bg-gray-800 dark:border-gray-700')
         const todoCard = this.createElem('div', 'flex flex-col p-4 w-full bg-white rounded-lg border border-blue-400 shadow-md sm:p-8 dark:bg-gray-800 dark:border-blue-700')
         const titleContents = this.createElem('div', 'flex gap-2')
-        titleContents.id = todo.id
+        const topPortionContents = this.createElem('div', 'flex justify-between items-center')
+        todoCard.id = todo.id
+
+
+
 
         const checkbox = this.createElem('input')
         checkbox.type = 'checkbox'
@@ -784,12 +788,13 @@ class View {
         }
 
         // contents for date portion of card
-        
+
         
         // contents for description portion of card
-
+        
+        todoCard.append(topPortionContents)
         titleContents.append(checkbox, todoTitle)
-        todoCard.append(titleContents)
+        topPortionContents.append(titleContents)
         this.todoList.append(todoCard)
 
 
