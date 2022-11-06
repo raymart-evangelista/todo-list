@@ -223,7 +223,8 @@ class View {
     this.submitBtn.textContent = 'Submit'
 
     this.todoList = this.createElem('ul', 'todo-list grid grid-cols-1 gap-4')
-    this.todoListWrapper = this.createElem('div')
+    this.todoListWrapper = this.createElem('div', 'mt-20')
+    this.todoListWrapper.id = 'todo-list-wrapper'
     this.todoListWrapper.append(this.todoList)
 
     // task title
