@@ -222,7 +222,7 @@ class View {
     this.submitBtn = this.createElem('button', 'mt-4 w-fit justify-self-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800')
     this.submitBtn.textContent = 'Submit'
 
-    this.todoList = this.createElem('ul', 'todo-list grid grid-cols-1 gap-4')
+    this.todoList = this.createElem('ul', 'todo-list grid grid-cols-1 gap-4 mb-6')
     this.todoListWrapper = this.createElem('div', 'mt-20')
     this.todoListWrapper.id = 'todo-list-wrapper'
     this.todoListWrapper.append(this.todoList)
