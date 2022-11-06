@@ -1,5 +1,5 @@
 import './style.css'
-import { format, parseISO, formatDistanceToNow, formatRelative, subDays, compareAsc, isToday, isYesterday, isTomorrow } from 'date-fns'
+import { format, parseISO, formatDistanceToNow, formatRelative, subDays, compareAsc, isToday, isYesterday, isTomorrow, isBefore, isAfter, addDays } from 'date-fns'
 import moment from 'moment'
 import logo from './icons/check-square.svg'
 import menu from './icons/menu.svg'
@@ -795,7 +795,7 @@ class View {
         const formattedDate = new Date(format(parseISO(todo.date), 'yyyy/MM/dd'))
         const now = new Date()
         // date.textContent = this.formatDate(formattedDate)
-        date.textContent = format(formattedDate, 'eeee')
+        date.textContent = this.formatDate(formattedDate)
         
         dateContents.append(date)
         
@@ -823,6 +823,17 @@ class View {
     if (isTomorrow(date)) {
       return `Tomorrow`
     }
+
+    if (isBefore(date, new Date())) {
+      return formatDistanceToNow((date), { addSuffix: true })
+    }
+
+    // if the date is a 8 days from the current date, post the date 'Nov 13'
+    if (isAfter(date, addDays(new Date(), 7) ) ) {
+      return format(date, 'MMM d')
+    }
+
+    return format(date, 'eeee')
   }
 
   displayProjects(projects) {
