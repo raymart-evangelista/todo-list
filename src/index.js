@@ -196,8 +196,10 @@ class Model {
 // used for UI logic--such as customer view including UI components such as text boxes, dropdowns
 class View {
   constructor() {
+    this.body = this.getElem('body')
+    this.body.classList.add('dark:bg-slate-900')
     this.app = this.getElem('#content')
-    this.app.classList = 'flex flex-col items-center h-screen dark:bg-slate-900'
+    this.app.classList = 'flex flex-col items-center h-screen'
 
     this.newTaskBtn = this.getElem('#newTask')
 
@@ -327,7 +329,7 @@ class View {
     // })
 
     // navbar 
-    this.navbar = this.createElem('nav', 'w-screen p-3 bg-gray-50 rounded border-gray-200 dark:bg-gray-800 dark:border-gray-700')
+    this.navbar = this.createElem('nav', 'fixed w-screen p-3 bg-gray-50 rounded border-gray-200 dark:bg-gray-800 dark:border-gray-700')
     this.navbarContainer = this.createElem('div', 'flex justify-between items-center')
     this.logoContainer = this.createElem('a', 'flex items-center')
     this.logoImg = this.createElem('img', 'mr-1 h-6 sm:h-10')
