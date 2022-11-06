@@ -210,7 +210,7 @@ class View {
 
     this.overlayCard = this.createElem('div')
     this.overlayCard.id = 'overlayCard'
-    this.overlayCard.classList = 'overflow-y-auto h-4/5 fixed flex flex-col transition-opacity duration-500 ease-in-out opacity-0 invisible bg-white shadow-lg rounded-2xl w-3/4 mt-6 p-6'
+    this.overlayCard.classList = 'mt-20 overflow-y-auto h-4/5 fixed flex flex-col transition-opacity duration-500 ease-in-out opacity-0 invisible bg-white shadow-lg rounded-2xl w-3/4 mt-6 p-6'
     this.app.append(this.overlayCard)
 
     this.title = this.createElem('h1', 'text-2xl text-center mb-6')
@@ -681,137 +681,105 @@ class View {
       // create todo item nodes for each todo in state
 
       // normal sort
-      currentTodoList.forEach(todo => {
-        const li = this.createElem('li')
-        li.id = todo.id
 
-        // each todo item will have a checkbox you can toggle
-        const checkbox = this.createElem('input')
-        checkbox.type = 'checkbox'
-        checkbox.checked = todo.complete
+      // currentTodoList.forEach(todo => {
+      //   const li = this.createElem('li')
+      //   li.id = todo.id
 
-        // todo item text will be in a contenteditable span
-        const span = this.createElem('span', 'dark:text-white')
-        span.contentEditable = true
-        span.classList.add('editable-title')
+      //   // each todo item will have a checkbox you can toggle
+      //   const checkbox = this.createElem('input')
+      //   checkbox.type = 'checkbox'
+      //   checkbox.checked = todo.complete
 
-        // if todo completed, add strikethrough
-        if (todo.complete) {
-          const strike = this.createElem('s')
-          strike.textContent = todo.title
-          span.append(strike)
-        } else {
-          span.textContent = todo.title
-        }
+      //   // todo item text will be in a contenteditable span
+      //   const span = this.createElem('span', 'dark:text-white')
+      //   span.contentEditable = true
+      //   span.classList.add('editable-title')
 
-        // todos have a delete button
-        const deleteBtn = this.createElem('button', 'delete dark:text-white')
-        deleteBtn.textContent = 'Delete'
-        li.append(checkbox, span, deleteBtn)
+      //   // if todo completed, add strikethrough
+      //   if (todo.complete) {
+      //     const strike = this.createElem('s')
+      //     strike.textContent = todo.title
+      //     span.append(strike)
+      //   } else {
+      //     span.textContent = todo.title
+      //   }
 
-        // append nodes to the todo list
-        this.todoList.append(li)
-      })
+      //   // todos have a delete button
+      //   const deleteBtn = this.createElem('button', 'delete dark:text-white')
+      //   deleteBtn.textContent = 'Delete'
+      //   li.append(checkbox, span, deleteBtn)
+
+      //   // append nodes to the todo list
+      //   this.todoList.append(li)
+      // })
 
       // sort based off priority
-      highPriorityList.forEach(todo => {
-        // const todoCard = this.createElem('div', 'p-4 w-full text-center bg-white rounded-lg border shadow-md sm:p-8 dark:bg-gray-800 dark:border-gray-700')
-        const todoCard = this.createElem('div', 'p-4 w-full bg-white rounded-lg border border-red-400 shadow-md sm:p-8 dark:bg-gray-800 dark:border-red-700')
-        const li = this.createElem('li')
-        li.id = todo.id
-
-        const checkbox = this.createElem('input')
-        checkbox.type = 'checkbox'
-        checkbox.checked = todo.complete
-
-        const todoTitle = this.createElem('h1', 'dark:text-white')
-        if (todo.complete) {
-          const strike = this.createElem('s')
-          strike.textContent = todo.title
-          todoTitle.append(strike)
-        } else {
-          todoTitle.textContent = todo.title
-        }
-
-        li.append(checkbox, todoTitle)
-        todoCard.append(li)
-        this.todoList.append(todoCard)
+      this._displayTodoList(highPriorityList)
+      this._displayTodoList(normalPriorityList)
+      this._displayTodoList(lowPriorityList)
 
 
-      })
-
-      normalPriorityList.forEach(todo => {
-        // const todoCard = this.createElem('div', 'p-4 w-full text-center bg-white rounded-lg border shadow-md sm:p-8 dark:bg-gray-800 dark:border-gray-700')
-        const todoCard = this.createElem('div', 'p-4 w-full bg-white rounded-lg border border-orange-400 shadow-md sm:p-8 dark:bg-gray-800 dark:border-orange-700')
-        const li = this.createElem('li')
-        li.id = todo.id
-
-        const checkbox = this.createElem('input')
-        checkbox.type = 'checkbox'
-        checkbox.checked = todo.complete
-
-        const todoTitle = this.createElem('h1', 'dark:text-white')
-        if (todo.complete) {
-          const strike = this.createElem('s')
-          strike.textContent = todo.title
-          todoTitle.append(strike)
-        } else {
-          todoTitle.textContent = todo.title
-        }
-
-        li.append(checkbox, todoTitle)
-        todoCard.append(li)
-        this.todoList.append(todoCard)
-
-
-      })
-
-      lowPriorityList.forEach(todo => {
-        // contents for title portion of card
-        // const todoCard = this.createElem('div', 'p-4 w-full text-center bg-white rounded-lg border shadow-md sm:p-8 dark:bg-gray-800 dark:border-gray-700')
-        const todoCard = this.createElem('div', 'flex flex-col p-4 w-full bg-white rounded-lg border border-blue-400 shadow-md sm:p-8 dark:bg-gray-800 dark:border-blue-700')
-        const titleContents = this.createElem('div', 'flex gap-2')
-        const topPortionContents = this.createElem('div', 'flex justify-between items-center')
-        todoCard.id = todo.id
-
-        const checkbox = this.createElem('input')
-        checkbox.type = 'checkbox'
-        checkbox.checked = todo.complete
-
-        const deleteImg = this.createElem('img', 'h-6 sm:h-10')
-        deleteImg.src = deleteIcon
-
-        const todoTitle = this.createElem('h1', 'dark:text-white')
-        if (todo.complete) {
-          const strike = this.createElem('s')
-          strike.textContent = todo.title
-          todoTitle.append(strike)
-        } else {
-          todoTitle.textContent = todo.title
-        }
-
-        // contents for date portion of card
-        const dateContents = this.createElem('div', '')
-        const date = this.createElem('h2', 'text-xs dark:text-white')
-
-        // format date
-        const formattedDate = new Date(format(parseISO(todo.date), 'yyyy/MM/dd'))
-        const now = new Date()
-        // date.textContent = this.formatDate(formattedDate)
-        date.textContent = this.formatDate(formattedDate)
-        
-        dateContents.append(date)
-        
-        // contents for description portion of card
-        
-        todoCard.append(topPortionContents, dateContents)
-        titleContents.append(checkbox, todoTitle)
-        topPortionContents.append(titleContents, deleteImg)
-        this.todoList.append(todoCard)
-
-
-      })
     }
+  }
+
+  _displayTodoList(list) {
+    list.forEach(todo => {
+      // contents for title portion of card
+      // const todoCard = this.createElem('div', 'p-4 w-full text-center bg-white rounded-lg border shadow-md sm:p-8 dark:bg-gray-800 dark:border-gray-700')
+      let todoCard = this.createElem('div')
+
+      if (todo.priority === 'Low') {
+        todoCard.classList = ('flex flex-col p-4 w-full bg-white rounded-lg border border-blue-400 shadow-md sm:p-8 dark:bg-gray-800 dark:border-blue-700')
+      }
+      if (todo.priority === 'Normal') {
+        todoCard.classList = ('flex flex-col p-4 w-full bg-white rounded-lg border border-orange-400 shadow-md sm:p-8 dark:bg-gray-800 dark:border-orange-700')
+      }
+      if (todo.priority === 'High') {
+        todoCard.classList = ('flex flex-col p-4 w-full bg-white rounded-lg border border-red-400 shadow-md sm:p-8 dark:bg-gray-800 dark:border-red-700')
+      }
+
+      const titleContents = this.createElem('div', 'flex gap-2')
+      const topPortionContents = this.createElem('div', 'flex justify-between items-center')
+      todoCard.id = todo.id
+
+      const checkbox = this.createElem('input')
+      checkbox.type = 'checkbox'
+      checkbox.checked = todo.complete
+
+      const deleteImg = this.createElem('img', 'h-6 sm:h-10')
+      deleteImg.src = deleteIcon
+
+      const todoTitle = this.createElem('h1', 'dark:text-white')
+      if (todo.complete) {
+        const strike = this.createElem('s')
+        strike.textContent = todo.title
+        todoTitle.append(strike)
+      } else {
+        todoTitle.textContent = todo.title
+      }
+
+      // contents for date portion of card
+      const dateContents = this.createElem('div', '')
+      const date = this.createElem('h2', 'text-xs dark:text-white')
+
+      // format date
+      const formattedDate = new Date(format(parseISO(todo.date), 'yyyy/MM/dd'))
+      const now = new Date()
+      // date.textContent = this.formatDate(formattedDate)
+      date.textContent = this.formatDate(formattedDate)
+      
+      dateContents.append(date)
+      
+      // contents for description portion of card
+      
+      todoCard.append(topPortionContents, dateContents)
+      titleContents.append(checkbox, todoTitle)
+      topPortionContents.append(titleContents, deleteImg)
+      this.todoList.append(todoCard)
+
+
+    })
   }
 
   formatDate(date) {
