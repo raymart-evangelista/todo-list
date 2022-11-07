@@ -210,7 +210,7 @@ class View {
 
     this.overlayCard = this.createElem('div')
     this.overlayCard.id = 'overlayCard'
-    this.overlayCard.classList = 'mt-20 overflow-y-auto h-4/5 fixed flex flex-col transition-opacity duration-500 ease-in-out opacity-0 invisible bg-white shadow-lg rounded-2xl w-3/4 mt-6 p-6'
+    this.overlayCard.classList = 'mt-24 overflow-y-auto h-4/5 fixed flex flex-col transition-opacity duration-500 ease-in-out opacity-0 invisible bg-white shadow-lg rounded-2xl w-3/4 p-6'
     this.app.append(this.overlayCard)
 
     this.title = this.createElem('h1', 'text-2xl text-center mb-6')
