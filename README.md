@@ -6,6 +6,7 @@
 - [html collection showing as 0 length](https://stackoverflow.com/questions/30211605/javascript-html-collection-showing-as-0-length)
 
 ## Todo
+- work on ui layout for larger screens
 - delete projects and all its contents
 - edit tasks
   - ability to change title, description, date, priority, notes, (and project space)
