@@ -223,8 +223,8 @@ class View {
     this.submitBtn = this.createElem('button', 'mt-4 w-fit justify-self-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800')
     this.submitBtn.textContent = 'Submit'
 
-    this.todoList = this.createElem('ul', 'todo-list grid grid-cols-1 gap-4 mb-28')
-    this.todoListWrapper = this.createElem('div', 'mt-20 w-10/12 lg:w-3/12')
+    this.todoList = this.createElem('ul', 'todo-list grid grid-cols-1 lg:grid-cols-3 gap-4 mb-28')
+    this.todoListWrapper = this.createElem('div', 'mt-20 w-10/12')
     this.todoListWrapper.id = 'todo-list-wrapper'
     this.todoListWrapper.append(this.todoList)
 
@@ -721,6 +721,8 @@ class View {
   }
 
   _displayTodoList(list) {
+    const priorityWrapper = this.createElem('div', 'flex flex-col gap-4')
+    
     list.forEach(todo => {
       // contents for title portion of card
       // const todoCard = this.createElem('div', 'p-4 w-full text-center bg-white rounded-lg border shadow-md sm:p-8 dark:bg-gray-800 dark:border-gray-700')
@@ -739,6 +741,7 @@ class View {
       const topContents = this.createElem('div', 'flex justify-between items-start')
       const rightContents = this.createElem('div', 'flex flex-col justify-between items-start w-full')
       rightContents.id = 'right-contents-wrapper'
+      todoCard.classList.add('h-fit')
       todoCard.id = todo.id
 
       const checkboxWrapper = this.createElem('div', 'flex items-start')
@@ -806,7 +809,8 @@ class View {
         rightContents.append(todoNotes)
       }
       rightContents.append(bottomContents)
-      this.todoList.append(todoCard)
+      priorityWrapper.append(todoCard)
+      this.todoList.append(priorityWrapper)
 
 
     })
