@@ -8,3 +8,4 @@
 ## Todo
 - delete projects and all its contents
 - edit tasks
+- refactor code
