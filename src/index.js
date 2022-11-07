@@ -752,7 +752,7 @@ class View {
       // const deleteImg = this.createElem('img', 'h-6')
       // deleteImg.src = deleteIcon
 
-      const todoTitle = this.createElem('h1', 'dark:text-white')
+      const todoTitle = this.createElem('h1', 'text-base dark:text-white')
       if (todo.complete) {
         const strike = this.createElem('s')
         strike.textContent = todo.title
@@ -761,15 +761,18 @@ class View {
         todoTitle.textContent = todo.title
       }
 
+      const todoDesc = this.createElem('h2', 'text-sm font-light text-gray-700 dark:text-white')
+      todoDesc.textContent = todo.description
+
       // contents for date portion of card
       const dateContents = this.createElem('div', '')
-      const date = this.createElem('h2', 'text-xs dark:text-white')
+      const date = this.createElem('h2', 'text-sm  dark:text-white')
 
       // format date
       const formattedDate = new Date(format(parseISO(todo.date), 'yyyy/MM/dd'))
       const now = new Date()
       // date.textContent = this.formatDate(formattedDate)
-      date.textContent = this.formatDate(formattedDate)
+      date.textContent = this.formatDate(formattedDate, date)
       
       dateContents.append(date)
       
@@ -778,35 +781,48 @@ class View {
       todoCard.append(checkboxWrapper, rightContents)
       // topContents.append(todoTitle, deleteImg)
       topContents.append(todoTitle)
-      rightContents.append(topContents, dateContents)
+
+      rightContents.append(topContents, todoDesc)
+      if (todo.notes != '') {
+        const todoNotes = this.createElem('h3', 'text-xs font-light text-gray-500 dark:text-white')
+        todoNotes.textContent = todo.notes
+        rightContents.append(todoNotes)
+      }
+      rightContents.append(dateContents)
       this.todoList.append(todoCard)
 
 
     })
   }
 
-  formatDate(date) {
+  formatDate(date, dateElement) {
     if (isToday(date)) {
+      dateElement.classList.add('text-green-500')
       return `Today`
     }
 
     if (isYesterday(date)) {
+      dateElement.classList.add('text-red-500')
       return `Yesterday`
     }
 
     if (isTomorrow(date)) {
+      dateElement.classList.add('text-orange-500')
       return `Tomorrow`
     }
 
     if (isBefore(date, new Date())) {
+      dateElement.classList.add('text-red-500')
       return formatDistanceToNow((date), { addSuffix: true })
     }
 
     // if the date is a 8 days from the current date, post the date 'Nov 13'
     if (isAfter(date, addDays(new Date(), 7) ) ) {
+      dateElement.classList.add('text-gray-500')
       return format(date, 'MMM d')
     }
 
+    dateElement.classList.add('text-purple-500')
     return format(date, 'eeee')
   }
 
