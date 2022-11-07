@@ -6,6 +6,8 @@ import menu from './icons/menu.svg'
 import down from './icons/chevron-down.svg'
 import deleteIconLightMode from './icons/delete-lightmode.svg'
 import deleteIconDarkMode from './icons/delete-darkmode.svg'
+import editIconLightMode from './icons/edit-lightmode.svg'
+import editIconDarkMode from './icons/edit-darkmode.svg'
 
 // home button
 
@@ -742,6 +744,7 @@ class View {
       const rightContents = this.createElem('div', 'flex flex-col justify-between items-start w-full')
       rightContents.id = 'right-contents-wrapper'
       todoCard.classList.add('h-fit')
+      todoCard.classList.add('hover:bg-gray-100', 'dark:hover:bg-gray-800', 'todo-card')
       todoCard.id = todo.id
 
       const checkboxWrapper = this.createElem('div', 'flex items-start')
@@ -774,6 +777,7 @@ class View {
       date.textContent = this.formatDate(formattedDate, date)
       
       const deleteImg = this.createElem('img', 'delete h-6 cursor-pointer')
+      const editImg = this.createElem('img', 'edit h-6 cursor-pointer')
 
       // todos have a delete button
       // const deleteBtn = this.createElem('button', 'delete flex p-3')
@@ -786,15 +790,26 @@ class View {
 
       if (matched) {
         deleteImg.src = deleteIconDarkMode
+        editImg.src = editIconDarkMode
       } else {
         deleteImg.src = deleteIconLightMode
+        editImg.src = editIconLightMode
       }
 
       window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
-        event.matches ? deleteImg.src = deleteIconDarkMode : deleteImg.src = deleteIconLightMode
+        // event.matches ? deleteImg.src = deleteIconDarkMode : deleteImg.src = deleteIconLightMode
+        if (event.matches) {
+          deleteImg.src = deleteIconDarkMode
+          editImg.src = editIconDarkMode
+        } else {
+          deleteImg.src = deleteIconLightMode
+          editImg.src = editIconLightMode
+        }
       })
 
-      bottomContents.append(date, deleteImg)
+      const iconButtons = this.createElem('div', 'flex gap-2')
+      iconButtons.append(editImg, deleteImg)
+      bottomContents.append(date, iconButtons)
 
       // contents for description portion of card
       checkboxWrapper.append(checkbox)
@@ -999,7 +1014,7 @@ class View {
   bindDeleteTodo(handler) {
     this.todoList.addEventListener('click', event => {
       if (event.target.classList.contains('delete')) {
-        const id = parseInt(event.target.parentElement.parentElement.parentElement.id)
+        const id = parseInt(event.target.parentElement.parentElement.parentElement.parentElement.id)
         handler(id)
       }
     })
@@ -1025,6 +1040,16 @@ class View {
       }
     })
   }
+
+  bindEditTodo(handler) {
+    this.todoList.addEventListener('click', event => {
+      if (event.target.classList.contains('edit')) {
+        console.log('in here')
+        const id = parseInt(event.target.parentElement.parentElement.parentElement.parentElement.id)
+        // handler(id)
+      }
+    })
+  }
 }
 
 // controller is link between model and view
@@ -1042,6 +1067,7 @@ class Controller {
     this.view.bindEditTitle(this.handleEditTitle)
     this.view.bindDeleteTodo(this.handleDeleteTodo)
     this.view.bindToggleTodo(this.handleToggleTodo)
+    this.view.bindEditTodo(this.handleEditTodo)
     
     
     // display initial projects
@@ -1090,6 +1116,10 @@ class Controller {
 
   handleToggleTodo = (id) => {
     this.model.toggleTodo(id)
+  }
+
+  handleEditTodo = (id) => {
+    this.model.editTodo(id)
   }
 }
 
