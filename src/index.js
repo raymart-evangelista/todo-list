@@ -4,7 +4,8 @@ import moment from 'moment'
 import logo from './icons/check-square.svg'
 import menu from './icons/menu.svg'
 import down from './icons/chevron-down.svg'
-import deleteIcon from './icons/delete.svg'
+import deleteIconLightMode from './icons/delete-lightmode.svg'
+import deleteIconDarkMode from './icons/delete-darkmode.svg'
 
 // home button
 
@@ -333,7 +334,7 @@ class View {
     this.navbar = this.createElem('nav', 'fixed w-screen p-3 bg-gray-50 rounded border-gray-200 dark:bg-gray-800 dark:border-gray-700')
     this.navbarContainer = this.createElem('div', 'flex justify-between items-center')
     this.logoContainer = this.createElem('a', 'flex items-center')
-    this.logoImg = this.createElem('img', 'mr-1 h-6 sm:h-10')
+    this.logoImg = this.createElem('img', 'mr-1 h-6 sm:h-10 dark:invert')
     this.logoImg.src = logo
     this.currentProjectTitle = this.createElem('span', 'self-center text-xl font-semibold whitespace-nowrap dark:text-white')
     // this.currentProjectTitle.textContent = 'Todo List'
@@ -350,7 +351,7 @@ class View {
     
     this.menuText = this.createElem('span', 'p-1')
     this.menuText.textContent = 'Projects'
-    this.menuLogo = this.createElem('img', 'p-.5')
+    this.menuLogo = this.createElem('img', 'p-.5 dark:invert')
     this.menuLogo.src = down
     
     this.menuBtnContents = this.createElem('div', 'flex')
@@ -730,17 +731,17 @@ class View {
       let todoCard = this.createElem('div')
 
       if (todo.priority === 'Low') {
-        todoCard.classList = ('flex p-4 w-full bg-white rounded-lg border border-blue-400 shadow-md sm:p-4 dark:bg-gray-800 dark:border-blue-700')
+        todoCard.classList = ('flex p-4 w-full bg-white rounded-lg border border-blue-400 shadow-md sm:p-4 dark:bg-gray-900 dark:border-blue-700')
       }
       if (todo.priority === 'Normal') {
-        todoCard.classList = ('flex p-4 w-full bg-white rounded-lg border border-orange-400 shadow-md sm:p-4 dark:bg-gray-800 dark:border-orange-700')
+        todoCard.classList = ('flex p-4 w-full bg-white rounded-lg border border-orange-400 shadow-md sm:p-4 dark:bg-gray-900 dark:border-orange-700')
       }
       if (todo.priority === 'High') {
-        todoCard.classList = ('flex p-4 w-full bg-white rounded-lg border border-red-400 shadow-md sm:p-4 dark:bg-gray-800 dark:border-red-700')
+        todoCard.classList = ('flex p-4 w-full bg-white rounded-lg border border-red-400 shadow-md sm:p-4 dark:bg-gray-900 dark:border-red-700')
       }
 
       const topContents = this.createElem('div', 'flex justify-between items-start')
-      const rightContents = this.createElem('div', 'flex flex-col justify-between items-start')
+      const rightContents = this.createElem('div', 'flex flex-col justify-between items-start w-full')
       rightContents.id = 'right-contents-wrapper'
       todoCard.id = todo.id
 
@@ -749,8 +750,7 @@ class View {
       checkbox.type = 'checkbox'
       checkbox.checked = todo.complete
 
-      // const deleteImg = this.createElem('img', 'h-6')
-      // deleteImg.src = deleteIcon
+
 
       const todoTitle = this.createElem('h1', 'text-base dark:text-white')
       if (todo.complete) {
@@ -765,7 +765,7 @@ class View {
       todoDesc.textContent = todo.description
 
       // contents for date portion of card
-      const dateContents = this.createElem('div', '')
+      const bottomContents = this.createElem('div', 'flex w-full justify-between items-center')
       const date = this.createElem('h2', 'text-sm')
 
       // format date
@@ -774,8 +774,25 @@ class View {
       // date.textContent = this.formatDate(formattedDate)
       date.textContent = this.formatDate(formattedDate, date)
       
-      dateContents.append(date)
-      
+      const deleteImg = this.createElem('img', 'h-6')
+
+
+      let matched = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+      if (matched) {
+        console.log('currently in dark mode')
+        deleteImg.src = deleteIconDarkMode
+      } else {
+        console.log('currently not in dark mode')
+        deleteImg.src = deleteIconLightMode
+      }
+
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+        event.matches ? deleteImg.src = deleteIconDarkMode : deleteImg.src = deleteIconLightMode
+      })
+
+      bottomContents.append(date, deleteImg)
+
       // contents for description portion of card
       checkboxWrapper.append(checkbox)
       todoCard.append(checkboxWrapper, rightContents)
@@ -788,7 +805,7 @@ class View {
         todoNotes.textContent = todo.notes
         rightContents.append(todoNotes)
       }
-      rightContents.append(dateContents)
+      rightContents.append(bottomContents)
       this.todoList.append(todoCard)
 
 
@@ -926,41 +943,6 @@ class View {
         console.log('[view]all form input is valid')
         console.log(`[view] this is the value of priorityValue: ${this._priorityValue}`)
         handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
-        // handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
-        // handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
-        // handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
-        // handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
-        // handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
-        // handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
-        // handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
-        // handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
-        // handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
-        // handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
-        // handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
-        // handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
-        // handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
-        // handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
-        // handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
-        // handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
-        // handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
-        // handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
-        // handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
-        // handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
-        // handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
-        // handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
-        // handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
-        // handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
-        // handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
-        // handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
-        // handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
-        // handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
-        // handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
-        // handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
-        // handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
-        // handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
-        // handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
-        // handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
-        // handler(this._taskTitle, this._taskDesc, this._taskDate, this._priorityValue, this._optionalNotes, this._taskProject)
         this._resetInput()
         // close form window
         this._closeFormOverlay()
