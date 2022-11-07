@@ -210,10 +210,10 @@ class View {
 
     this.overlayCard = this.createElem('div')
     this.overlayCard.id = 'overlayCard'
-    this.overlayCard.classList = 'mt-24 overflow-y-auto h-4/5 fixed flex flex-col transition-opacity duration-500 ease-in-out opacity-0 invisible bg-white shadow-lg rounded-2xl w-3/4 p-6'
+    this.overlayCard.classList = 'mt-24 overflow-y-auto h-4/5 fixed flex flex-col transition-opacity duration-500 ease-in-out opacity-0 invisible bg-white shadow-lg rounded-2xl w-3/4 p-6 dark:bg-gray-700'
     this.app.append(this.overlayCard)
 
-    this.title = this.createElem('h1', 'text-2xl text-center mb-6')
+    this.title = this.createElem('h1', 'text-2xl text-center mb-6 dark:text-white')
     this.title.textContent = 'Add a new task'
 
     this.form = this.createElem('form')
@@ -230,11 +230,11 @@ class View {
     // task title
     this.taskTitle = this.createElem('input')
     this.taskTitle.type = 'text'
-    this.taskTitle.classList = 'block p-4 w-full text-gray-900 bg-gray-50 rounded-lg border border-gray-300 sm:text-md focus:ring-blue-500 focus:border-blue-500'
+    this.taskTitle.classList = 'block p-4 w-full text-gray-900 bg-gray-50 rounded-lg border border-gray-300 sm:text-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
     this.taskTitle.placeholder = 'e.g., Learn Portuguese'
     this.taskTitle.name = 'taskTitle'
 
-    this.taskTitleLabel = this.createElem('label', 'block mb-2 text-sm font-medium text-gray-900')
+    this.taskTitleLabel = this.createElem('label', 'block mb-2 text-sm font-medium text-gray-900 dark:text-gray-100')
     this.taskTitleLabel.textContent = 'Task title'
     this.taskTitleContainer = this.createElem('div', 'mb-2')
     this.taskTitleContainer.append(this.taskTitleLabel, this.taskTitle)
@@ -242,22 +242,22 @@ class View {
     // task description
     this.taskDesc = this.createElem('input')
     this.taskDesc.type = 'text'
-    this.taskDesc.classList = 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'
+    this.taskDesc.classList = 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
     this.taskDesc.placeholder = 'e.g., Hour long session'
     this.taskDesc.name = 'taskDesc'
 
-    this.taskDescLabel = this.createElem('label', 'block mb-2 text-sm font-medium text-gray-900')
+    this.taskDescLabel = this.createElem('label', 'block mb-2 text-sm font-medium text-gray-900 dark:text-gray-100')
     this.taskDescLabel.textContent = 'Description'
     this.taskDescContainer = this.createElem('div', 'mb-2')
     this.taskDescContainer.append(this.taskDescLabel, this.taskDesc)  
 
     // task date
-    this.taskDate = this.createElem('input', 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5')
+    this.taskDate = this.createElem('input', 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500')
     this.taskDate.type = 'date'
     this.taskDate.value = moment().format('YYYY-MM-DD')
     this.taskDate.name = 'taskDate'
 
-    this.taskDateLabel = this.createElem('label', 'block mb-2 text-sm font-medium text-gray-900')
+    this.taskDateLabel = this.createElem('label', 'block mb-2 text-sm font-medium text-gray-900 dark:text-gray-100')
     this.taskDateLabel.textContent = 'Date'
     this.taskDateContainer = this.createElem('div', 'mb-2')
     this.taskDateContainer.append(this.taskDateLabel, this.taskDate)  
@@ -265,11 +265,11 @@ class View {
     // task optional notes
     this.optionalNotes = this.createElem('input')
     this.optionalNotes.type = 'text'
-    this.optionalNotes.classList = 'block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-gray-300 sm:text-xs focus:ring-blue-500 focus:border-blue-500'
+    this.optionalNotes.classList = 'block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-gray-300 sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
     this.optionalNotes.placeholder = 'e.g., bring flashcards'
     this.optionalNotes.name = 'optionalNotes'
 
-    this.optionalNotesLabel = this.createElem('label', 'block mb-2 text-sm font-medium text-gray-900')
+    this.optionalNotesLabel = this.createElem('label', 'block mb-2 text-sm font-medium text-gray-900 dark:text-gray-100')
     this.optionalNotesLabel.textContent = 'Optional notes'
     this.optionalNotesContainer = this.createElem('div', 'mb-2')
     this.optionalNotesContainer.append(this.optionalNotesLabel, this.optionalNotes)  
@@ -277,9 +277,9 @@ class View {
     // task priority level
     this.radioGroup = this.createElem('div', 'radio-group')
 
-    this.radioGroupLabel = this.createElem('label', 'block mb-2 text-sm font-medium text-gray-900')
+    this.radioGroupLabel = this.createElem('label', 'block mb-2 text-sm font-medium text-gray-900 dark:text-gray-100')
     this.radioGroupLabel.textContent = 'Priority level'
-    this.radioGroupContainer = this.createElem('div', 'mb-2 p-2 rounded-lg border border-gray-300')
+    this.radioGroupContainer = this.createElem('div', 'mb-2 p-2 rounded-lg border border-gray-300 dark:border-gray-600')
     this.radioGroupContainer.append(this.radioGroupLabel, this.radioGroup)  
 
     // https://www.tutorialspoint.com/how-to-dynamically-create-radio-buttons-using-an-array-in-javascript
@@ -298,7 +298,7 @@ class View {
 
       this.labelValue = this.createElem('label')
       this.labelValue.innerHTML = priorityValue
-      this.labelValue.classList = 'block ml-2 text-sm font-medium text-gray-900'
+      this.labelValue.classList = 'block ml-2 text-sm font-medium text-gray-900 dark:text-gray-100'
 
       this.selectionContainer.append(this.inputValue, this.labelValue)
 
@@ -310,9 +310,9 @@ class View {
     this.projectOptions.id = 'projects'
     this.projectOptions.name = 'projects'
 
-    this.projectOptionsLabel = this.createElem('label', 'block mb-2 text-sm font-medium text-gray-900')
+    this.projectOptionsLabel = this.createElem('label', 'block mb-2 text-sm font-medium text-gray-900 dark:text-gray-100')
     this.projectOptionsLabel.textContent = 'Choose a project for the task'
-    this.projectOptionsContainer = this.createElem('div', 'mb-2 p-2 rounded-lg border border-gray-300')
+    this.projectOptionsContainer = this.createElem('div', 'mb-2 p-2 rounded-lg border border-gray-300 dark:border-gray-600')
     this.projectOptionsContainer.append(this.projectOptionsLabel, this.projectOptions)
 
     // const projects = ['Default project', 'Another project', 'Work project']
@@ -885,13 +885,13 @@ class View {
   }
 
   highlightInput = (input) => {
-    input.classList.remove('border-gray-300')
-    input.classList.add('border-red-600')
+    input.classList.remove('border-gray-300', 'dark:border-gray-600')
+    input.classList.add('border-red-600', 'dark:border-red-500')
   }
   
   unhighlightInput = (input) => {
-    input.classList.remove('border-red-600')
-    input.classList.add('border-gray-300')
+    input.classList.remove('border-red-600', 'dark:border-red-500')
+    input.classList.add('border-gray-300', 'dark:border-gray-600')
   }
 
   bindAddTodo(handler) {
