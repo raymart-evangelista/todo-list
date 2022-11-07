@@ -361,7 +361,7 @@ class View {
     this.menuBtn.append(this.menuBtnContents)
 
     // project menu dropdown
-    this.menuDropdown = this.createElem('div', 'transition-opacity duration-150 ease-in-out opacity-0 hidden invisible absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none divide-y divide-gray-100')
+    this.menuDropdown = this.createElem('div', 'transition-opacity duration-150 ease-in-out opacity-0 hidden invisible absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none divide-y divide-gray-100 shadow dark:border-gray-100 dark:bg-gray-800 dark:divide-gray-600')
     this.menuDropdown.id = 'menu-dropdown'
     this.menuDropdownWrapper = this.createElem('div', 'py-1 overflow-y-auto')
     this.menuDropdownWrapper.id = 'project-buttons'
@@ -379,7 +379,7 @@ class View {
 
     // for new project 
     this.menuDropdownWrapper2 = this.createElem('div', 'py-1')
-    this.newProjectBtn = this.createElem('button', 'w-full text-gray-700 block px-4 py-2 text-sm font-bold')
+    this.newProjectBtn = this.createElem('button', 'w-full text-gray-700 dark:text-gray-300 block px-4 py-2 text-sm font-bold')
     this.newProjectBtn.textContent = 'New project'
     this.menuDropdownWrapper2.append(this.newProjectBtn)
 
@@ -851,9 +851,9 @@ class View {
       // each project will be posted in the projects dropdown as well
       let currentProjectTitle = this.getElem('#current-project-title')
       if (project.name === currentProjectTitle.textContent) {
-        this.projectDropdownName = this.createElem('button', 'w-full text-green-700 font-bold block px-4 py-2 text-sm')  
+        this.projectDropdownName = this.createElem('button', 'w-full text-green-700 dark:text-green-500 font-bold block px-4 py-2 text-sm')  
       } else {
-        this.projectDropdownName = this.createElem('button', 'w-full text-gray-700 block px-4 py-2 text-sm')
+        this.projectDropdownName = this.createElem('button', 'w-full text-gray-700 dark:text-gray-300 block px-4 py-2 text-sm')
 
       }
       this.projectDropdownName.textContent = project.name
@@ -875,11 +875,11 @@ class View {
     // in menu dropdown, highlight current project
     for (let projectButton of this.menuDropdownWrapper.children) {
       if (projectButton.textContent === currentProjectTitle.textContent) {
-        projectButton.classList.remove('text-gray-700')
-        projectButton.classList.add('text-green-700', 'font-bold')
+        projectButton.classList.remove('text-gray-700', 'dark:text-gray-300')
+        projectButton.classList.add('text-green-700','dark:text-green-500', 'font-bold')
       } else {
-        projectButton.classList.remove('text-green-700', 'font-bold')
-        projectButton.classList.add('text-gray-700')
+        projectButton.classList.remove('text-green-700', 'dark:text-green-500', 'font-bold')
+        projectButton.classList.add('text-gray-700', 'dark:text-gray-300')
       }
     }
   }
