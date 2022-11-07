@@ -673,7 +673,7 @@ class View {
 
     // show default message
     if (currentTodoList.length === 0) {
-      const p = this.createElem('p', 'dark:text-white')
+      const p = this.createElem('p', 'text-center dark:text-white')
       p.textContent = 'Nothing to do! Add a task?'
       this.todoList.append(p)
     } else {
