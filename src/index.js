@@ -761,12 +761,12 @@ class View {
         todoTitle.textContent = todo.title
       }
 
-      const todoDesc = this.createElem('h2', 'text-sm font-light text-gray-700 dark:text-white')
+      const todoDesc = this.createElem('h2', 'text-sm font-light text-gray-700 dark:text-gray-300')
       todoDesc.textContent = todo.description
 
       // contents for date portion of card
       const dateContents = this.createElem('div', '')
-      const date = this.createElem('h2', 'text-sm  dark:text-white')
+      const date = this.createElem('h2', 'text-sm')
 
       // format date
       const formattedDate = new Date(format(parseISO(todo.date), 'yyyy/MM/dd'))
@@ -784,7 +784,7 @@ class View {
 
       rightContents.append(topContents, todoDesc)
       if (todo.notes != '') {
-        const todoNotes = this.createElem('h3', 'text-xs font-light text-gray-500 dark:text-white')
+        const todoNotes = this.createElem('h3', 'text-xs font-light text-gray-500')
         todoNotes.textContent = todo.notes
         rightContents.append(todoNotes)
       }
