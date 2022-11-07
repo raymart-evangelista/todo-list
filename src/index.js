@@ -222,8 +222,8 @@ class View {
     this.submitBtn = this.createElem('button', 'mt-4 w-fit justify-self-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800')
     this.submitBtn.textContent = 'Submit'
 
-    this.todoList = this.createElem('ul', 'todo-list grid grid-cols-1 gap-4 mb-6')
-    this.todoListWrapper = this.createElem('div', 'mt-20')
+    this.todoList = this.createElem('ul', 'todo-list grid grid-cols-1 gap-4 mb-28')
+    this.todoListWrapper = this.createElem('div', 'mt-20 w-10/12 lg:w-3/12')
     this.todoListWrapper.id = 'todo-list-wrapper'
     this.todoListWrapper.append(this.todoList)
 
@@ -730,13 +730,13 @@ class View {
       let todoCard = this.createElem('div')
 
       if (todo.priority === 'Low') {
-        todoCard.classList = ('flex flex-col p-4 w-full bg-white rounded-lg border border-blue-400 shadow-md sm:p-8 dark:bg-gray-800 dark:border-blue-700')
+        todoCard.classList = ('flex flex-col p-4 w-full bg-white rounded-lg border border-blue-400 shadow-md sm:p-4 dark:bg-gray-800 dark:border-blue-700')
       }
       if (todo.priority === 'Normal') {
-        todoCard.classList = ('flex flex-col p-4 w-full bg-white rounded-lg border border-orange-400 shadow-md sm:p-8 dark:bg-gray-800 dark:border-orange-700')
+        todoCard.classList = ('flex flex-col p-4 w-full bg-white rounded-lg border border-orange-400 shadow-md sm:p-4 dark:bg-gray-800 dark:border-orange-700')
       }
       if (todo.priority === 'High') {
-        todoCard.classList = ('flex flex-col p-4 w-full bg-white rounded-lg border border-red-400 shadow-md sm:p-8 dark:bg-gray-800 dark:border-red-700')
+        todoCard.classList = ('flex flex-col p-4 w-full bg-white rounded-lg border border-red-400 shadow-md sm:p-4 dark:bg-gray-800 dark:border-red-700')
       }
 
       const titleContents = this.createElem('div', 'flex gap-2')
@@ -747,7 +747,7 @@ class View {
       checkbox.type = 'checkbox'
       checkbox.checked = todo.complete
 
-      const deleteImg = this.createElem('img', 'h-6 sm:h-10')
+      const deleteImg = this.createElem('img', 'h-6')
       deleteImg.src = deleteIcon
 
       const todoTitle = this.createElem('h1', 'dark:text-white')
