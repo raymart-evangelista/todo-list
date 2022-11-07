@@ -666,10 +666,6 @@ class View {
           highPriorityList.push(todo)
         }
       })
-
-      console.log(`lowPriorityList: ${lowPriorityList.length}`)
-      console.log(`normalPriorityList: ${normalPriorityList.length}`)
-      console.log(`highPriorityList: ${highPriorityList.length}`)
     }
 
     // show default message
@@ -746,7 +742,7 @@ class View {
       todoCard.id = todo.id
 
       const checkboxWrapper = this.createElem('div', 'flex items-start')
-      const checkbox = this.createElem('input', 'mt-1 mr-2')
+      const checkbox = this.createElem('input', 'mt-1 mr-2 cursor-pointer')
       checkbox.type = 'checkbox'
       checkbox.checked = todo.complete
 
@@ -774,16 +770,20 @@ class View {
       // date.textContent = this.formatDate(formattedDate)
       date.textContent = this.formatDate(formattedDate, date)
       
-      const deleteImg = this.createElem('img', 'h-6')
+      const deleteImg = this.createElem('img', 'delete h-6 cursor-pointer')
+
+      // todos have a delete button
+      // const deleteBtn = this.createElem('button', 'delete flex p-3')
+      // deleteBtn.textContent = ''
+      // deleteBtn.append(deleteImg)
 
 
+      // dark mode / light mode theme watching to change delete icon color
       let matched = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
       if (matched) {
-        console.log('currently in dark mode')
         deleteImg.src = deleteIconDarkMode
       } else {
-        console.log('currently not in dark mode')
         deleteImg.src = deleteIconLightMode
       }
 
@@ -995,8 +995,7 @@ class View {
   bindDeleteTodo(handler) {
     this.todoList.addEventListener('click', event => {
       if (event.target.classList.contains('delete')) {
-        const id = parseInt(event.target.parentElement.id)
-
+        const id = parseInt(event.target.parentElement.parentElement.parentElement.id)
         handler(id)
       }
     })
