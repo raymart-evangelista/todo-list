@@ -730,25 +730,27 @@ class View {
       let todoCard = this.createElem('div')
 
       if (todo.priority === 'Low') {
-        todoCard.classList = ('flex flex-col p-4 w-full bg-white rounded-lg border border-blue-400 shadow-md sm:p-4 dark:bg-gray-800 dark:border-blue-700')
+        todoCard.classList = ('flex p-4 w-full bg-white rounded-lg border border-blue-400 shadow-md sm:p-4 dark:bg-gray-800 dark:border-blue-700')
       }
       if (todo.priority === 'Normal') {
-        todoCard.classList = ('flex flex-col p-4 w-full bg-white rounded-lg border border-orange-400 shadow-md sm:p-4 dark:bg-gray-800 dark:border-orange-700')
+        todoCard.classList = ('flex p-4 w-full bg-white rounded-lg border border-orange-400 shadow-md sm:p-4 dark:bg-gray-800 dark:border-orange-700')
       }
       if (todo.priority === 'High') {
-        todoCard.classList = ('flex flex-col p-4 w-full bg-white rounded-lg border border-red-400 shadow-md sm:p-4 dark:bg-gray-800 dark:border-red-700')
+        todoCard.classList = ('flex p-4 w-full bg-white rounded-lg border border-red-400 shadow-md sm:p-4 dark:bg-gray-800 dark:border-red-700')
       }
 
-      const titleContents = this.createElem('div', 'flex gap-2')
-      const topPortionContents = this.createElem('div', 'flex justify-between items-center')
+      const topContents = this.createElem('div', 'flex justify-between items-start')
+      const rightContents = this.createElem('div', 'flex flex-col justify-between items-start')
+      rightContents.id = 'right-contents-wrapper'
       todoCard.id = todo.id
 
-      const checkbox = this.createElem('input')
+      const checkboxWrapper = this.createElem('div', 'flex items-start')
+      const checkbox = this.createElem('input', 'mt-1 mr-2')
       checkbox.type = 'checkbox'
       checkbox.checked = todo.complete
 
-      const deleteImg = this.createElem('img', 'h-6')
-      deleteImg.src = deleteIcon
+      // const deleteImg = this.createElem('img', 'h-6')
+      // deleteImg.src = deleteIcon
 
       const todoTitle = this.createElem('h1', 'dark:text-white')
       if (todo.complete) {
@@ -772,10 +774,11 @@ class View {
       dateContents.append(date)
       
       // contents for description portion of card
-      
-      todoCard.append(topPortionContents, dateContents)
-      titleContents.append(checkbox, todoTitle)
-      topPortionContents.append(titleContents, deleteImg)
+      checkboxWrapper.append(checkbox)
+      todoCard.append(checkboxWrapper, rightContents)
+      // topContents.append(todoTitle, deleteImg)
+      topContents.append(todoTitle)
+      rightContents.append(topContents, dateContents)
       this.todoList.append(todoCard)
 
 
@@ -1004,8 +1007,8 @@ class View {
   bindToggleTodo(handler) {
     this.todoList.addEventListener('change', event => {
       if (event.target.type === 'checkbox') {
-        const id = parseInt(event.target.parentElement.id)
-
+        const id = parseInt(event.target.parentElement.parentElement.id)
+        console.log(id)
         handler(id)
       }
     })
