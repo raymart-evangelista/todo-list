@@ -9,4 +9,5 @@
 - delete projects and all its contents
 - edit tasks
   - ability to change title, description, date, priority, notes, (and project space)
+  - validate input
 - refactor code
