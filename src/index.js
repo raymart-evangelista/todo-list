@@ -93,8 +93,21 @@ class Model {
     console.log('[model]project name added to projects')
   }
 
-  editTodo(id) {
-    console.log(`[model][editTodo] id: ${id}`)
+  editTodo(id, editedTitle, editedDesc, editedDate, editedPriority, editedOptionalNotes, editedProject) {
+    console.log(`[model][editTodo] id: ${id}, title: ${editedTitle}, desc: ${editedDesc}, date: ${editedDate}, priority: ${editedPriority}, notes: ${editedOptionalNotes}, project: ${editedProject}`)
+    this.todos = this.todos.map((todo) =>
+    todo.id === id ? {
+      id: todo.id,
+      title: editedTitle,
+      description: editedDesc,
+      date: editedDate,
+      priority: editedPriority,
+      notes: editedOptionalNotes,
+      project: editedProject,
+      complete: todo.complete } : todo
+    )
+
+    this._commit(this.todos)
   }
 
   editTodoTitle(id, updatedTitle) {
@@ -1033,17 +1046,6 @@ class View {
     })
   }
 
-  bindEditTodo(handler) {
-    // this.todoList.addEventListener('click', event => {
-    //   if (event.target.classList.contains('edit')) {
-    //     const id = parseInt(event.target.parentElement.parentElement.parentElement.parentElement.id)
-    //     console.log(`the id is: ${id}`)
-
-    //     // let currentTodo = currentTodoList.find(todo => todo.id === id)
-    //     console.log(`the currentTodo is ${currentTodo}`)
-    //   }
-    // })
-  }
 
   bindToggleTodo(handler) {
     this.todoList.addEventListener('change', event => {
@@ -1067,19 +1069,39 @@ class View {
     })
   }
 
+  bindEditTodo(handler) {
+    // this.editForm.addEventListener('submit', event => {
+    //   console.log('[view][bindEditTodo]')
+    // })
+
+    this.editForm.addEventListener('submit', event => {
+      event.preventDefault()
+
+      // get priority value
+      let value
+      const priorityValues = document.getElementsByName('edit-priority')
+      priorityValues.forEach((priority) => {
+        if (priority.checked) {
+          value = priority.value
+        }
+      })
+      handler(this.editedTaskId, this.editTaskTitle.value, this.editTaskDesc.value, this.editTaskDate.value, value, this.editOptionalNotes.value, this.editProjectOptions.value)
+    })
+  }
+
   _initEditTodoListeners() {
     // console.log(`this is the current todo list: ${currentTodoList}`)
+    this._createEditForm()
     this.todoList.addEventListener('click', event => {
       if (event.target.classList.contains('edit')) {
         const id = parseInt(event.target.parentElement.parentElement.parentElement.parentElement.id)
         console.log(`the id is: ${id}`)
-        console.log(this.allCurrentTodos)
         // get current todo
         let currentTodo = this.allCurrentTodos.find(todo => todo.id === id)
-
+        this.editedTaskId = currentTodo.id
         // make an edit form for the current todo
         // ****** left off here, try to animate edit card **************
-        this._createEditForm(currentTodo)
+        this._setEditForm(currentTodo)
 
         // when clicking the edit button; bring in overlay and card openEditOverlay
         this.editOverlay.classList.remove('hidden')
@@ -1109,6 +1131,27 @@ class View {
         
       }
     })
+  }
+  _setEditForm(todo) {
+    this.allProjects.forEach(project => {
+      this.editProjectOption = this.createElem('option')
+      this.editProjectOption.value = project.name
+      this.editProjectOption.textContent = project.name
+
+      this.editProjectOptions.append(this.editProjectOption)
+    })
+
+    const editPriorityValues = document.getElementsByName('edit-priority')
+    editPriorityValues.forEach((priority) => {
+      if (priority.value == todo.priority) {
+        priority.checked = true
+      }
+    })
+    this.editProjectOptions.value = todo.project
+    this.editTaskTitle.value = todo.title
+    this.editTaskDesc.value = todo.description
+    this.editTaskDate.value = moment(todo.date).format('YYYY-MM-DD')
+    this.editOptionalNotes.value = todo.notes
   }
 
   _createEditForm(todo) {
@@ -1202,13 +1245,13 @@ class View {
     this.editProjectsList = this.createElem('ul', 'edit-projects-list')
     this.editProjectOptions.append(this.editProjectsList)
 
-    this.allProjects.forEach(project => {
-      this.editProjectOption = this.createElem('option')
-      this.editProjectOption.value = project.name
-      this.editProjectOption.textContent = project.name
+    // this.allProjects.forEach(project => {
+    //   this.editProjectOption = this.createElem('option')
+    //   this.editProjectOption.value = project.name
+    //   this.editProjectOption.textContent = project.name
 
-      this.editProjectOptions.append(this.editProjectOption)
-    })
+    //   this.editProjectOptions.append(this.editProjectOption)
+    // })
 
     // edit form project optional notes
     this.editOptionalNotes = this.createElem('input')
@@ -1231,23 +1274,26 @@ class View {
     this.editCard.append(this.editForm)
 
     // *** set values to task values ***
-    const editPriorityValues = document.getElementsByName('edit-priority')
-    editPriorityValues.forEach((priority) => {
-      if (priority.value == todo.priority) {
-        priority.checked = true
-      }
-    })
-    this.editProjectOptions.value = todo.project
-    this.editTaskTitle.value = todo.title
-    this.editTaskDesc.value = todo.description
-    this.editTaskDate.value = moment(todo.date).format('YYYY-MM-DD')
-    this.editOptionalNotes.value = todo.notes
+    // if (todo) {
+    //   const editPriorityValues = document.getElementsByName('edit-priority')
+    //   editPriorityValues.forEach((priority) => {
+    //     if (priority.value == todo.priority) {
+    //       priority.checked = true
+    //     }
+    //   })
+    //   this.editProjectOptions.value = todo.project
+    //   this.editTaskTitle.value = todo.title
+    //   this.editTaskDesc.value = todo.description
+    //   this.editTaskDate.value = moment(todo.date).format('YYYY-MM-DD')
+    //   this.editOptionalNotes.value = todo.notes
+    // }
 
-    this.editSubmitBtn.addEventListener('click', event => {
-      event.preventDefault()
-      console.log('edit submit button')
+
+    // this.editSubmitBtn.addEventListener('click', event => {
+    //   event.preventDefault()
+    //   console.log('edit submit button')
       
-    })
+    // })
   }
 }
 
@@ -1266,9 +1312,7 @@ class Controller {
     this.view.bindEditTitle(this.handleEditTitle)
     this.view.bindDeleteTodo(this.handleDeleteTodo)
     this.view.bindEditTodo(this.handleEditTodo)
-    this.view.bindToggleTodo(this.handleToggleTodo)
-    this.view.bindEditTodo(this.handleEditTodo)
-    
+    this.view.bindToggleTodo(this.handleToggleTodo)    
     
     // display initial projects
     this.onProjectListChanged(this.model.projects)
@@ -1318,8 +1362,8 @@ class Controller {
     this.model.toggleTodo(id)
   }
 
-  handleEditTodo = (id) => {
-    this.model.editTodo(id)
+  handleEditTodo = (id, editedTitle, editedDesc, editedDate, editedPriority, editedOptionalNotes, editedProject) => {
+    this.model.editTodo(id, editedTitle, editedDesc, editedDate, editedPriority, editedOptionalNotes, editedProject)
   }
 }
 
