@@ -1158,14 +1158,54 @@ class View {
     this.editTaskDateContainer = this.createElem('div', 'mb-2')
     this.editTaskDateContainer.append(this.taskDateLabel, this.editTaskDate)
 
+    // edit form priority level
+    this.editRadioGroup = this.createElem('div', 'radio-group')
+
+    this.editRadioGroupLabel = this.createElem('label', 'block mb-2 text-sm font-medium text-gray-900 dark:text-gray-100')
+    this.editRadioGroupLabel.textContent = 'Priority level'
+    this.editRadioGroupContainer = this.createElem('div', 'mb-2 p-2 rounded-lg border border-gray-300 dark:border-gray-600')
+    this.editRadioGroupContainer.append(this.editRadioGroupLabel, this.editRadioGroup)  
+
+    // https://www.tutorialspoint.com/how-to-dynamically-create-radio-buttons-using-an-array-in-javascript
+    const priority = ['Low', 'Normal', 'High']
+    priority.forEach((priorityValue, index) => {
+
+      this.editSelectionContainer = this.createElem('div')
+      this.editSelectionContainer.classList = 'flex items-center mb-2'
+
+      this.editInputValue = this.createElem('input')
+      this.editInputValue.type = 'radio'
+      this.editInputValue.name = 'edit-priority'
+      this.editInputValue.value = priorityValue
+      this.editInputValue.priorityValue = index
+      this.editInputValue.classList = 'w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300'
+
+      this.editLabelValue = this.createElem('label')
+      this.editLabelValue.innerHTML = priorityValue
+      this.editLabelValue.classList = 'block ml-2 text-sm font-medium text-gray-900 dark:text-gray-100'
+
+      this.editSelectionContainer.append(this.editInputValue, this.editLabelValue)
+
+      this.editRadioGroup.append(this.editSelectionContainer)
+
+    })
 
     // submit button
     this.editSubmitBtn = this.createElem('button', 'mt-4 w-fit justify-self-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800')
     this.editSubmitBtn.textContent = 'Submit'
     this.editSubmitBtn.id = 'edit-submit-button'
 
-    this.editForm.append(this.editTaskTitleLabelContainer, this.editTaskDescContainer, this.editTaskDateContainer, this.editSubmitBtn)
+    this.editForm.append(this.editRadioGroupContainer, this.editTaskTitleLabelContainer, this.editTaskDescContainer, this.editTaskDateContainer, this.editSubmitBtn)
     this.editCard.append(this.editForm)
+
+    const editPriorityValues = document.getElementsByName('edit-priority')
+    // console.log(editPriorityValues)
+    editPriorityValues.forEach((priority) => {
+      // console.log(`element value: ${priority.value} todo value: ${todo.priority}`)
+      if (priority.value == todo.priority) {
+        priority.checked = true
+      }
+    })
 
     this.editSubmitBtn.addEventListener('click', event => {
       event.preventDefault()
