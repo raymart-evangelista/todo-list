@@ -910,6 +910,13 @@ class View {
 
       this.projectOptions.append(this.projectOption)
 
+      // each project will be posted in the edit form
+      this.editProjectOption = this.createElem('option')
+      this.editProjectOption.value = project.name
+      this.editProjectOption.textContent = project.name
+  
+      this.editProjectOptions.append(this.editProjectOption)
+
       // each project will be posted in the projects dropdown as well
       let currentProjectTitle = this.getElem('#current-project-title')
       if (project.name === currentProjectTitle.textContent) {
@@ -1144,14 +1151,6 @@ class View {
     })
   }
   _setEditForm(todo) {
-    this.allProjects.forEach(project => {
-      this.editProjectOption = this.createElem('option')
-      this.editProjectOption.value = project.name
-      this.editProjectOption.textContent = project.name
-
-      this.editProjectOptions.append(this.editProjectOption)
-    })
-
     const editPriorityValues = document.getElementsByName('edit-priority')
     editPriorityValues.forEach((priority) => {
       if (priority.value == todo.priority) {
@@ -1263,6 +1262,7 @@ class View {
 
     //   this.editProjectOptions.append(this.editProjectOption)
     // })
+    
 
     // edit form project optional notes
     this.editOptionalNotes = this.createElem('input')
