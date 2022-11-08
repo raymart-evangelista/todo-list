@@ -1086,6 +1086,19 @@ class View {
         }
       })
       handler(this.editedTaskId, this.editTaskTitle.value, this.editTaskDesc.value, this.editTaskDate.value, value, this.editOptionalNotes.value, this.editProjectOptions.value)
+
+      // when submitting an edit form close the form overlay
+      this.editOverlay.classList.remove('opacity-90')
+      this.editOverlay.classList.add('opacity-0')
+      this.editCard.classList.remove('opacity-100')
+      this.editCard.classList.add('opacity-0')
+      setTimeout(() => {
+        this.editOverlay.classList.add('invisible')
+        this.editCard.classList.add('invisible')
+        this.editOverlay.classList.add('hidden')
+        this.editCard.classList.add('hidden')
+        // this.menuWrapper.classList.add('relative')
+      }, 500);
     })
   }
 
@@ -1126,9 +1139,7 @@ class View {
             this.editCard.classList.add('hidden')
             // this.menuWrapper.classList.add('relative')
           }, 500);
-        })
-
-        
+        })        
       }
     })
   }
