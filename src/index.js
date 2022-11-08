@@ -1135,7 +1135,6 @@ class View {
     this.editTaskTitle = this.createElem('input')
     this.editTaskTitle.type = 'text'
     this.editTaskTitle.classList = 'block p-4 w-full text-gray-900 bg-gray-50 rounded-lg border border-gray-300 sm:text-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
-    this.editTaskTitle.value = todo.title
     this.editTaskTitle.placeholder = this.taskTitle.placeholder
 
     this.editTaskTitleLabelContainer = this.createElem('div', 'mb-2')
@@ -1146,7 +1145,6 @@ class View {
     this.editTaskDesc.type = 'text'
     this.editTaskDesc.classList = 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
     this.editTaskDesc.placeholder = this.taskDesc.placeholder
-    this.editTaskDesc.value = todo.description
 
     this.editTaskDescContainer = this.createElem('div', 'mb-2')
     this.editTaskDescContainer.append(this.taskDescLabel, this.editTaskDesc)
@@ -1154,7 +1152,6 @@ class View {
     // edit form task date
     this.editTaskDate = this.createElem('input', 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500')
     this.editTaskDate.type = 'date'
-    this.editTaskDate.value = moment(todo.date).format('YYYY-MM-DD')
     this.editTaskDateContainer = this.createElem('div', 'mb-2')
     this.editTaskDateContainer.append(this.taskDateLabel, this.editTaskDate)
 
@@ -1213,25 +1210,38 @@ class View {
       this.editProjectOptions.append(this.editProjectOption)
     })
 
+    // edit form project optional notes
+    this.editOptionalNotes = this.createElem('input')
+    this.editOptionalNotes.type = 'text'
+    this.editOptionalNotes.classList = 'block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-gray-300 sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+    this.editOptionalNotes.placeholder = 'e.g., bring flashcards'
+    this.editOptionalNotes.name = 'optionalNotes'
+
+    this.editOptionalNotesLabel = this.createElem('label', 'block mb-2 text-sm font-medium text-gray-900 dark:text-gray-100')
+    this.editOptionalNotesLabel.textContent = 'Optional notes'
+    this.editOptionalNotesContainer = this.createElem('div', 'mb-2')
+    this.editOptionalNotesContainer.append(this.editOptionalNotesLabel, this.editOptionalNotes)  
+
     // submit button
     this.editSubmitBtn = this.createElem('button', 'mt-4 w-fit justify-self-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800')
     this.editSubmitBtn.textContent = 'Submit'
     this.editSubmitBtn.id = 'edit-submit-button'
 
-    this.editForm.append(this.editRadioGroupContainer, this.editProjectOptionsContainer, this.editTaskTitleLabelContainer, this.editTaskDescContainer, this.editTaskDateContainer, this.editSubmitBtn)
+    this.editForm.append(this.editRadioGroupContainer, this.editProjectOptionsContainer, this.editTaskTitleLabelContainer, this.editTaskDescContainer, this.editTaskDateContainer, this.editOptionalNotesContainer, this.editSubmitBtn)
     this.editCard.append(this.editForm)
 
-    // set values to task values
+    // *** set values to task values ***
     const editPriorityValues = document.getElementsByName('edit-priority')
-    // console.log(editPriorityValues)
     editPriorityValues.forEach((priority) => {
-      // console.log(`element value: ${priority.value} todo value: ${todo.priority}`)
       if (priority.value == todo.priority) {
         priority.checked = true
       }
     })
-
     this.editProjectOptions.value = todo.project
+    this.editTaskTitle.value = todo.title
+    this.editTaskDesc.value = todo.description
+    this.editTaskDate.value = moment(todo.date).format('YYYY-MM-DD')
+    this.editOptionalNotes.value = todo.notes
 
     this.editSubmitBtn.addEventListener('click', event => {
       event.preventDefault()
