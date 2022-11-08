@@ -93,7 +93,12 @@ class Model {
     console.log('[model]project name added to projects')
   }
 
+  editTodo(id) {
+    console.log(`[model][editTodo] id: ${id}`)
+  }
+
   editTodoTitle(id, updatedTitle) {
+    console.log('[model]')
     this.todos = this.todos.map((todo) => 
     todo.id === id ? {
       id: todo.id, 
@@ -199,6 +204,7 @@ class Model {
 // used for UI logic--such as customer view including UI components such as text boxes, dropdowns
 class View {
   constructor() {
+    this.x = 0;
     this.body = this.getElem('body')
     this.body.classList.add('dark:bg-slate-900')
     this.app = this.getElem('#content')
@@ -429,6 +435,9 @@ class View {
 
     this._temporaryTitle = ''
     this._initLocalListeners()
+    this.allProjects = ''
+    this.allCurrentTodos = ''
+    this._initEditTodoListeners()
   }
 
   get _priorityGroupChecked() {
@@ -506,8 +515,9 @@ class View {
 
   _initLocalListeners() {
     this.todoList.addEventListener('input', event => {
-      if (event.target.className === 'editable-title') {
+      if (event.target.classList.contains('editable')) {
         this._temporaryTitle = event.target.innerText
+        console.log(this._temporaryTitle)
       }
     })
 
@@ -650,11 +660,9 @@ class View {
     if (todos.length > 0) {
       todos.forEach(todo => {
         // filter todos such that it's only the todos for the current project
-        console.log(`[view]this is the current project: ${this._currentProject}`)
         if (todo.project === this._currentProject) {
           currentTodoList.push(todo)
         } else {
-          console.log(`[view]that todo is not part of the current project, it is part of: ${todo.project}`)
         }
       })
 
@@ -676,7 +684,7 @@ class View {
       p.textContent = 'Nothing to do! Add a task?'
       this.todoList.append(p)
     } else {
-
+      this.allCurrentTodos = currentTodoList
       // create todo item nodes for each todo in state
 
       // normal sort
@@ -714,11 +722,11 @@ class View {
       // })
 
       // sort based off priority
+      this.x += 1
+      console.log(`**** this.x: ${this.x}`)
       this._displayTodoList(highPriorityList)
       this._displayTodoList(normalPriorityList)
       this._displayTodoList(lowPriorityList)
-
-
     }
   }
 
@@ -754,7 +762,11 @@ class View {
 
 
 
-      const todoTitle = this.createElem('h1', 'text-base dark:text-white')
+      const todoTitle = this.createElem('span', 'editable text-base dark:text-white')
+      todoTitle.contentEditable = true
+
+
+
       if (todo.complete) {
         const strike = this.createElem('s')
         strike.textContent = todo.title
@@ -863,6 +875,7 @@ class View {
   }
 
   displayProjects(projects) {
+    this.allProjects = projects
     // delete all nodes on screen
     while (this.projectOptions.firstChild) {
       // for projects in select options
@@ -1020,6 +1033,18 @@ class View {
     })
   }
 
+  bindEditTodo(handler) {
+    // this.todoList.addEventListener('click', event => {
+    //   if (event.target.classList.contains('edit')) {
+    //     const id = parseInt(event.target.parentElement.parentElement.parentElement.parentElement.id)
+    //     console.log(`the id is: ${id}`)
+
+    //     // let currentTodo = currentTodoList.find(todo => todo.id === id)
+    //     console.log(`the currentTodo is ${currentTodo}`)
+    //   }
+    // })
+  }
+
   bindToggleTodo(handler) {
     this.todoList.addEventListener('change', event => {
       if (event.target.type === 'checkbox') {
@@ -1032,24 +1057,288 @@ class View {
 
   bindEditTitle(handler) {
     this.todoList.addEventListener('focusout', event => {
+      console.log('[view][bindEditTitle]')
+      console.log(this._temporaryTitle)
       if (this._temporaryTitle) {
-        const id = parseInt(event.target.parentElement.id)
-
+        const id = parseInt(event.target.parentElement.parentElement.parentElement.id)
         handler(id, this._temporaryTitle)
         this._temporaryTitle = ''
       }
     })
   }
 
-  bindEditTodo(handler) {
+  _initEditTodoListeners() {
+    // console.log(`this is the current todo list: ${currentTodoList}`)
     this.todoList.addEventListener('click', event => {
       if (event.target.classList.contains('edit')) {
-        console.log('in here')
         const id = parseInt(event.target.parentElement.parentElement.parentElement.parentElement.id)
-        // handler(id)
+        console.log(`the id is: ${id}`)
+        console.log(this.allCurrentTodos)
+        // get current todo
+        let currentTodo = this.allCurrentTodos.find(todo => todo.id === id)
+
+        // make an edit form for the current todo
+        // ****** left off here, try to animate edit card **************
+        this._createEditForm(currentTodo)
+
+        // when clicking the edit button; bring in overlay and card openEditOverlay
+        this.editOverlay.classList.remove('hidden')
+        this.editCard.classList.remove('hidden')
+        setTimeout(() => {
+          this.editOverlay.classList.remove('invisible', 'opacity-0')
+          this.editOverlay.classList.add('opacity-90')
+          this.editCard.classList.remove('invisible', 'opacity-0')
+          this.editCard.classList.add('opacity-100')
+        }, 10);
+
+        // when clicking out of the edit card--so clicking on the edit overlay
+        this.editOverlay.addEventListener('click', event => {
+          this.editOverlay.classList.remove('opacity-90')
+          this.editOverlay.classList.add('opacity-0')
+          this.editCard.classList.remove('opacity-100')
+          this.editCard.classList.add('opacity-0')
+          setTimeout(() => {
+            this.editOverlay.classList.add('invisible')
+            this.editCard.classList.add('invisible')
+            this.editOverlay.classList.add('hidden')
+            this.editCard.classList.add('hidden')
+            // this.menuWrapper.classList.add('relative')
+          }, 500);
+        })
+
+        
       }
     })
   }
+
+  _createEditForm(todo) {
+    console.log(`****** is todo undefined?: ${todo === undefined}`)
+    this.editOverlay = this.createElem('div', 'fixed w-screen h-screen transition-opacity duration-500 ease-in-out bg-gray-900 opacity-0 invisible')
+    this.editOverlay.id = 'edit-overlay'
+    this.app.append(this.editOverlay)
+
+    this.editCard = this.createElem('div', 'mt-24 overflow-y-auto h-4/5 fixed flex flex-col transition-opacity duration-500 ease-in-out opacity-0 invisible bg-white shadow-lg rounded-2xl w-3/4 p-6 dark:bg-gray-700')
+    this.editCard.id = 'edit-card'
+    this.app.append(this.editCard)
+
+    // title of card
+    this.editTitle = this.createElem('h1', 'text-2xl text-center mb-6 dark:text-white')
+    this.editTitle.textContent = 'Edit task'
+
+    this.editCard.append(this.editTitle)
+
+    // edit form
+    this.editForm = this.createElem('form')
+    this.editForm.classList = 'grid'
+
+    // edit form task title
+    this.editTaskTitle = this.createElem('input')
+    this.editTaskTitle.type = 'text'
+    this.editTaskTitle.classList = 'block p-4 w-full text-gray-900 bg-gray-50 rounded-lg border border-gray-300 sm:text-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+    this.editTaskTitle.value = todo.title
+    this.editTaskTitle.placeholder = this.taskTitle.placeholder
+
+    this.editTaskTitleLabelContainer = this.createElem('div', 'mb-2')
+    this.editTaskTitleLabelContainer.append(this.taskTitleLabel, this.editTaskTitle)
+
+    // edit form task description
+    this.editTaskDesc = this.createElem('input')
+    this.editTaskDesc.type = 'text'
+    this.editTaskDesc.classList = 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+    this.editTaskDesc.placeholder = this.taskDesc.placeholder
+    this.editTaskDesc.value = todo.description
+
+    this.editTaskDescContainer = this.createElem('div', 'mb-2')
+    this.editTaskDescContainer.append(this.taskDescLabel, this.editTaskDesc)
+
+    // edit form task date
+    this.editTaskDate = this.createElem('input', 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500')
+    this.editTaskDate.type = 'date'
+    this.editTaskDate.value = moment(todo.date).format('YYYY-MM-DD')
+    this.editTaskDateContainer = this.createElem('div', 'mb-2')
+    this.editTaskDateContainer.append(this.taskDateLabel, this.editTaskDate)
+
+
+    // submit button
+    this.editSubmitBtn = this.createElem('button', 'mt-4 w-fit justify-self-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800')
+    this.editSubmitBtn.textContent = 'Submit'
+    this.editSubmitBtn.id = 'edit-submit-button'
+
+    this.editForm.append(this.editTaskTitleLabelContainer, this.editTaskDescContainer, this.editTaskDateContainer, this.editSubmitBtn)
+    this.editCard.append(this.editForm)
+
+    this.editSubmitBtn.addEventListener('click', event => {
+      event.preventDefault()
+      console.log('edit submit button')
+      
+    })
+  }
+
+  // createTaskForm(todo) {
+  //   this.overlay = this.createElem('div')
+  //   this.overlay.id = 'overlay'
+  //   this.overlay.classList = 'fixed w-screen h-screen transition-opacity duration-500 ease-in-out bg-gray-900 opacity-0 invisible'
+
+  //   this.overlay = this.createElem('div')
+  //   this.overlay.id = 'overlay'
+  //   this.overlay.classList = 'fixed w-screen h-screen transition-opacity duration-500 ease-in-out bg-gray-900 opacity-0 invisible'
+  //   this.app.append(this.overlay)
+
+  //   this.overlayCard = this.createElem('div')
+  //   this.overlayCard.id = 'overlayCard'
+  //   this.overlayCard.classList = 'mt-24 overflow-y-auto h-4/5 fixed flex flex-col transition-opacity duration-500 ease-in-out opacity-0 invisible bg-white shadow-lg rounded-2xl w-3/4 p-6 dark:bg-gray-700'
+  //   this.app.append(this.overlayCard)
+
+  //   this.title = this.createElem('h1', 'text-2xl text-center mb-6 dark:text-white')
+  //   this.title.textContent = 'Edit task'
+
+  //   this.form = this.createElem('form')
+  //   this.form.classList = 'grid'
+
+  //   this.submitBtn = this.createElem('button', 'mt-4 w-fit justify-self-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800')
+  //   this.submitBtn.textContent = 'Submit'
+
+  //   this.todoList = this.createElem('ul', 'todo-list grid grid-cols-1 lg:grid-cols-3 gap-4 mb-28')
+  //   this.todoListWrapper = this.createElem('div', 'mt-20 w-10/12')
+  //   this.todoListWrapper.id = 'todo-list-wrapper'
+  //   this.todoListWrapper.append(this.todoList)
+
+  //   // task title
+  //   this.taskTitle = this.createElem('input')
+  //   this.taskTitle.type = 'text'
+  //   this.taskTitle.classList = 'block p-4 w-full text-gray-900 bg-gray-50 rounded-lg border border-gray-300 sm:text-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+  //   this.taskTitle.placeholder = 'e.g., Learn Portuguese'
+  //   this.taskTitle.name = 'taskTitle'
+
+  //   this.taskTitleLabel = this.createElem('label', 'block mb-2 text-sm font-medium text-gray-900 dark:text-gray-100')
+  //   this.taskTitleLabel.textContent = 'Task title'
+  //   this.taskTitleContainer = this.createElem('div', 'mb-2')
+  //   this.taskTitleContainer.append(this.taskTitleLabel, this.taskTitle)
+
+  //   // task description
+  //   this.taskDesc = this.createElem('input')
+  //   this.taskDesc.type = 'text'
+  //   this.taskDesc.classList = 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+  //   this.taskDesc.placeholder = 'e.g., Hour long session'
+  //   this.taskDesc.name = 'taskDesc'
+
+  //   this.taskDescLabel = this.createElem('label', 'block mb-2 text-sm font-medium text-gray-900 dark:text-gray-100')
+  //   this.taskDescLabel.textContent = 'Description'
+  //   this.taskDescContainer = this.createElem('div', 'mb-2')
+  //   this.taskDescContainer.append(this.taskDescLabel, this.taskDesc)  
+
+  //   // task date
+  //   this.taskDate = this.createElem('input', 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500')
+  //   this.taskDate.type = 'date'
+  //   this.taskDate.value = moment().format('YYYY-MM-DD')
+  //   this.taskDate.name = 'taskDate'
+
+  //   this.taskDateLabel = this.createElem('label', 'block mb-2 text-sm font-medium text-gray-900 dark:text-gray-100')
+  //   this.taskDateLabel.textContent = 'Date'
+  //   this.taskDateContainer = this.createElem('div', 'mb-2')
+  //   this.taskDateContainer.append(this.taskDateLabel, this.taskDate)  
+
+  //   // task optional notes
+  //   this.optionalNotes = this.createElem('input')
+  //   this.optionalNotes.type = 'text'
+  //   this.optionalNotes.classList = 'block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-gray-300 sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+  //   this.optionalNotes.placeholder = 'e.g., bring flashcards'
+  //   this.optionalNotes.name = 'optionalNotes'
+
+  //   this.optionalNotesLabel = this.createElem('label', 'block mb-2 text-sm font-medium text-gray-900 dark:text-gray-100')
+  //   this.optionalNotesLabel.textContent = 'Optional notes'
+  //   this.optionalNotesContainer = this.createElem('div', 'mb-2')
+  //   this.optionalNotesContainer.append(this.optionalNotesLabel, this.optionalNotes)  
+
+  //   // task priority level
+  //   this.radioGroup = this.createElem('div', 'radio-group')
+
+  //   this.radioGroupLabel = this.createElem('label', 'block mb-2 text-sm font-medium text-gray-900 dark:text-gray-100')
+  //   this.radioGroupLabel.textContent = 'Priority level'
+  //   this.radioGroupContainer = this.createElem('div', 'mb-2 p-2 rounded-lg border border-gray-300 dark:border-gray-600')
+  //   this.radioGroupContainer.append(this.radioGroupLabel, this.radioGroup)  
+
+  //   // https://www.tutorialspoint.com/how-to-dynamically-create-radio-buttons-using-an-array-in-javascript
+  //   const priority = ['Low', 'Normal', 'High']
+  //   priority.forEach((priorityValue, index) => {
+
+  //     this.selectionContainer = this.createElem('div')
+  //     this.selectionContainer.classList = 'flex items-center mb-2'
+
+  //     this.inputValue = this.createElem('input')
+  //     this.inputValue.type = 'radio'
+  //     this.inputValue.name = 'priority'
+  //     this.inputValue.value = priorityValue
+  //     this.inputValue.priorityValue = index
+  //     this.inputValue.classList = 'w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300'
+
+  //     this.labelValue = this.createElem('label')
+  //     this.labelValue.innerHTML = priorityValue
+  //     this.labelValue.classList = 'block ml-2 text-sm font-medium text-gray-900 dark:text-gray-100'
+
+  //     this.selectionContainer.append(this.inputValue, this.labelValue)
+
+  //     this.radioGroup.append(this.selectionContainer)
+
+  //   })
+
+  //   // project options
+  //   this.projectOptions = this.createElem('select', 'bg-gray-50 border border-gray-300 text-gray-900 mb-2 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500')
+  //   this.projectOptions.id = 'projects'
+  //   this.projectOptions.name = 'projects'
+
+  //   this.projectOptionsLabel = this.createElem('label', 'block mb-2 text-sm font-medium text-gray-900 dark:text-gray-100')
+  //   this.projectOptionsLabel.textContent = 'Choose a project for the task'
+  //   this.projectOptionsContainer = this.createElem('div', 'mb-2 p-2 rounded-lg border border-gray-300 dark:border-gray-600')
+  //   this.projectOptionsContainer.append(this.projectOptionsLabel, this.projectOptions)
+
+  //   // const projects = ['Default project', 'Another project', 'Work project']
+
+  //   this.projectsList = this.createElem('ul', 'projects-list')
+  //   this.projectOptions.append(this.projectsList)
+
+  //   this.allProjects.forEach(project => {
+  //     this.projectOption = this.createElem('option')
+  //     this.projectOption.value = project.name
+  //     this.projectOption.textContent = project.name
+
+  //     this.projectOptions.append(this.projectOption)
+  //   })
+
+  //   this.app.append(this.todoListWrapper)
+  //   this.form.append(this.radioGroupContainer, this.projectOptionsContainer)
+  //   this.form.append(this.taskTitleContainer, this.taskDescContainer, this.taskDateContainer, this.optionalNotesContainer, this.submitBtn)
+  //   this.overlayCard.append(this.title, this.form)
+
+  //   if (todo) {
+  //     this.taskTitle.value = todo.title
+  //     this.taskDesc.value = todo.description
+  //     this.taskDate.value = moment(todo.date).format('YYYY-MM-DD')
+      
+  //     const priorityValues = document.getElementsByName('priority')
+  //     priorityValues.forEach((priority) => {
+  //       if (priority.value == todo.priority) {
+  //         priority.checked = true
+  //       }
+  //     })
+
+  //     this.projectOptions.value = todo.project
+      
+
+  //     if (todo.notes) {
+  //       this.optionalNotes.value = todo.notes
+  //     }
+  //   }
+  // }
+  // bindEditTodo(handler) {
+  //   // this.todoList.addEventListener('click', event => {
+  //   //   if (event.target.classList.contains('edit')) {
+  //   //     console.log('in here')
+  //   //     const id = parseInt(event.target.parentElement.parentElement.parentElement.parentElement.id)
+  //   //     handler(id)
+  //   //   }
+  //   // })
+  // }
 }
 
 // controller is link between model and view
@@ -1066,6 +1355,7 @@ class Controller {
     this.view.bindAddProjectName(this.handleAddProjectName, this.model.projects)
     this.view.bindEditTitle(this.handleEditTitle)
     this.view.bindDeleteTodo(this.handleDeleteTodo)
+    this.view.bindEditTodo(this.handleEditTodo)
     this.view.bindToggleTodo(this.handleToggleTodo)
     this.view.bindEditTodo(this.handleEditTodo)
     
