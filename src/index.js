@@ -1190,14 +1190,38 @@ class View {
 
     })
 
+    // edit form project options
+    this.editProjectOptions = this.createElem('select', 'bg-gray-50 border border-gray-300 text-gray-900 mb-2 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500')
+    this.editProjectOptions.id = 'projects'
+    this.editProjectOptions.name = 'projects'
+
+    this.editProjectOptionsLabel = this.createElem('label', 'block mb-2 text-sm font-medium text-gray-900 dark:text-gray-100')
+    this.editProjectOptionsLabel.textContent = 'Choose a project for the task'
+    this.editProjectOptionsContainer = this.createElem('div', 'mb-2 p-2 rounded-lg border border-gray-300 dark:border-gray-600')
+    this.editProjectOptionsContainer.append(this.editProjectOptionsLabel, this.editProjectOptions)
+
+    // const projects = ['Default project', 'Another project', 'Work project']
+
+    this.editProjectsList = this.createElem('ul', 'edit-projects-list')
+    this.editProjectOptions.append(this.editProjectsList)
+
+    this.allProjects.forEach(project => {
+      this.editProjectOption = this.createElem('option')
+      this.editProjectOption.value = project.name
+      this.editProjectOption.textContent = project.name
+
+      this.editProjectOptions.append(this.editProjectOption)
+    })
+
     // submit button
     this.editSubmitBtn = this.createElem('button', 'mt-4 w-fit justify-self-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800')
     this.editSubmitBtn.textContent = 'Submit'
     this.editSubmitBtn.id = 'edit-submit-button'
 
-    this.editForm.append(this.editRadioGroupContainer, this.editTaskTitleLabelContainer, this.editTaskDescContainer, this.editTaskDateContainer, this.editSubmitBtn)
+    this.editForm.append(this.editRadioGroupContainer, this.editProjectOptionsContainer, this.editTaskTitleLabelContainer, this.editTaskDescContainer, this.editTaskDateContainer, this.editSubmitBtn)
     this.editCard.append(this.editForm)
 
+    // set values to task values
     const editPriorityValues = document.getElementsByName('edit-priority')
     // console.log(editPriorityValues)
     editPriorityValues.forEach((priority) => {
@@ -1206,6 +1230,8 @@ class View {
         priority.checked = true
       }
     })
+
+    this.editProjectOptions.value = todo.project
 
     this.editSubmitBtn.addEventListener('click', event => {
       event.preventDefault()
